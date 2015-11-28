@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#528932">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        >
+
+
+        <com.ascentbrezie.brezie.custom.CustomEditText
+            android:id="@+id/number_edit_login_activity"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Number"
+            android:inputType="number"
+            />
+        <com.ascentbrezie.brezie.custom.CustomEditText
+            android:id="@+id/password_edit_login_activity"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword"
+            />
+
+        <com.ascentbrezie.brezie.custom.CustomButton
+            android:id="@+id/login_button_login_activity"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

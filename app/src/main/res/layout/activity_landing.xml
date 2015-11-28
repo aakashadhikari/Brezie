@@ -1,0 +1,31 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LandingActivity"
+    android:background="@drawable/background_1"
+    >
+
+    <include
+        android:id="@+id/toolbar_landing_activity"
+        layout="@layout/layout_toolbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <com.daimajia.slider.library.SliderLayout
+        android:id="@+id/slider_landing_activity"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        />
+
+    <LinearLayout
+        android:id="@+id/tabs_layout_landing_activity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        />
+
+</RelativeLayout>

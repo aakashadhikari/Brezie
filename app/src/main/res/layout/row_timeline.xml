@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/margin_small"
+    >
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:src="@drawable/background_1"
+        android:layout_weight="1"
+        android:scaleType="centerCrop"
+        />
+    <com.ascentbrezie.brezie.custom.CustomTextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="You were feeling happy today"
+        android:layout_weight="5"
+        />
+
+
+</LinearLayout>

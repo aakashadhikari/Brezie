@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/cover_image_profile_activity"
+        android:layout_width="fill_parent"
+        android:layout_height="250dp"
+        android:background="@drawable/background_1"
+        />
+
+    <com.ascentbrezie.brezie.custom.CircularImageView
+        android:id="@+id/profile_image_profile_activity"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/background_2"
+        android:layout_marginTop="175dp"
+        android:layout_centerHorizontal="true"
+        />
+    <com.ascentbrezie.brezie.custom.CustomTextView
+        android:id="@+id/name_text_profile_activity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_extra_large"
+        android:text="SAGAR DEVANGA"
+        android:layout_below="@id/profile_image_profile_activity"
+        android:gravity="center"
+        android:padding="@dimen/padding"
+        />
+
+    <include
+        android:id="@+id/stats_layout_profile_activity"
+        layout="@layout/layout_personal_stats"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name_text_profile_activity"
+        />
+
+    <com.ascentbrezie.brezie.custom.CircularImageView
+        android:id="@+id/fab_image_profile_activity"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:src="@drawable/background_2"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        />
+
+</RelativeLayout>
+
+
+    <!--<android.support.v7.widget.RecyclerView-->
+    <!--android:id="@+id/history_recycler_view_profile_activity"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="fill_parent"-->
+    <!--android:layout_below="@id/stats_layout_profile_activity"-->
+    <!--/>-->
