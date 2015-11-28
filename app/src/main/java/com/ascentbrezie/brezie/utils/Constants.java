@@ -19,6 +19,7 @@ public class Constants {
     public static final String LANDING_ACTIVITY = " LANDING ACTIVITY ";
     public static final String LOGIN_ACTIVITY = " LOGIN ACTIVITY ";
     public static final String LOGIN_OR_REGISTER_ACTIVITY = " LOGIN OR REGISTER ACTIVITY ";
+    public static final String MOBILE_VERIFICATION_ACTIVITY = " MOBILE VERIFICATION ACTIVITY ";
     public static final String MOOD_DETAIL_ACTIVITY = " MOOD DETAIL ACTIVITY ";
     public static final String PROFILE_ACTIVITY = " PROFILE ACTIVITY ";
     public static final String REGISTER_ACTIVITY = " REGISTER ACTIVITY ";
