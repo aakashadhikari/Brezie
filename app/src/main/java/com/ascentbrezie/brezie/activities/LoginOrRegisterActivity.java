@@ -3,6 +3,7 @@ package com.ascentbrezie.brezie.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.View;
 
@@ -21,7 +22,6 @@ public class LoginOrRegisterActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_or_register);
-
         Log.d(Constants.LOG_TAG,Constants.LOGIN_OR_REGISTER_ACTIVITY);
 
         getExtras();
@@ -33,6 +33,7 @@ public class LoginOrRegisterActivity extends Activity {
      * This function will be called when when
      * we pass extras with the intents
      * */
+
     public void getExtras(){
 
 
