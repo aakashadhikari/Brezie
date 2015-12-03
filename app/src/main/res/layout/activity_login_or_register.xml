@@ -25,7 +25,7 @@
         android:background="@drawable/custom_button"
         style="@style/button_style"
         android:textSize="@dimen/text_size_large"
-        android:padding="10dp" />
+        android:padding="@dimen/padding_large" />
     <com.ascentbrezie.brezie.custom.CustomButton
         android:id="@+id/register_button_login_or_register_activity"
         android:layout_width="fill_parent"
