@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:background="#cecece"
+    android:background="@color/background_smoke"
     >
 
     <LinearLayout
@@ -12,31 +12,30 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerInParent="true"
-        android:background="cecece"
+        android:background="@color/background_smoke"
         >
 
     <com.ascentbrezie.brezie.custom.CustomButton
         android:id="@+id/login_button_login_or_register_activity"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:text="Login"
-        android:layout_margin="20dp"
+        android:layout_margin="@dimen/margin_large"
         android:background="@drawable/custom_button"
         style="@style/button_style"
         android:textSize="@dimen/text_size_large"
-        android:padding="10dp" />
+        android:padding="@dimen/padding_large" />
     <com.ascentbrezie.brezie.custom.CustomButton
         android:id="@+id/register_button_login_or_register_activity"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="20dp"
+        android:layout_margin="@dimen/margin_large"
         android:text="Register"
         android:background="@drawable/custom_button"
         style="@style/button_style"
         android:textSize="@dimen/text_size_large"
-        android:padding="10dp" />
+        android:padding="@dimen/padding_large" />
 
     </LinearLayout>
 

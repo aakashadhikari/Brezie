@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#cecece"
+    android:background="@color/background_smoke"
     >
 
     <LinearLayout
@@ -11,41 +11,35 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerInParent="true"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/margin_large"
         >
 
         <com.ascentbrezie.brezie.custom.CustomEditText
             android:id="@+id/number_edit_register_activity"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/margin_large"
             android:hint="Number"
-            android:background="@drawable/edittext_rounded_corners"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:padding="5dp"
+            android:background="@drawable/rounded_corners_edit_text"
+            android:padding="@dimen/padding_small"
             android:inputType="number"
             />
         <com.ascentbrezie.brezie.custom.CustomEditText
             android:id="@+id/nick_name_edit_register_activity"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/edittext_rounded_corners"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:padding="5dp"
-            android:layout_margin="10dp"
+            android:background="@drawable/rounded_corners_edit_text"
+            android:padding="@dimen/padding_small"
+            android:layout_margin="@dimen/margin_large"
             android:hint="Nick Name"
             />
         <com.ascentbrezie.brezie.custom.CustomEditText
             android:id="@+id/password_edit_register_activity"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/edittext_rounded_corners"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_margin="10dp"
-            android:padding="5dp"
+            android:background="@drawable/rounded_corners_edit_text"
+            android:layout_margin="@dimen/margin_large"
+            android:padding="@dimen/padding_small"
             android:hint="Password"
             android:inputType="textPassword"
             />
@@ -53,11 +47,9 @@
             android:id="@+id/confirm_password_edit_register_activity"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/edittext_rounded_corners"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_margin="10dp"
-            android:padding="5dp"
+            android:background="@drawable/rounded_corners_edit_text"
+            android:layout_margin="@dimen/margin_large"
+            android:padding="@dimen/padding_small"
             android:hint="Confirm Password"
             android:inputType="textPassword"
             />
@@ -68,11 +60,9 @@
             android:text="Register"
             android:background="@drawable/custom_button"
             style="@style/button_style"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/margin_large"
             android:textSize="@dimen/text_size_large"
-            android:padding="5dp" />
-
-
+            android:padding="@dimen/padding_small" />
 
     </LinearLayout>
 
