@@ -21,7 +21,6 @@ public class LoginOrRegisterActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_or_register);
-
         Log.d(Constants.LOG_TAG,Constants.LOGIN_OR_REGISTER_ACTIVITY);
 
         getExtras();
@@ -33,6 +32,7 @@ public class LoginOrRegisterActivity extends Activity {
      * This function will be called when when
      * we pass extras with the intents
      * */
+
     public void getExtras(){
 
 
