@@ -33,11 +33,9 @@ public class SplashScreenActivity extends Activity implements LocationListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-
         Log.d(Constants.LOG_TAG,Constants.SPLASH_SCREEN_ACTIVITY);
 
+        getService();
         findViews();
         loadAnimation();
         getScreenResolution();
@@ -51,6 +49,15 @@ public class SplashScreenActivity extends Activity implements LocationListener{
                 startActivity(i);
             }
         },3000);
+    }
+
+    public void getService(){
+
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
+
     }
 
     public void findViews(){
@@ -88,7 +95,7 @@ public class SplashScreenActivity extends Activity implements LocationListener{
         String deviceId = Settings.Secure.getString(this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
-        Log.d(Constants.LOG_TAG," The device Id is "+deviceId);
+        Log.d(Constants.LOG_TAG, " The device Id is " + deviceId);
 
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -99,34 +106,37 @@ public class SplashScreenActivity extends Activity implements LocationListener{
 
     @Override
     public void onLocationChanged(Location location) {
-        String Lat, Long;
-        Lat = Double.valueOf(location.getLatitude()).toString();
-        Long = Double.valueOf(location.getLongitude()).toString();
+        String latitude, longitude;
+
+        latitude = Double.valueOf(location.getLatitude()).toString();
+        longitude = Double.valueOf(location.getLongitude()).toString();
+
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("Latitude", Lat);
-        editor.putString("Longitude", Long);
+        editor.putString("latitude", latitude);
+        editor.putString("longitude", longitude);
         editor.commit();
-        Log.d(Constants.LOG_TAG, "Latitude" + Lat);
-        Log.d(Constants.LOG_TAG, "Longitude" + Long);
+
+        Log.d(Constants.LOG_TAG, "Latitude" + latitude);
+        Log.d(Constants.LOG_TAG, "Longitude" + longitude);
 
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        Log.d("Location","status");
+        Log.d(Constants.LOG_TAG, "status");
 
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-        Log.d("Location","disable");
+        Log.d(Constants.LOG_TAG, "disable");
 
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-        Log.d("Location","disable");
+        Log.d(Constants.LOG_TAG, "disable");
 
     }
 }
