@@ -34,9 +34,8 @@ public class Constants {
     public static final String TIMELINE_RECYCLER_ADAPTER =" TIMELINE RECYCLER ADAPTER";
 
     // all the async tasks
-    public static final String FETCH_QUOTES_FOR_DAY_ASYNC_TASK=" FETCH_QUOTES_FOR_DAY_ASYNC_TASK ";
-    public static final String FETCH_MOOD_DETAIL_ASYNC_TASK=" FETCH_MOOD_DETAIL_ASYNC_TASK ";
-    public static final String FETCH_USERIDREF_ASYNC_TASK=" FETCH__USERIDREF_ASYNC_TASK ";
+    public static final String FETCH_QUOTES_FOR_DAY_ASYNC_TASK=" FETCH QUOTES FOR DAY ASYNC TASK ";
+    public static final String FETCH_MOOD_DETAIL_ASYNC_TASK=" FETCH MOOD DETAIL ASYNC TASK ";
 
     // all the data
     public static ArrayList<CommentsData> commentsData;
