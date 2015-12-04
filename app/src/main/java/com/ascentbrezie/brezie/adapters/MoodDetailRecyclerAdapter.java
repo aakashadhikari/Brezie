@@ -24,15 +24,16 @@ import com.ascentbrezie.brezie.utils.Constants;
  */
 public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRecyclerAdapter.ViewHolder> {
 
-    Context context;
-    int width,height;
-    LinearLayout rowLayout;
-    ImageView moodImage;
-    int images[] = {R.drawable.q1,R.drawable.q2,R.drawable.q3,R.drawable.q4,R.drawable.q5};
+    private Context context;
+    private int width,height;
 
-    LinearLayout displayComments;
-    CustomEditText enterComments;
-    CustomButton addComment;
+    private ImageView moodImage,like,share;
+    private int images[] = {R.drawable.q1,R.drawable.q2,R.drawable.q3,R.drawable.q4,R.drawable.q5};
+
+    private LinearLayout rowLayout,displayComments;
+    private CustomEditText enterComments;
+    private CustomButton addComment;
+
 
     public MoodDetailRecyclerAdapter(Context context, int width, int height) {
         this.context = context;
@@ -74,6 +75,9 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
         rowLayout = (LinearLayout) holder.v.findViewById(R.id.row_layout);
         moodImage = (ImageView) holder.v.findViewById(R.id.quote_image_mood_detail_activity);
 
+        like = (ImageView) holder.v.findViewById(R.id.like_included);
+        share = (ImageView) holder.v.findViewById(R.id.share_included);
+
         displayComments = (LinearLayout) holder.v.findViewById(R.id.display_comments_layout_mood_detail_activity);
         enterComments = (CustomEditText) holder.v.findViewById(R.id.add_comment_edit_included);
         addComment = (CustomButton) holder.v.findViewById(R.id.add_comment_button_included);
@@ -113,7 +117,15 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
     public void setViews(int position){
 
+        like.setTag("like_"+position);
+        like.setOnClickListener(listener);
+
+        share.setTag("share_"+position);
+        share.setOnClickListener(listener);
+
+        addComment.setTag("comment_"+position);
         addComment.setOnClickListener(listener);
+
         moodImage.setImageResource(images[position]);
 
     }
@@ -123,6 +135,16 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
     public int getItemCount() {
 
         return 5;
+    }
+
+    public void like(){
+
+
+    }
+
+    public void share(){
+
+
     }
 
     public void addComment(){
@@ -158,6 +180,10 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
             switch (v.getId()){
 
+                case R.id.like_included: like();
+                    break;
+                case R.id.share_included: share();
+                    break;
                 case R.id.add_comment_button_included: addComment();
                     break;
 

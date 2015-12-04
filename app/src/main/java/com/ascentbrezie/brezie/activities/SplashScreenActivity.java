@@ -18,6 +18,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.ascentbrezie.brezie.R;
+import com.ascentbrezie.brezie.async.FetchUserIdAsyncTask;
 import com.ascentbrezie.brezie.utils.Constants;
 
 /**
@@ -28,27 +29,21 @@ public class SplashScreenActivity extends Activity implements LocationListener{
     private ImageView appName;
     private  int width,height;
     protected LocationManager locationManager;
+    private String deviceId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        Log.d(Constants.LOG_TAG,Constants.SPLASH_SCREEN_ACTIVITY);
+        Log.d(Constants.LOG_TAG, Constants.SPLASH_SCREEN_ACTIVITY);
 
         getService();
         findViews();
         loadAnimation();
         getScreenResolution();
         getDeviceId();
+        sendDeviceId();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                Intent i = new Intent(SplashScreenActivity.this,LandingActivity.class);
-                startActivity(i);
-            }
-        },3000);
     }
 
     public void getService(){
@@ -92,7 +87,7 @@ public class SplashScreenActivity extends Activity implements LocationListener{
 
     public void getDeviceId(){
 
-        String deviceId = Settings.Secure.getString(this.getContentResolver(),
+        deviceId = Settings.Secure.getString(this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
         Log.d(Constants.LOG_TAG, " The device Id is " + deviceId);
@@ -101,6 +96,35 @@ public class SplashScreenActivity extends Activity implements LocationListener{
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("deviceId", deviceId);
         editor.commit();
+
+    }
+
+    public void sendDeviceId(){
+
+        String url = Constants.splashUrl;
+        new FetchUserIdAsyncTask(this, new FetchUserIdAsyncTask.FetchUserIdCallback() {
+            @Override
+            public void onStart(boolean status) {
+
+
+            }
+            @Override
+            public void onResult(boolean result) {
+
+                if(true){
+
+                    SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("userId",Constants.userId);
+                    editor.putString("referenceCode",Constants.referenceCode);
+                    editor.commit();
+
+                    Intent i = new Intent(SplashScreenActivity.this,LandingActivity.class);
+                    startActivity(i);
+                }
+
+            }
+            }).execute(url,deviceId);
 
     }
 

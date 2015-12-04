@@ -16,6 +16,13 @@ public class Constants {
     public static final String APP_NAME = "Brezie";
     public static final String LOG_TAG = "Brezie";
 
+    // Landing Screen Variables
+
+    //Splash Screen Variables
+    public static String userId;
+    public static String referenceCode;
+
+    //
     public static String nickName;
 
     public static JSONObject transactionParentJsonObject;
@@ -43,8 +50,9 @@ public class Constants {
     public static final String TIMELINE_RECYCLER_ADAPTER =" TIMELINE RECYCLER ADAPTER";
 
     // all the async tasks
-    public static final String FETCH_QUOTES_FOR_DAY_ASYNC_TASK=" FETCH QUOTES FOR DAY ASYNC TASK ";
     public static final String FETCH_MOOD_DETAIL_ASYNC_TASK=" FETCH MOOD DETAIL ASYNC TASK ";
+    public static final String FETCH_QUOTES_FOR_DAY_ASYNC_TASK=" FETCH QUOTES FOR DAY ASYNC TASK ";
+    public static final String FETCH_USER_ID_ASYNC_TASK=" FETCH USER ID ASYNC TASK ";
     public static final String LOGIN_ASYNC_TASK=" LOGIN ASYNC TASK ";
     public static final String MOBILE_VERIFICATION_ASYNC_TASK=" MOBILE VERIFICATION ASYNC TASK ";
     public static final String REGISTER_ASYNC_TASK=" REGISTER ASYNC TASK ";
@@ -54,8 +62,13 @@ public class Constants {
     public static ArrayList<MoodDetailData> moodDetailData;
     public static ArrayList<TimelineData> timelineData;
 
-    //all the test links
-
     // all the developer links
+
+    public static final String splashUrl = "http://brezie.in/dev/Brezie/splash.php";
+    public static final String landingUrl = "http://brezie.in/dev/Brezie/landing.php";
+    public static final String moodDetailUrl = "http://brezie.in/dev/Brezie/mood_detail.php";
+    public static final String profileUrl = "http://brezie.in/dev/Brezie/profile.php";
+    public static final String registerUrl = "http://brezie.in/dev/Brezie/register.php";
+    public static final String verifyUrl = "http://brezie.in/dev/Brezie/verify.php";
 
 }

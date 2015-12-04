@@ -69,7 +69,7 @@ public class LandingActivity extends ActionBarActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
         String deviceId = sharedPreferences.getString("deviceId","null");
 
-        String url="";
+        String url=Constants.landingUrl;
 
         new FetchQuotesForDayAsyncTask(getApplicationContext(),new FetchQuotesForDayAsyncTask.FetchQuotesForDayCallback() {
             @Override
