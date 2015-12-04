@@ -71,7 +71,7 @@ public class RegisterActivity extends Activity {
         final String nickNameValue = nickName.getText().toString();
         final String numberValue = number.getText().toString();
 
-        String url = "null";
+        String url = Constants.registerUrl;
         new RegisterAsyncTask(this, new RegisterAsyncTask.RegisterCallback() {
             @Override
             public void onStart(boolean status) {

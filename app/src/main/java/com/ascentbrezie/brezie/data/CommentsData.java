@@ -5,11 +5,11 @@ package com.ascentbrezie.brezie.data;
  */
 public class CommentsData {
 
-    String comment,handle;
+    String comment, nickName;
 
-    public CommentsData(String comment, String handle) {
+    public CommentsData(String comment, String nickName) {
         this.comment = comment;
-        this.handle = handle;
+        this.nickName = nickName;
     }
 
     public String getComment() {
@@ -20,11 +20,11 @@ public class CommentsData {
         this.comment = comment;
     }
 
-    public String getHandle() {
-        return handle;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setHandle(String handle) {
-        this.handle = handle;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 }

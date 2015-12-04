@@ -63,7 +63,6 @@ public class Constants {
     public static ArrayList<TimelineData> timelineData;
 
     // all the developer links
-
     public static final String splashUrl = "http://brezie.in/dev/Brezie/splash.php";
     public static final String landingUrl = "http://brezie.in/dev/Brezie/landing.php";
     public static final String moodDetailUrl = "http://brezie.in/dev/Brezie/mood_detail.php";

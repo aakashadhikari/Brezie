@@ -70,7 +70,7 @@ public class FetchQuotesForDayAsyncTask extends AsyncTask<String,Void,Boolean> {
             httpURLConnection.setDoOutput(true);
 
             List<KeyValuePairData> keyValuePairData = new ArrayList<KeyValuePairData>();
-            keyValuePairData.add(new KeyValuePairData("device_id",params[1]));
+            keyValuePairData.add(new KeyValuePairData("user_id",params[1]));
 
             outputStream = httpURLConnection.getOutputStream();
 
@@ -87,36 +87,31 @@ public class FetchQuotesForDayAsyncTask extends AsyncTask<String,Void,Boolean> {
                 String response = convertInputStreamToString(inputStream);
 
                 Log.d(Constants.LOG_TAG," The response is "+response);
-                JSONObject jsonObject = new JSONObject(response);
-                JSONArray jsonArray = jsonObject.getJSONArray("listing");
-                for(int i=0;i<jsonArray.length();i++){
 
-
-
-                    Constants.commentsData = new ArrayList<CommentsData>();
-//                    for(int j=0;j<;j++){
-//
-//
-//                    }
-
-
-                }
 
                 return true;
             }
-            return true;
-//            return false;
+            return false;
 
         }
         catch(Exception e){
 
-
+            e.printStackTrace();
         }
         finally{
 
+            try {
+
+                if(inputStream != null){
+
+                    inputStream.close();
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
 
         }
-
         return true;
 //        return false;
     }
@@ -139,6 +134,8 @@ public class FetchQuotesForDayAsyncTask extends AsyncTask<String,Void,Boolean> {
             result += "=";
             result += data.getValue();
         }
+
+        Log.d(Constants.LOG_TAG," the sent parameters "+result);
         return result;
 
     }

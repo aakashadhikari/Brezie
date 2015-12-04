@@ -117,6 +117,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
     public void setViews(int position){
 
+
         like.setTag("like_"+position);
         like.setOnClickListener(listener);
 
@@ -143,6 +144,8 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
     }
 
     public void share(){
+
+
 
 
     }

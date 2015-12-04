@@ -140,6 +140,8 @@ public class RegisterAsyncTask extends AsyncTask<String,Void,Boolean> {
             result += "=";
             result += data.getValue();
         }
+
+        Log.d(Constants.LOG_TAG," the sent parameters "+result);
         return result;
 
     }

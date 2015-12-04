@@ -91,11 +91,11 @@ public class LoginAsyncTask extends AsyncTask<String,Void,Boolean> {
 
                 Log.d(Constants.LOG_TAG," The response is "+response);
 
-//                Constants.nickName
 
                 return true;
             }
-            return false;
+            return true;
+//            return false;
 
         }
         catch(Exception e){
@@ -116,8 +116,7 @@ public class LoginAsyncTask extends AsyncTask<String,Void,Boolean> {
 
         }
 
-        return true;
-//        return false;
+        return false;
     }
 
     public String constructPostParameters(List<KeyValuePairData> keyValuePairData){
@@ -138,6 +137,8 @@ public class LoginAsyncTask extends AsyncTask<String,Void,Boolean> {
             result += "=";
             result += data.getValue();
         }
+
+        Log.d(Constants.LOG_TAG," the sent parameters "+result);
         return result;
 
     }

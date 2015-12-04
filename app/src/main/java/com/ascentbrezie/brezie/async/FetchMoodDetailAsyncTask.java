@@ -76,7 +76,10 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
             httpURLConnection.setDoOutput(true);
 
             List<KeyValuePairData> keyValuePairData = new ArrayList<KeyValuePairData>();
-            keyValuePairData.add(new KeyValuePairData("mood_id",params[1]));
+            keyValuePairData.add(new KeyValuePairData("user_id",params[1]));
+            keyValuePairData.add(new KeyValuePairData("mood_id",params[2]));
+            keyValuePairData.add(new KeyValuePairData("latitude",params[3]));
+            keyValuePairData.add(new KeyValuePairData("longitude",params[4]));
 
             outputStream = httpURLConnection.getOutputStream();
 
@@ -93,33 +96,51 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
                 String response = convertInputStreamToString(inputStream);
 
                 Log.d(Constants.LOG_TAG," The response is "+response);
+
                 JSONObject jsonObject = new JSONObject(response);
-                JSONArray jsonArray = jsonObject.getJSONArray("listing");
+                String quoteId = jsonObject.getString("quote_id");
+                String commentCounter = jsonObject.getString("comment_counter");
+                String likeCounter = jsonObject.getString("like_counter");
+                String shareCounter = jsonObject.getString("share_counter");
+                String usedAsCounter = jsonObject.getString("usedas_counter");
+
+                JSONArray jsonArray = jsonObject.getJSONArray("comments");
                 for(int i=0;i<jsonArray.length();i++){
 
+                    JSONObject nestedJsonObject = jsonArray.getJSONObject(i);
+                    String nickName = nestedJsonObject.getString("nickname");
+                    String comment = nestedJsonObject.getString("comment_text");
 
-
-                    Constants.commentsData = new ArrayList<CommentsData>();
-//                    for(int j=0;j<;j++){
-//
-//
-//                    }
-
+                    List<CommentsData>commentsData = new ArrayList<CommentsData>();
+                    commentsData.add(new CommentsData(comment,nickName));
 
                 }
 
+
                 return true;
             }
-            return true;
-//            return false;
+
+            return false;
 
         }
         catch(Exception e){
 
+            e.printStackTrace();
 
         }
         finally{
 
+            try {
+
+                if(inputStream != null){
+
+                    inputStream.close();
+                }
+            }
+            catch (Exception e){
+
+                e.printStackTrace();
+            }
 
         }
 
@@ -145,6 +166,7 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
             result += "=";
             result += data.getValue();
         }
+        Log.d(Constants.LOG_TAG," the sent parameters "+result);
         return result;
 
     }

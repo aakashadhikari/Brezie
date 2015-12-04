@@ -67,7 +67,7 @@ public class LandingActivity extends ActionBarActivity {
 
 
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
-        String deviceId = sharedPreferences.getString("deviceId","null");
+        String userId = sharedPreferences.getString("userId","null");
 
         String url=Constants.landingUrl;
 
@@ -95,7 +95,7 @@ public class LandingActivity extends ActionBarActivity {
                 }
 
             }
-        }).execute(url,deviceId);
+        }).execute(url,userId);
 
     }
 

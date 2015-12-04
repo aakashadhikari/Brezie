@@ -9,14 +9,25 @@ public class MoodDetailData {
 
     String imageId,imageUrl,likesCounter,commentsCounter,usedAsCounter;
     List<CommentsData> commentsData;
+    boolean isLiked;
 
-    public MoodDetailData(String imageId, String imageUrl, String likesCounter, String commentsCounter, String usedAsCounter, List<CommentsData> commentsData) {
+    public MoodDetailData(String imageId, String imageUrl, String likesCounter, String commentsCounter, String usedAsCounter, List<CommentsData> commentsData, boolean isLiked) {
         this.imageId = imageId;
         this.imageUrl = imageUrl;
         this.likesCounter = likesCounter;
         this.commentsCounter = commentsCounter;
         this.usedAsCounter = usedAsCounter;
         this.commentsData = commentsData;
+        this.isLiked = isLiked;
+    }
+
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setIsLiked(boolean isLiked) {
+        this.isLiked = isLiked;
     }
 
     public String getImageId() {

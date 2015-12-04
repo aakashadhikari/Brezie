@@ -70,11 +70,9 @@ public class MobileVerificationActivity extends Activity {
 
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME, MODE_PRIVATE);
         String userId = sharedPreferences.getString("userId", "null");
-//        user_id,number,password,nickname and otp.
-
         String otpValue = otp.getText().toString();
 
-        String url = "null";
+        String url = Constants.verifyUrl;
         new MobileVerificationAsyncTask(this, new MobileVerificationAsyncTask.MobileVerificationCallback() {
             @Override
             public void onStart(boolean status) {
