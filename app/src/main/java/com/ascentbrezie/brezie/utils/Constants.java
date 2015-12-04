@@ -36,6 +36,7 @@ public class Constants {
     // all the async tasks
     public static final String FETCH_QUOTES_FOR_DAY_ASYNC_TASK=" FETCH_QUOTES_FOR_DAY_ASYNC_TASK ";
     public static final String FETCH_MOOD_DETAIL_ASYNC_TASK=" FETCH_MOOD_DETAIL_ASYNC_TASK ";
+    public static final String FETCH_USERIDREF_ASYNC_TASK=" FETCH__USERIDREF_ASYNC_TASK ";
 
     // all the data
     public static ArrayList<CommentsData> commentsData;
