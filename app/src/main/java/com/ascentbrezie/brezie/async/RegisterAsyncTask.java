@@ -118,7 +118,8 @@ public class RegisterAsyncTask extends AsyncTask<String,Void,Boolean> {
 
         }
 
-        return false;
+        return true;
+//        return false;
     }
 
     public String constructPostParameters(List<KeyValuePairData> keyValuePairData){

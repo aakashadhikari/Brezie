@@ -90,6 +90,8 @@ public class MobileVerificationAsyncTask extends AsyncTask<String,Void,Boolean> 
 
                 Log.d(Constants.LOG_TAG," The response is "+response);
 
+//                Constants.nickName
+
                 return true;
             }
 
@@ -116,7 +118,8 @@ public class MobileVerificationAsyncTask extends AsyncTask<String,Void,Boolean> 
 
         }
 
-        return false;
+        return true;
+//        return false;
     }
 
     public String constructPostParameters(List<KeyValuePairData> keyValuePairData){

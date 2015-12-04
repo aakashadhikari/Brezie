@@ -27,6 +27,9 @@
             android:name=".activities.LoginOrRegisterActivity"
             android:label="@string/app_name" />
         <activity
+            android:name=".activities.MobileVerificationActivity"
+            android:label="@string/app_name" />
+        <activity
             android:name="com.ascentbrezie.brezie.activities.DeleteActivity"
             android:label="@string/app_name" />
         <activity

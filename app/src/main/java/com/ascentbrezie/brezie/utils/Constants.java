@@ -14,6 +14,8 @@ public class Constants {
     public static final String APP_NAME = "Brezie";
     public static final String LOG_TAG = "Brezie";
 
+    public static String nickName;
+
     // all the classes
     public static final String ABOUT_US_ACTIVITY = " ABOUT US ACTIVITY ";
     public static final String LANDING_ACTIVITY = " LANDING ACTIVITY ";
