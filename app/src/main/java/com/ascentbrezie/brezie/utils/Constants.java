@@ -4,6 +4,8 @@ import com.ascentbrezie.brezie.data.CommentsData;
 import com.ascentbrezie.brezie.data.MoodDetailData;
 import com.ascentbrezie.brezie.data.TimelineData;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -15,6 +17,11 @@ public class Constants {
     public static final String LOG_TAG = "Brezie";
 
     public static String nickName;
+
+    public static JSONObject transactionParentJsonObject;
+    public static JSONObject transactionChildJsonObject;
+
+
 
     // all the classes
     public static final String ABOUT_US_ACTIVITY = " ABOUT US ACTIVITY ";

@@ -109,7 +109,18 @@ public class MoodDetailActivity extends AppCompatActivity {
 
     }
 
+    public void sendTransaction(){
 
 
 
+
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sendTransaction();
+
+    }
 }
