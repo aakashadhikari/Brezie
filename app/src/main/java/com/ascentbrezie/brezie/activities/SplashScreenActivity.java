@@ -1,9 +1,13 @@
 package com.ascentbrezie.brezie.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -19,15 +23,18 @@ import com.ascentbrezie.brezie.utils.Constants;
 /**
  * Created by ADMIN on 25-09-2015.
  */
-public class SplashScreenActivity extends Activity {
+public class SplashScreenActivity extends Activity implements LocationListener{
 
     private ImageView appName;
     private  int width,height;
+    protected LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 
         Log.d(Constants.LOG_TAG,Constants.SPLASH_SCREEN_ACTIVITY);
 
@@ -90,4 +97,36 @@ public class SplashScreenActivity extends Activity {
 
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
+        String Lat, Long;
+        Lat = Double.valueOf(location.getLatitude()).toString();
+        Long = Double.valueOf(location.getLongitude()).toString();
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("Latitude", Lat);
+        editor.putString("Longitude", Long);
+        editor.commit();
+        Log.d(Constants.LOG_TAG, "Latitude" + Lat);
+        Log.d(Constants.LOG_TAG, "Longitude" + Long);
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        Log.d("Location","status");
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        Log.d("Location","disable");
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Log.d("Location","disable");
+
+    }
 }

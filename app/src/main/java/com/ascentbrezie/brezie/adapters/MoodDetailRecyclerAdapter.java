@@ -1,6 +1,8 @@
 package com.ascentbrezie.brezie.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ascentbrezie.brezie.R;
+import com.ascentbrezie.brezie.activities.LoginOrRegisterActivity;
 import com.ascentbrezie.brezie.custom.CustomButton;
 import com.ascentbrezie.brezie.custom.CustomEditText;
 import com.ascentbrezie.brezie.utils.Constants;
@@ -124,12 +127,27 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
     public void addComment(){
 
-        TextView tv = new TextView(context);
-        LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        tv.setLayoutParams(layoutParams1);
-        tv.setText(enterComments.getText().toString());
-        tv.setTextSize(18F);
-        displayComments.addView(tv);
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
+        String nickName = sharedPreferences.getString("nickName","null");
+
+        if(nickName.equalsIgnoreCase("null")){
+
+            Intent i = new Intent(context, LoginOrRegisterActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
+
+        }
+        else{
+
+            TextView tv = new TextView(context);
+            LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            tv.setLayoutParams(layoutParams1);
+            tv.setText(nickName+" : "+enterComments.getText().toString());
+            tv.setTextSize(18F);
+            displayComments.addView(tv);
+
+        }
 
 
     }
