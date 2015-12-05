@@ -175,7 +175,7 @@ public class LandingActivity extends ActionBarActivity {
         public void onClick(View v) {
 
             String tagDetails[] = v.getTag().toString().split("_");
-            int position = Integer.parseInt(tagDetails[1]);
+            int position = Integer.parseInt(tagDetails[1])+1;
 
             Log.d(Constants.LOG_TAG," the mood id is "+position);
 

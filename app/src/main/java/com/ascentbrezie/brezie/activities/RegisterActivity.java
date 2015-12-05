@@ -63,46 +63,57 @@ public class RegisterActivity extends Activity {
 
     public void register(){
 
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
-        String userId = sharedPreferences.getString("user_id", "null");
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME, MODE_PRIVATE);
+        String userId = sharedPreferences.getString("userId", "null");
 
 
         final String passwordValue = password.getText().toString();
+        final String confirmPasswordValue = confirmPassword.getText().toString();
         final String nickNameValue = nickName.getText().toString();
         final String numberValue = number.getText().toString();
 
-        String url = Constants.registerUrl;
-        new RegisterAsyncTask(this, new RegisterAsyncTask.RegisterCallback() {
-            @Override
-            public void onStart(boolean status) {
+        if(passwordValue.equalsIgnoreCase(confirmPasswordValue)){
 
-                progressDialog = new ProgressDialog(RegisterActivity.this);
-                progressDialog.setTitle(Constants.APP_NAME);
-                progressDialog.setMessage("Loading...Please Wait");
-                progressDialog.show();
+            String url = Constants.registerUrl;
+            new RegisterAsyncTask(this, new RegisterAsyncTask.RegisterCallback() {
+                @Override
+                public void onStart(boolean status) {
 
-            }
-
-            @Override
-            public void onResult(boolean result) {
-
-                progressDialog.dismiss();
-                if(result){
-
-                    Intent i = new Intent(RegisterActivity.this,MobileVerificationActivity.class);
-                    i.putExtra("number",numberValue);
-                    i.putExtra("password",passwordValue);
-                    i.putExtra("nickname",nickNameValue);
-                    startActivity(i);
+                    progressDialog = new ProgressDialog(RegisterActivity.this);
+                    progressDialog.setTitle(Constants.APP_NAME);
+                    progressDialog.setMessage("Loading...Please Wait");
+                    progressDialog.show();
 
                 }
-                else{
 
-                    Toast.makeText(getApplicationContext(),"Sorry couldn't register",5000).show();
+                @Override
+                public void onResult(boolean result) {
+
+                    progressDialog.dismiss();
+                    if(result){
+
+                        Intent i = new Intent(RegisterActivity.this,MobileVerificationActivity.class);
+                        i.putExtra("number",numberValue);
+                        i.putExtra("password",passwordValue);
+                        i.putExtra("nickname",nickNameValue);
+                        startActivity(i);
+
+                    }
+                    else{
+
+                        Toast.makeText(getApplicationContext(),"Sorry couldn't register",5000).show();
+                    }
+
                 }
+            }).execute(url,userId,numberValue,nickNameValue);
 
-            }
-        }).execute(url,userId,numberValue,nickNameValue);
+        }
+        else{
+
+            Toast.makeText(RegisterActivity.this,"Both the passwords dont match",Toast.LENGTH_SHORT).show();
+        }
+
+
 
 
     }

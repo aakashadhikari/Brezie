@@ -3,6 +3,8 @@ package com.ascentbrezie.brezie.activities;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +29,8 @@ public class MoodDetailActivity extends AppCompatActivity {
     private int width,height;
     private String moodId,userId,latitude,longitude;
     private ProgressDialog progressDialog;
+
+    private Parcelable recyclerState;
 
 
 
@@ -113,22 +117,51 @@ public class MoodDetailActivity extends AppCompatActivity {
 
                 }
             }
-        }).execute(url,userId,moodId,latitude,longitude);
+        }).execute(url, userId, moodId, latitude, longitude);
 
     }
 
     public void sendTransaction(){
 
 
+    }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
+        recyclerState = moodDetailLayoutManager.onSaveInstanceState();
+        outState.putParcelable("myState",recyclerState);
 
     }
+
+//
+//    @Override
+//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//
+//        Log.d(Constants.LOG_TAG," on restore instance is called ");
+//
+//        recyclerState = savedInstanceState.getParcelable("myState");
+//    }
+
 
     @Override
     protected void onPause() {
         super.onPause();
         sendTransaction();
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(recyclerState != null){
+
+            moodDetailLayoutManager.onRestoreInstanceState(recyclerState);
+        }
 
     }
 }

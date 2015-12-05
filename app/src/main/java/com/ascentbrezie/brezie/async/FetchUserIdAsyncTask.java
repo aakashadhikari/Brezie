@@ -91,7 +91,6 @@ public class FetchUserIdAsyncTask extends AsyncTask<String,Void,Boolean> {
                 Constants.userId = jsonObject.getString("user_id");
                 Constants.referenceCode = jsonObject.getString("ref_code");
 
-                Log.d(Constants.LOG_TAG," the user id is "+Constants.userId + " and refeerenc code from async task "+Constants.referenceCode);
                 return true;
             }
             return false;
@@ -115,8 +114,7 @@ public class FetchUserIdAsyncTask extends AsyncTask<String,Void,Boolean> {
 
         }
 
-        return true;
-//        return false;
+        return false;
     }
 
     public String constructPostParameters(List<KeyValuePairData> keyValuePairData){

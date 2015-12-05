@@ -70,8 +70,9 @@ public class MobileVerificationAsyncTask extends AsyncTask<String,Void,Boolean> 
             keyValuePairData.add(new KeyValuePairData("user_id",params[1]));
             keyValuePairData.add(new KeyValuePairData("number",params[2]));
             keyValuePairData.add(new KeyValuePairData("password",params[3]));
-            keyValuePairData.add(new KeyValuePairData("nickname",params[3]));
-            keyValuePairData.add(new KeyValuePairData("otp",params[3]));
+            keyValuePairData.add(new KeyValuePairData("nickname",params[4]));
+            keyValuePairData.add(new KeyValuePairData("otp",params[5]));
+
 
 
             outputStream = httpURLConnection.getOutputStream();
@@ -118,8 +119,7 @@ public class MobileVerificationAsyncTask extends AsyncTask<String,Void,Boolean> 
 
         }
 
-        return true;
-//        return false;
+        return false;
     }
 
     public String constructPostParameters(List<KeyValuePairData> keyValuePairData){

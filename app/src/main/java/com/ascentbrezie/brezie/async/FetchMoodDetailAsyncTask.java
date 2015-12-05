@@ -78,8 +78,10 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
             List<KeyValuePairData> keyValuePairData = new ArrayList<KeyValuePairData>();
             keyValuePairData.add(new KeyValuePairData("user_id",params[1]));
             keyValuePairData.add(new KeyValuePairData("mood_id",params[2]));
-            keyValuePairData.add(new KeyValuePairData("latitude",params[3]));
-            keyValuePairData.add(new KeyValuePairData("longitude",params[4]));
+            keyValuePairData.add(new KeyValuePairData("latitude","1"));
+            keyValuePairData.add(new KeyValuePairData("longitude","1"));
+//            keyValuePairData.add(new KeyValuePairData("latitude",params[3]));
+//            keyValuePairData.add(new KeyValuePairData("longitude",params[4]));
 
             outputStream = httpURLConnection.getOutputStream();
 
@@ -144,8 +146,7 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
 
         }
 
-        return true;
-//        return false;
+        return false;
     }
 
     public String constructPostParameters(List<KeyValuePairData> keyValuePairData){

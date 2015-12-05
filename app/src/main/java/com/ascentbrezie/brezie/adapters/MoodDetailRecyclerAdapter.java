@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ascentbrezie.brezie.R;
 import com.ascentbrezie.brezie.activities.LoginOrRegisterActivity;
@@ -153,26 +154,41 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
     public void addComment(){
 
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
-        String nickName = sharedPreferences.getString("nickName","null");
+        String commentValue = enterComments.getText().toString();
 
-        if(nickName.equalsIgnoreCase("null")){
+        Log.d(Constants.LOG_TAG," The comment value is "+commentValue);
 
-            Intent i = new Intent(context, LoginOrRegisterActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(i);
+//        if(commentValue.equalsIgnoreCase("")){
+//
+//            Toast.makeText(context, "No comment", Toast.LENGTH_SHORT).show();
+//
+//        }
+//        else{
 
-        }
-        else{
 
-            TextView tv = new TextView(context);
-            LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            tv.setLayoutParams(layoutParams1);
-            tv.setText(nickName+" : "+enterComments.getText().toString());
-            tv.setTextSize(18F);
-            displayComments.addView(tv);
+            SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
+            String nickName = sharedPreferences.getString("nickName","null");
 
-        }
+            if(nickName.equalsIgnoreCase("null")){
+
+                Intent i = new Intent(context, LoginOrRegisterActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
+
+            }
+            else{
+
+                TextView tv = new TextView(context);
+                LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                tv.setLayoutParams(layoutParams1);
+                tv.setText(nickName+" : "+enterComments.getText().toString());
+                tv.setTextSize(18F);
+                displayComments.addView(tv);
+
+            }
+
+
+//        }
 
 
     }

@@ -1,7 +1,9 @@
 package com.ascentbrezie.brezie.utils;
 
 import com.ascentbrezie.brezie.data.CommentsData;
+import com.ascentbrezie.brezie.data.KeyValuePairData;
 import com.ascentbrezie.brezie.data.MoodDetailData;
+import com.ascentbrezie.brezie.data.QuotesData;
 import com.ascentbrezie.brezie.data.TimelineData;
 
 import org.json.JSONObject;
@@ -59,7 +61,9 @@ public class Constants {
 
     // all the data
     public static ArrayList<CommentsData> commentsData;
+    public static ArrayList<KeyValuePairData> keyValuePairData;
     public static ArrayList<MoodDetailData> moodDetailData;
+    public static ArrayList<QuotesData> quotesData;
     public static ArrayList<TimelineData> timelineData;
 
     // all the developer links
@@ -69,5 +73,14 @@ public class Constants {
     public static final String profileUrl = "http://brezie.in/dev/Brezie/profile.php";
     public static final String registerUrl = "http://brezie.in/dev/Brezie/register.php";
     public static final String verifyUrl = "http://brezie.in/dev/Brezie/verify.php";
+    public static final String loginUrl = "http://brezie.in/dev/Brezie/login.php";
+
+    // all the prod links
+//    public static final String splashUrl = "http://brezie.com/brezieprod/splash.php";
+//    public static final String landingUrl = "http://brezie.com/brezieprod/landing.php";
+//    public static final String moodDetailUrl = "http://brezie.com/brezieprod/mood_detail.php";
+//    public static final String profileUrl = "http://brezie.com/brezieprod/profile.php";
+//    public static final String registerUrl = "http://brezie.com/brezieprod/register.php";
+//    public static final String verifyUrl = "http://brezie.com/brezieprod/verify.php";
 
 }

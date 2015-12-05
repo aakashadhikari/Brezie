@@ -119,9 +119,6 @@ public class SplashScreenActivity extends Activity implements LocationListener{
                     editor.putString("referenceCode",Constants.referenceCode);
                     editor.commit();
 
-                    Log.d(Constants.LOG_TAG," the user id is "+Constants.userId + " and refeerenc code from splash screen "+Constants.referenceCode);
-
-
                     Intent i = new Intent(SplashScreenActivity.this,LandingActivity.class);
                     startActivity(i);
                 }

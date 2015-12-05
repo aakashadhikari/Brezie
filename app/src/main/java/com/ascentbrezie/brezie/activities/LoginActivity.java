@@ -69,7 +69,7 @@ public class LoginActivity extends Activity {
         numberValue = number.getText().toString();
         passwordValue = password.getText().toString();
 
-        String url="null";
+        String url= Constants.loginUrl;
 
         new LoginAsyncTask(this, new LoginAsyncTask.LoginCallback() {
             @Override

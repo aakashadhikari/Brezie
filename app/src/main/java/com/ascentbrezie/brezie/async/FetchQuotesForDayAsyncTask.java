@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.ascentbrezie.brezie.data.CommentsData;
 import com.ascentbrezie.brezie.data.KeyValuePairData;
+import com.ascentbrezie.brezie.data.QuotesData;
 import com.ascentbrezie.brezie.utils.Constants;
 
 import org.json.JSONArray;
@@ -45,6 +46,14 @@ public class FetchQuotesForDayAsyncTask extends AsyncTask<String,Void,Boolean> {
     public FetchQuotesForDayAsyncTask(Context context, FetchQuotesForDayCallback callback) {
         this.context = context;
         this.callback = callback;
+        if(Constants.quotesData != null){
+
+            Constants.quotesData.clear();
+        }
+        else{
+
+            Constants.quotesData = new ArrayList<QuotesData>();
+        }
 
 
     }
@@ -88,6 +97,13 @@ public class FetchQuotesForDayAsyncTask extends AsyncTask<String,Void,Boolean> {
 
                 Log.d(Constants.LOG_TAG," The response is "+response);
 
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray jsonArray = jsonObject.getJSONArray("quotes");
+                for(int i=0;i<jsonArray.length();i++){
+
+                    String quote = jsonArray.getString(i);
+                    Constants.quotesData.add(new QuotesData(quote));
+                }
 
                 return true;
             }
@@ -112,8 +128,7 @@ public class FetchQuotesForDayAsyncTask extends AsyncTask<String,Void,Boolean> {
             }
 
         }
-        return true;
-//        return false;
+        return false;
     }
 
     public String constructPostParameters(List<KeyValuePairData> keyValuePairData){
