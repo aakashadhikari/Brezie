@@ -4,12 +4,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.ascentbrezie.brezie.data.CommentsData;
 import com.ascentbrezie.brezie.data.KeyValuePairData;
-import com.ascentbrezie.brezie.data.MoodDetailData;
 import com.ascentbrezie.brezie.utils.Constants;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -27,31 +24,27 @@ import java.util.List;
 /**
  * Created by ADMIN on 09-11-2015.
  */
-public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
+public class FetchUserIdAsyncTask extends AsyncTask<String,Void,Boolean> {
 
     private Context context;
-    private FetchMoodDetailCallback callback;
+    private FetchUserIdCallback callback;
+
     private InputStream inputStream;
     private OutputStream outputStream;
     private BufferedWriter bufferedWriter;
+
     private URL url;
     private HttpURLConnection httpURLConnection;
 
-    public interface FetchMoodDetailCallback{
+    public interface FetchUserIdCallback{
 
         public void onStart(boolean status);
         public void onResult(boolean result);
     }
 
-    public FetchMoodDetailAsyncTask(Context context, FetchMoodDetailCallback callback) {
+    public FetchUserIdAsyncTask(Context context, FetchUserIdCallback callback) {
         this.context = context;
         this.callback = callback;
-        if(Constants.moodDetailData != null){
-            Constants.moodDetailData.clear();
-        }
-        else{
-            Constants.moodDetailData = new ArrayList<MoodDetailData>();
-        }
 
     }
 
@@ -64,7 +57,7 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
     @Override
     protected Boolean doInBackground(String... params) {
 
-        Log.d(Constants.LOG_TAG,Constants.FETCH_MOOD_DETAIL_ASYNC_TASK);
+        Log.d(Constants.LOG_TAG,Constants.FETCH_USER_ID_ASYNC_TASK);
         Log.d(Constants.LOG_TAG," The url to be fetched is "+params[0]);
 
         try{
@@ -76,12 +69,7 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
             httpURLConnection.setDoOutput(true);
 
             List<KeyValuePairData> keyValuePairData = new ArrayList<KeyValuePairData>();
-            keyValuePairData.add(new KeyValuePairData("user_id",params[1]));
-            keyValuePairData.add(new KeyValuePairData("mood_id",params[2]));
-            keyValuePairData.add(new KeyValuePairData("latitude","1"));
-            keyValuePairData.add(new KeyValuePairData("longitude","1"));
-//            keyValuePairData.add(new KeyValuePairData("latitude",params[3]));
-//            keyValuePairData.add(new KeyValuePairData("longitude",params[4]));
+            keyValuePairData.add(new KeyValuePairData("deviceId",params[1]));
 
             outputStream = httpURLConnection.getOutputStream();
 
@@ -100,47 +88,27 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
                 Log.d(Constants.LOG_TAG," The response is "+response);
 
                 JSONObject jsonObject = new JSONObject(response);
-                String quoteId = jsonObject.getString("quote_id");
-                String commentCounter = jsonObject.getString("comment_counter");
-                String likeCounter = jsonObject.getString("like_counter");
-                String shareCounter = jsonObject.getString("share_counter");
-                String usedAsCounter = jsonObject.getString("usedas_counter");
-
-                JSONArray jsonArray = jsonObject.getJSONArray("comments");
-                for(int i=0;i<jsonArray.length();i++){
-
-                    JSONObject nestedJsonObject = jsonArray.getJSONObject(i);
-                    String nickName = nestedJsonObject.getString("nickname");
-                    String comment = nestedJsonObject.getString("comment_text");
-
-                    List<CommentsData>commentsData = new ArrayList<CommentsData>();
-                    commentsData.add(new CommentsData(comment,nickName));
-
-                }
-
+                Constants.userId = jsonObject.getString("user_id");
+                Constants.referenceCode = jsonObject.getString("ref_code");
 
                 return true;
             }
-
             return false;
 
         }
         catch(Exception e){
 
             e.printStackTrace();
-
         }
         finally{
 
             try {
-
-                if(inputStream != null){
+                if (inputStream != null) {
 
                     inputStream.close();
                 }
             }
             catch (Exception e){
-
                 e.printStackTrace();
             }
 
@@ -167,6 +135,7 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
             result += "=";
             result += data.getValue();
         }
+
         Log.d(Constants.LOG_TAG," the sent parameters "+result);
         return result;
 

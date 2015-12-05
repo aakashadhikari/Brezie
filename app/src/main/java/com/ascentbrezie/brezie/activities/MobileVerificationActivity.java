@@ -1,11 +1,17 @@
 package com.ascentbrezie.brezie.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.ascentbrezie.brezie.R;
+import com.ascentbrezie.brezie.async.MobileVerificationAsyncTask;
 import com.ascentbrezie.brezie.custom.CustomButton;
 import com.ascentbrezie.brezie.custom.CustomEditText;
 import com.ascentbrezie.brezie.custom.CustomTextView;
@@ -20,6 +26,9 @@ public class MobileVerificationActivity extends Activity {
     private CustomTextView number;
     private CustomButton verify;
 
+    private ProgressDialog progressDialog;
+    private String numberValue,passwordValue,nickNameValue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,10 +38,15 @@ public class MobileVerificationActivity extends Activity {
 
         getExtras();
         findViews();
-        fetchData();
+        setViews();
     }
 
     public void getExtras(){
+
+        Intent i = getIntent();
+        numberValue = i.getStringExtra("number");
+        passwordValue = i.getStringExtra("password");
+        nickNameValue = i.getStringExtra("nickname");
 
 
     }
@@ -45,20 +59,52 @@ public class MobileVerificationActivity extends Activity {
 
     }
 
-    public void fetchData(){
-
-        // write the Async task here
-        // if true then set the views
-
-    }
-
     public void setViews(){
 
+        number.setText(numberValue);
         verify.setOnClickListener(listener);
 
     }
 
     public void verify(){
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME, MODE_PRIVATE);
+        String userId = sharedPreferences.getString("userId", "null");
+        String otpValue = otp.getText().toString();
+
+        String url = Constants.verifyUrl;
+        new MobileVerificationAsyncTask(this, new MobileVerificationAsyncTask.MobileVerificationCallback() {
+            @Override
+            public void onStart(boolean status) {
+
+                progressDialog = new ProgressDialog(MobileVerificationActivity.this);
+                progressDialog.setTitle(Constants.APP_NAME);
+                progressDialog.setMessage("Loading...Please Wait");
+                progressDialog.show();
+
+            }
+
+            @Override
+            public void onResult(boolean result) {
+
+                progressDialog.dismiss();
+                if(result){
+
+                    SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("nickName",Constants.nickName);
+
+                    Intent i = new Intent(MobileVerificationActivity.this,MoodDetailActivity.class);
+                    startActivity(i);
+
+                }
+                else{
+
+                    Toast.makeText(MobileVerificationActivity.this," Mobile number not verified", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }).execute(url,userId,numberValue,passwordValue,nickNameValue,otpValue);
 
 
     }

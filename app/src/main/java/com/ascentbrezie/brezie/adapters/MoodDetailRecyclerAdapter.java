@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ascentbrezie.brezie.R;
 import com.ascentbrezie.brezie.activities.LoginOrRegisterActivity;
@@ -24,15 +25,16 @@ import com.ascentbrezie.brezie.utils.Constants;
  */
 public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRecyclerAdapter.ViewHolder> {
 
-    Context context;
-    int width,height;
-    LinearLayout rowLayout;
-    ImageView moodImage;
-    int images[] = {R.drawable.q1,R.drawable.q2,R.drawable.q3,R.drawable.q4,R.drawable.q5};
+    private Context context;
+    private int width,height;
 
-    LinearLayout displayComments;
-    CustomEditText enterComments;
-    CustomButton addComment;
+    private ImageView moodImage,like,share;
+    private int images[] = {R.drawable.q1,R.drawable.q2,R.drawable.q3,R.drawable.q4,R.drawable.q5};
+
+    private LinearLayout rowLayout,displayComments;
+    private CustomEditText enterComments;
+    private CustomButton addComment;
+
 
     public MoodDetailRecyclerAdapter(Context context, int width, int height) {
         this.context = context;
@@ -74,6 +76,9 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
         rowLayout = (LinearLayout) holder.v.findViewById(R.id.row_layout);
         moodImage = (ImageView) holder.v.findViewById(R.id.quote_image_mood_detail_activity);
 
+        like = (ImageView) holder.v.findViewById(R.id.like_included);
+        share = (ImageView) holder.v.findViewById(R.id.share_included);
+
         displayComments = (LinearLayout) holder.v.findViewById(R.id.display_comments_layout_mood_detail_activity);
         enterComments = (CustomEditText) holder.v.findViewById(R.id.add_comment_edit_included);
         addComment = (CustomButton) holder.v.findViewById(R.id.add_comment_button_included);
@@ -113,7 +118,16 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
     public void setViews(int position){
 
+
+        like.setTag("like_"+position);
+        like.setOnClickListener(listener);
+
+        share.setTag("share_"+position);
+        share.setOnClickListener(listener);
+
+        addComment.setTag("comment_"+position);
         addComment.setOnClickListener(listener);
+
         moodImage.setImageResource(images[position]);
 
     }
@@ -125,29 +139,56 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
         return 5;
     }
 
+    public void like(){
+
+
+    }
+
+    public void share(){
+
+
+
+
+    }
+
     public void addComment(){
 
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
-        String nickName = sharedPreferences.getString("nickName","null");
+        String commentValue = enterComments.getText().toString();
 
-        if(nickName.equalsIgnoreCase("null")){
+        Log.d(Constants.LOG_TAG," The comment value is "+commentValue);
 
-            Intent i = new Intent(context, LoginOrRegisterActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(i);
+//        if(commentValue.equalsIgnoreCase("")){
+//
+//            Toast.makeText(context, "No comment", Toast.LENGTH_SHORT).show();
+//
+//        }
+//        else{
 
-        }
-        else{
 
-            TextView tv = new TextView(context);
-            LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            tv.setLayoutParams(layoutParams1);
-            tv.setText(nickName+" : "+enterComments.getText().toString());
-            tv.setTextSize(18F);
-            displayComments.addView(tv);
+            SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
+            String nickName = sharedPreferences.getString("nickName","null");
 
-        }
+            if(nickName.equalsIgnoreCase("null")){
+
+                Intent i = new Intent(context, LoginOrRegisterActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
+
+            }
+            else{
+
+                TextView tv = new TextView(context);
+                LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                tv.setLayoutParams(layoutParams1);
+                tv.setText(nickName+" : "+enterComments.getText().toString());
+                tv.setTextSize(18F);
+                displayComments.addView(tv);
+
+            }
+
+
+//        }
 
 
     }
@@ -158,6 +199,10 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
             switch (v.getId()){
 
+                case R.id.like_included: like();
+                    break;
+                case R.id.share_included: share();
+                    break;
                 case R.id.add_comment_button_included: addComment();
                     break;
 

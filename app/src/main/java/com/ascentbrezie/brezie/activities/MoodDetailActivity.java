@@ -3,6 +3,8 @@ package com.ascentbrezie.brezie.activities;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,8 +27,12 @@ public class MoodDetailActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private int width,height;
-    private String position;
+    private String moodId,userId,latitude,longitude;
     private ProgressDialog progressDialog;
+
+    private Parcelable recyclerState;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +50,7 @@ public class MoodDetailActivity extends AppCompatActivity {
 
     public void getExtras(){
 
-        position = getIntent().getStringExtra("mood");
+        moodId = getIntent().getStringExtra("mood");
     }
 
     public void findViews(){
@@ -76,7 +82,13 @@ public class MoodDetailActivity extends AppCompatActivity {
 
     public void fetchData(){
 
-        String url = "";
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
+        userId = sharedPreferences.getString("userId","null");
+        latitude = sharedPreferences.getString("latitude","null");
+        longitude = sharedPreferences.getString("longitude","null");
+
+        String url = Constants.moodDetailUrl;
 
         new FetchMoodDetailAsyncTask(getApplicationContext(),new FetchMoodDetailAsyncTask.FetchMoodDetailCallback() {
             @Override
@@ -105,11 +117,51 @@ public class MoodDetailActivity extends AppCompatActivity {
 
                 }
             }
-        }).execute(url);
+        }).execute(url, userId, moodId, latitude, longitude);
 
     }
 
+    public void sendTransaction(){
 
 
+    }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        recyclerState = moodDetailLayoutManager.onSaveInstanceState();
+        outState.putParcelable("myState",recyclerState);
+
+    }
+
+//
+//    @Override
+//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//
+//        Log.d(Constants.LOG_TAG," on restore instance is called ");
+//
+//        recyclerState = savedInstanceState.getParcelable("myState");
+//    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sendTransaction();
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(recyclerState != null){
+
+            moodDetailLayoutManager.onRestoreInstanceState(recyclerState);
+        }
+
+    }
 }

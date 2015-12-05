@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.ascentbrezie.brezie.data.CommentsData;
 import com.ascentbrezie.brezie.data.KeyValuePairData;
+import com.ascentbrezie.brezie.data.QuotesData;
 import com.ascentbrezie.brezie.utils.Constants;
 
 import org.json.JSONArray;
@@ -45,6 +46,14 @@ public class FetchQuotesForDayAsyncTask extends AsyncTask<String,Void,Boolean> {
     public FetchQuotesForDayAsyncTask(Context context, FetchQuotesForDayCallback callback) {
         this.context = context;
         this.callback = callback;
+        if(Constants.quotesData != null){
+
+            Constants.quotesData.clear();
+        }
+        else{
+
+            Constants.quotesData = new ArrayList<QuotesData>();
+        }
 
 
     }
@@ -70,7 +79,7 @@ public class FetchQuotesForDayAsyncTask extends AsyncTask<String,Void,Boolean> {
             httpURLConnection.setDoOutput(true);
 
             List<KeyValuePairData> keyValuePairData = new ArrayList<KeyValuePairData>();
-            keyValuePairData.add(new KeyValuePairData("device_id",params[1]));
+            keyValuePairData.add(new KeyValuePairData("user_id",params[1]));
 
             outputStream = httpURLConnection.getOutputStream();
 
@@ -87,38 +96,39 @@ public class FetchQuotesForDayAsyncTask extends AsyncTask<String,Void,Boolean> {
                 String response = convertInputStreamToString(inputStream);
 
                 Log.d(Constants.LOG_TAG," The response is "+response);
+
                 JSONObject jsonObject = new JSONObject(response);
-                JSONArray jsonArray = jsonObject.getJSONArray("listing");
+                JSONArray jsonArray = jsonObject.getJSONArray("quotes");
                 for(int i=0;i<jsonArray.length();i++){
 
-
-
-                    Constants.commentsData = new ArrayList<CommentsData>();
-//                    for(int j=0;j<;j++){
-//
-//
-//                    }
-
-
+                    String quote = jsonArray.getString(i);
+                    Constants.quotesData.add(new QuotesData(quote));
                 }
 
                 return true;
             }
-            return true;
-//            return false;
+            return false;
 
         }
         catch(Exception e){
 
-
+            e.printStackTrace();
         }
         finally{
 
+            try {
+
+                if(inputStream != null){
+
+                    inputStream.close();
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
 
         }
-
-        return true;
-//        return false;
+        return false;
     }
 
     public String constructPostParameters(List<KeyValuePairData> keyValuePairData){
@@ -139,6 +149,8 @@ public class FetchQuotesForDayAsyncTask extends AsyncTask<String,Void,Boolean> {
             result += "=";
             result += data.getValue();
         }
+
+        Log.d(Constants.LOG_TAG," the sent parameters "+result);
         return result;
 
     }

@@ -67,9 +67,9 @@ public class LandingActivity extends ActionBarActivity {
 
 
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
-        String deviceId = sharedPreferences.getString("deviceId","null");
+        String userId = sharedPreferences.getString("userId","null");
 
-        String url="";
+        String url=Constants.landingUrl;
 
         new FetchQuotesForDayAsyncTask(getApplicationContext(),new FetchQuotesForDayAsyncTask.FetchQuotesForDayCallback() {
             @Override
@@ -95,7 +95,7 @@ public class LandingActivity extends ActionBarActivity {
                 }
 
             }
-        }).execute(url,deviceId);
+        }).execute(url,userId);
 
     }
 
@@ -175,7 +175,7 @@ public class LandingActivity extends ActionBarActivity {
         public void onClick(View v) {
 
             String tagDetails[] = v.getTag().toString().split("_");
-            int position = Integer.parseInt(tagDetails[1]);
+            int position = Integer.parseInt(tagDetails[1])+1;
 
             Log.d(Constants.LOG_TAG," the mood id is "+position);
 
