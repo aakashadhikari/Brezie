@@ -68,10 +68,6 @@ public class FetchProfileDetailsAsyncTask extends AsyncTask<String,Void,Boolean>
 
         Log.d(Constants.LOG_TAG, Constants.FETCH_PROFILE_DETAILS_ASYNC_TASK);
         Log.d(Constants.LOG_TAG," The url to be fetched is "+params[0]);
-        //SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME);
-        //sharedPreferences.getString("device_id", null);
-        SharedPreferences prefs = mContext.getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
-        prefs.getString("user_id", null);
 
 
         try{
