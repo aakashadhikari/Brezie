@@ -58,6 +58,7 @@ public class Constants {
     public static final String LOGIN_ASYNC_TASK=" LOGIN ASYNC TASK ";
     public static final String MOBILE_VERIFICATION_ASYNC_TASK=" MOBILE VERIFICATION ASYNC TASK ";
     public static final String REGISTER_ASYNC_TASK=" REGISTER ASYNC TASK ";
+    public static final String FETCH_PROFILE_DETAILS_ASYNC_TASK=" FETCH_PROFILE_DETAILS_ASYNC_TASK "
 
     // all the data
     public static ArrayList<CommentsData> commentsData;
