@@ -2,30 +2,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LandingActivity"
     android:background="@drawable/background_1"
-    >
+    tools:context=".LandingActivity">
 
     <include
         android:id="@+id/toolbar_landing_activity"
         layout="@layout/layout_toolbar"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="wrap_content" />
 
-    <com.daimajia.slider.library.SliderLayout
+    <android.support.v4.view.ViewPager
+        android:padding="@dimen/padding"
         android:id="@+id/slider_landing_activity"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_centerInParent="true"
-        />
+        android:layout_height="300dp"
+        android:layout_centerInParent="true" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/slider_landing_activity"
+        android:id="@+id/arrow_image_landing_activity"
+        android:src="@drawable/arrow_down" />
 
     <LinearLayout
         android:id="@+id/tabs_layout_landing_activity"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        />
+        android:orientation="horizontal" />
 
 </RelativeLayout>

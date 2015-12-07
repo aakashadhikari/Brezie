@@ -2,6 +2,7 @@ package com.ascentbrezie.brezie.utils;
 
 import com.ascentbrezie.brezie.data.CommentsData;
 import com.ascentbrezie.brezie.data.MoodDetailData;
+import com.ascentbrezie.brezie.data.QuotesData;
 import com.ascentbrezie.brezie.data.TimelineData;
 
 import org.json.JSONObject;
@@ -61,6 +62,7 @@ public class Constants {
     public static ArrayList<CommentsData> commentsData;
     public static ArrayList<MoodDetailData> moodDetailData;
     public static ArrayList<TimelineData> timelineData;
+    public static ArrayList<QuotesData> quotesData;
 
     // all the developer links
     public static final String splashUrl = "http://brezie.in/dev/Brezie/splash.php";

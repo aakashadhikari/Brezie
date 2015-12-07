@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.ascentbrezie.brezie.data.CommentsData;
 import com.ascentbrezie.brezie.data.KeyValuePairData;
+import com.ascentbrezie.brezie.data.QuotesData;
 import com.ascentbrezie.brezie.utils.Constants;
 
 import org.json.JSONArray;
@@ -26,7 +27,7 @@ import java.util.List;
 /**
  * Created by ADMIN on 09-11-2015.
  */
-public class FetchQuotesForDayAsyncTask extends AsyncTask<String,Void,Boolean> {
+public class FetchQuotesForDayAsyncTask extends AsyncTask<String, Void, Boolean> {
 
     private Context context;
     private FetchQuotesForDayCallback callback;
@@ -36,9 +37,10 @@ public class FetchQuotesForDayAsyncTask extends AsyncTask<String,Void,Boolean> {
     private URL url;
     private HttpURLConnection httpURLConnection;
 
-    public interface FetchQuotesForDayCallback{
+    public interface FetchQuotesForDayCallback {
 
         public void onStart(boolean status);
+
         public void onResult(boolean result);
     }
 
@@ -58,10 +60,10 @@ public class FetchQuotesForDayAsyncTask extends AsyncTask<String,Void,Boolean> {
     @Override
     protected Boolean doInBackground(String... params) {
 
-        Log.d(Constants.LOG_TAG,Constants.FETCH_QUOTES_FOR_DAY_ASYNC_TASK);
-        Log.d(Constants.LOG_TAG," The url to be fetched is "+params[0]);
+        Log.d(Constants.LOG_TAG, Constants.FETCH_QUOTES_FOR_DAY_ASYNC_TASK);
+        Log.d(Constants.LOG_TAG, " The url to be fetched is " + params[0]);
 
-        try{
+        try {
 
             url = new URL(params[0]);
             httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -70,7 +72,7 @@ public class FetchQuotesForDayAsyncTask extends AsyncTask<String,Void,Boolean> {
             httpURLConnection.setDoOutput(true);
 
             List<KeyValuePairData> keyValuePairData = new ArrayList<KeyValuePairData>();
-            keyValuePairData.add(new KeyValuePairData("user_id",params[1]));
+            keyValuePairData.add(new KeyValuePairData("user_id", params[1]));
 
             outputStream = httpURLConnection.getOutputStream();
 
@@ -80,34 +82,36 @@ public class FetchQuotesForDayAsyncTask extends AsyncTask<String,Void,Boolean> {
 
             int statusCode = httpURLConnection.getResponseCode();
 
-            if(statusCode == 200){
+            if (statusCode == 200) {
 
 
                 inputStream = httpURLConnection.getInputStream();
                 String response = convertInputStreamToString(inputStream);
 
-                Log.d(Constants.LOG_TAG," The response is "+response);
-
+                Log.d(Constants.LOG_TAG, " The response is " + response);
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray jsonArray = jsonObject.getJSONArray("quotes");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    String s = jsonArray.getString(i);
+                    Constants.quotesData.add(new QuotesData(s));
+                }
 
                 return true;
             }
             return false;
 
-        }
-        catch(Exception e){
+        } catch (Exception e) {
 
             e.printStackTrace();
-        }
-        finally{
+        } finally {
 
             try {
 
-                if(inputStream != null){
+                if (inputStream != null) {
 
                     inputStream.close();
                 }
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -116,12 +120,12 @@ public class FetchQuotesForDayAsyncTask extends AsyncTask<String,Void,Boolean> {
 //        return false;
     }
 
-    public String constructPostParameters(List<KeyValuePairData> keyValuePairData){
+    public String constructPostParameters(List<KeyValuePairData> keyValuePairData) {
 
-        String result="";
-        boolean firstTime=true;
+        String result = "";
+        boolean firstTime = true;
 
-        for(KeyValuePairData data : keyValuePairData){
+        for (KeyValuePairData data : keyValuePairData) {
 
             if (firstTime) {
                 firstTime = false;
@@ -135,26 +139,26 @@ public class FetchQuotesForDayAsyncTask extends AsyncTask<String,Void,Boolean> {
             result += data.getValue();
         }
 
-        Log.d(Constants.LOG_TAG," the sent parameters "+result);
+        Log.d(Constants.LOG_TAG, " the sent parameters " + result);
         return result;
 
     }
 
     public String convertInputStreamToString(InputStream inputStream) throws IOException {
 
-        String line="";
-        String result="";
+        String line = "";
+        String result = "";
 
-        BufferedReader  bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
-        while((line = bufferedReader.readLine())!=null) {
+        while ((line = bufferedReader.readLine()) != null) {
 
             result += line;
 
         }
 
              /* Close Stream */
-        if(null!=inputStream){
+        if (null != inputStream) {
             inputStream.close();
         }
 
@@ -164,7 +168,7 @@ public class FetchQuotesForDayAsyncTask extends AsyncTask<String,Void,Boolean> {
     @Override
     protected void onPostExecute(Boolean result) {
         super.onPostExecute(result);
-        Log.d(Constants.LOG_TAG," The value returned is "+result);
+        Log.d(Constants.LOG_TAG, " The value returned is " + result);
         callback.onResult(result);
     }
 }

@@ -12,7 +12,6 @@
         android:id="@+id/share_included"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/icon_unselected_share"
         android:padding="@dimen/padding_small"
         android:layout_margin="@dimen/margin_small"
         />
@@ -21,7 +20,6 @@
         android:id="@+id/like_included"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/icon_unselected_like"
         android:padding="@dimen/padding_small"
         android:layout_margin="@dimen/margin_small"
         />
