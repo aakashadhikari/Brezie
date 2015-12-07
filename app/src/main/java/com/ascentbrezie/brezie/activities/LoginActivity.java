@@ -21,7 +21,7 @@ import com.ascentbrezie.brezie.utils.Constants;
  */
 public class  LoginActivity extends Activity {
 
-    CustomEditText number,password;
+    CustomEditText number, password;
     CustomButton login;
 
     ProgressDialog progressDialog;
