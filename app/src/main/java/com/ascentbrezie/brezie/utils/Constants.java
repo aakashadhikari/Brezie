@@ -3,6 +3,7 @@ package com.ascentbrezie.brezie.utils;
 import com.ascentbrezie.brezie.data.CommentsData;
 import com.ascentbrezie.brezie.data.KeyValuePairData;
 import com.ascentbrezie.brezie.data.MoodDetailData;
+import com.ascentbrezie.brezie.data.ProfileData;
 import com.ascentbrezie.brezie.data.QuotesData;
 import com.ascentbrezie.brezie.data.TimelineData;
 
@@ -53,17 +54,19 @@ public class Constants {
 
     // all the async tasks
     public static final String FETCH_MOOD_DETAIL_ASYNC_TASK=" FETCH MOOD DETAIL ASYNC TASK ";
+    public static final String FETCH_PROFILE_DETAILS_ASYNC_TASK=" FETCH_PROFILE_DETAILS_ASYNC_TASK ";
     public static final String FETCH_QUOTES_FOR_DAY_ASYNC_TASK=" FETCH QUOTES FOR DAY ASYNC TASK ";
     public static final String FETCH_USER_ID_ASYNC_TASK=" FETCH USER ID ASYNC TASK ";
     public static final String LOGIN_ASYNC_TASK=" LOGIN ASYNC TASK ";
     public static final String MOBILE_VERIFICATION_ASYNC_TASK=" MOBILE VERIFICATION ASYNC TASK ";
     public static final String REGISTER_ASYNC_TASK=" REGISTER ASYNC TASK ";
-    public static final String FETCH_PROFILE_DETAILS_ASYNC_TASK=" FETCH_PROFILE_DETAILS_ASYNC_TASK "
+
 
     // all the data
     public static ArrayList<CommentsData> commentsData;
     public static ArrayList<KeyValuePairData> keyValuePairData;
     public static ArrayList<MoodDetailData> moodDetailData;
+    public static ArrayList<ProfileData> profileData;
     public static ArrayList<QuotesData> quotesData;
     public static ArrayList<TimelineData> timelineData;
 
