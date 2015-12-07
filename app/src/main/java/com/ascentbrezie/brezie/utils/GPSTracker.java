@@ -1,4 +1,4 @@
-package com.ascentbrezie.brezie.activities;
+package com.ascentbrezie.brezie.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,7 +14,7 @@ import android.util.Log;
 /**
  * Created by Aakash on 05-12-2015.
  */
-public class GPSTrackerActivity implements LocationListener {
+public class GPSTracker implements LocationListener {
     private final Context mContext;
 
     // flag for GPS status
@@ -39,7 +39,7 @@ public class GPSTrackerActivity implements LocationListener {
     // Declaring a Location Manager
     protected LocationManager locationManager;
 
-    public GPSTrackerActivity(Context context) {
+    public GPSTracker(Context context) {
         this.mContext = context;
         getLocation();
     }
@@ -58,13 +58,13 @@ public class GPSTrackerActivity implements LocationListener {
             isGPSEnabled = locationManager
                     .isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-            Log.v("isGPSEnabled", "=" + isGPSEnabled);
+            Log.v(Constants.LOG_TAG,"isGPSEnabled = " + isGPSEnabled);
 
             // getting network status
             isNetworkEnabled = locationManager
                     .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-            Log.v("isNetworkEnabled", "=" + isNetworkEnabled);
+            Log.v(Constants.LOG_TAG,"isNetworkEnabled = " + isNetworkEnabled);
 
             if (isGPSEnabled == false && isNetworkEnabled == false) {
                 // no network provider is enabled
@@ -73,7 +73,7 @@ public class GPSTrackerActivity implements LocationListener {
                 if (isNetworkEnabled) {
                     location=null;
                     locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, (LocationListener) this);
-                    Log.d("Network", "Network");
+                    Log.d(Constants.LOG_TAG, "Network");
                     if (locationManager != null) {
                         location = locationManager
                                 .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -88,7 +88,7 @@ public class GPSTrackerActivity implements LocationListener {
                     location=null;
                     if (location == null) {
                         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, (LocationListener) this);
-                        Log.d("GPS Enabled", "GPS Enabled");
+                        Log.d(Constants.LOG_TAG, "GPS Enabled");
                         if (locationManager != null) {
                             location = locationManager
                                     .getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -114,7 +114,7 @@ public class GPSTrackerActivity implements LocationListener {
      * */
     public void stopUsingGPS() {
         if (locationManager != null) {
-            locationManager.removeUpdates((LocationListener) GPSTrackerActivity.this);
+            locationManager.removeUpdates((LocationListener) GPSTracker.this);
         }
     }
 

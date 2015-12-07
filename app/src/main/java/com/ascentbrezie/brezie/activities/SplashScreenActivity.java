@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.ascentbrezie.brezie.R;
 import com.ascentbrezie.brezie.async.FetchUserIdAsyncTask;
 import com.ascentbrezie.brezie.utils.Constants;
+import com.ascentbrezie.brezie.utils.GPSTracker;
 
 /**
  * Created by ADMIN on 25-09-2015.
@@ -35,7 +36,7 @@ public class SplashScreenActivity extends Activity{
         setContentView(R.layout.activity_splash_screen);
         Log.d(Constants.LOG_TAG, Constants.SPLASH_SCREEN_ACTIVITY);
 
-        GPSTrackerActivity tracker = new GPSTrackerActivity(this);
+        GPSTracker tracker = new GPSTracker(this);
     if (!tracker.canGetLocation()) {
         Toast.makeText(getApplicationContext(), ("Unable to find"), Toast.LENGTH_LONG).show();
         Log.d(Constants.LOG_TAG, "Unable to find");
@@ -44,11 +45,12 @@ public class SplashScreenActivity extends Activity{
         latitude = tracker.getLatitude();
         longitude = tracker.getLongitude();
         Toast.makeText(getApplicationContext(), ("Lat" +tracker.getLatitude() + "Lon" +tracker.getLongitude()), Toast.LENGTH_LONG).show();
-        Log.d(Constants.LOG_TAG, "Lat" + tracker.getLatitude() + "Lon" + tracker.getLongitude());
+        Log.d(Constants.LOG_TAG, "Lat " + tracker.getLatitude() + " Lon " + tracker.getLongitude());
+
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putLong("Lat", (long) + tracker.getLatitude());
-        editor.putLong("Lon", (long) +tracker.getLongitude());
+        editor.putString("latitude", String.valueOf(tracker.getLatitude()));
+        editor.putString("longitude", String.valueOf(tracker.getLongitude()));
         editor.commit();
 
     }
@@ -98,8 +100,6 @@ public class SplashScreenActivity extends Activity{
         deviceId = Settings.Secure.getString(this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
-        Log.d(Constants.LOG_TAG, " The device Id is " + deviceId);
-
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("deviceId", deviceId);
@@ -127,8 +127,6 @@ public class SplashScreenActivity extends Activity{
                     editor.putString("userId", Constants.userId);
                     editor.putString("referenceCode", Constants.referenceCode);
                     editor.commit();
-
-                    Log.d(Constants.LOG_TAG, " the user id is " + Constants.userId + " and reference code from splash screen " + Constants.referenceCode);
 
 
                     Intent i = new Intent(SplashScreenActivity.this, LandingActivity.class);

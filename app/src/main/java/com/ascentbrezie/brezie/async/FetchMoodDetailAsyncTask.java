@@ -36,6 +36,9 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
     private BufferedWriter bufferedWriter;
     private URL url;
     private HttpURLConnection httpURLConnection;
+    private List<CommentsData>commentsData;
+
+    private String quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter;
 
     public interface FetchMoodDetailCallback{
 
@@ -76,12 +79,11 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
             httpURLConnection.setDoOutput(true);
 
             List<KeyValuePairData> keyValuePairData = new ArrayList<KeyValuePairData>();
-            keyValuePairData.add(new KeyValuePairData("user_id",params[1]));
-            keyValuePairData.add(new KeyValuePairData("mood_id",params[2]));
-            keyValuePairData.add(new KeyValuePairData("latitude","1"));
-            keyValuePairData.add(new KeyValuePairData("longitude","1"));
-//            keyValuePairData.add(new KeyValuePairData("latitude",params[3]));
-//            keyValuePairData.add(new KeyValuePairData("longitude",params[4]));
+//            keyValuePairData.add(new KeyValuePairData("user_id",params[1]));
+            keyValuePairData.add(new KeyValuePairData("user_id","2"));
+            keyValuePairData.add(new KeyValuePairData("mood_id","1"));
+            keyValuePairData.add(new KeyValuePairData("latitude",params[3]));
+            keyValuePairData.add(new KeyValuePairData("longitude",params[4]));
 
             outputStream = httpURLConnection.getOutputStream();
 
@@ -99,24 +101,32 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
 
                 Log.d(Constants.LOG_TAG," The response is "+response);
 
-                JSONObject jsonObject = new JSONObject(response);
-                String quoteId = jsonObject.getString("quote_id");
-                String commentCounter = jsonObject.getString("comment_counter");
-                String likeCounter = jsonObject.getString("like_counter");
-                String shareCounter = jsonObject.getString("share_counter");
-                String usedAsCounter = jsonObject.getString("usedas_counter");
+                JSONArray jsonArray = new JSONArray(response);
+                for (int i=0;i<jsonArray.length();i++){
 
-                JSONArray jsonArray = jsonObject.getJSONArray("comments");
-                for(int i=0;i<jsonArray.length();i++){
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    quoteId = jsonObject.getString("quote_id");
+                    commentCounter = jsonObject.getString("comment_counter");
+                    likeCounter = jsonObject.getString("like_counter");
+                    shareCounter = jsonObject.getString("share_counter");
+                    usedAsCounter = jsonObject.getString("usedas_counter");
 
-                    JSONObject nestedJsonObject = jsonArray.getJSONObject(i);
-                    String nickName = nestedJsonObject.getString("nickname");
-                    String comment = nestedJsonObject.getString("comment_text");
+                    JSONArray nestedJsonArray = jsonObject.getJSONArray("comments");
+                    for(int j=0;j<nestedJsonArray.length();j++){
 
-                    List<CommentsData>commentsData = new ArrayList<CommentsData>();
-                    commentsData.add(new CommentsData(comment,nickName));
+                        JSONObject nestedJsonObject = nestedJsonArray.getJSONObject(j);
+                        String nickName = nestedJsonObject.getString("nickname");
+                        String comment = nestedJsonObject.getString("comment_text");
+
+                        commentsData = new ArrayList<CommentsData>();
+                        commentsData.add(new CommentsData(comment,nickName));
+
+                    }
+
+                    Constants.moodDetailData.add(new MoodDetailData(quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,commentsData));
 
                 }
+
 
 
                 return true;

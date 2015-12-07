@@ -7,9 +7,27 @@ import java.util.List;
  */
 public class MoodDetailData {
 
-    String imageId,imageUrl,likesCounter,commentsCounter,usedAsCounter;
+    String quoteId,imageId,imageUrl,likesCounter,commentsCounter,usedAsCounter;
     List<CommentsData> commentsData;
     boolean isLiked;
+
+    public MoodDetailData(String quoteId,String commentsCounter,String likesCounter,String shareCounter,String usedAsCounter,List<CommentsData> commentsData){
+
+        this.quoteId = quoteId;
+        this.commentsCounter = commentsCounter;
+        this.likesCounter = likesCounter;
+        this.usedAsCounter = usedAsCounter;
+        this.commentsData = commentsData;
+
+    }
+
+    public MoodDetailData(String likesCounter, String commentsCounter, String usedAsCounter, List<CommentsData> commentsData) {
+        this.likesCounter = likesCounter;
+        this.commentsCounter = commentsCounter;
+        this.usedAsCounter = usedAsCounter;
+        this.commentsData = commentsData;
+    }
+
 
     public MoodDetailData(String imageId, String imageUrl, String likesCounter, String commentsCounter, String usedAsCounter, List<CommentsData> commentsData, boolean isLiked) {
         this.imageId = imageId;

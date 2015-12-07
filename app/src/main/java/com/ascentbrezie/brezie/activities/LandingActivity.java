@@ -95,7 +95,7 @@ public class LandingActivity extends ActionBarActivity {
                 }
 
             }
-        }).execute(url,userId);
+        }).execute(url, userId);
 
     }
 
@@ -104,7 +104,7 @@ public class LandingActivity extends ActionBarActivity {
 
         tabLayout.removeAllViews();
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
-        int width = sharedPreferences.getInt("width",0);
+        int width = sharedPreferences.getInt("width", 0);
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, width/6);
         layoutParams.leftMargin = 5;
@@ -136,6 +136,24 @@ public class LandingActivity extends ActionBarActivity {
 
     }
 
+    public void fetchProfile(){
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
+        String nickname = sharedPreferences.getString("nickname","null");
+
+        if(nickname.equalsIgnoreCase("null")){
+
+            Intent i = new Intent(LandingActivity.this,LoginOrRegisterActivity.class);
+            startActivity(i);
+        }
+        else{
+
+            Intent i = new Intent(LandingActivity.this,ProfileActivity.class);
+            startActivity(i);
+        }
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -150,9 +168,8 @@ public class LandingActivity extends ActionBarActivity {
         switch (item.getItemId())
         {
 
-//            case R.id.action_profile: i = new Intent(LandingActivity.this,ProfileActivity.class);
-//                startActivity(i);
-//                break;
+            case R.id.action_profile: fetchProfile();
+                break;
 //            case R.id.action_settings: i = new Intent(LandingActivity.this,SettingsActivity.class);
 //                startActivity(i);
 //                break;
