@@ -51,10 +51,12 @@ public class Constants {
 
 
     // all the fragments
+    public static final String QUOTE_HOLDER_FRAGMENT = " QUOTE HOLDER FRAGMENT ";
 
     // all the adapters
-    public static final String MOOD_DETAIL_RECYCLER_ADAPTER =" MOODS DETAIL RECYCLER ADAPTER";
-    public static final String TIMELINE_RECYCLER_ADAPTER =" TIMELINE RECYCLER ADAPTER";
+    public static final String MOOD_DETAIL_RECYCLER_ADAPTER =" MOODS DETAIL RECYCLER ADAPTER ";
+    public static final String QUOTE_SLIDE_ADAPTER =" QUOTE SLIDE ADAPTER ";
+    public static final String TIMELINE_RECYCLER_ADAPTER =" TIMELINE RECYCLER ADAPTER ";
 
     // all the async tasks
     public static final String FETCH_MOOD_DETAIL_ASYNC_TASK=" FETCH MOOD DETAIL ASYNC TASK ";

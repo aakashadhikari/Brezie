@@ -1,7 +1,6 @@
 package com.ascentbrezie.brezie.data;
 
 /**
-<<<<<<< HEAD
  * Created by SAGAR on 12/5/2015.
  */
 public class QuotesData {

@@ -153,7 +153,6 @@ public class LandingActivity extends ActionBarActivity {
         runnable = new Runnable() {
             @Override
             public void run() {
-                Log.d(Constants.LOG_TAG, " current is " + current);
                 if (current < Constants.quotesData.size()) {
                     viewPager.setCurrentItem(current++, true);
                 }
