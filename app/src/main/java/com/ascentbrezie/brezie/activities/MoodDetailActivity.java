@@ -2,6 +2,7 @@ package com.ascentbrezie.brezie.activities;
 
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.PersistableBundle;
@@ -14,7 +15,11 @@ import android.util.Log;
 import com.ascentbrezie.brezie.R;
 import com.ascentbrezie.brezie.adapters.MoodDetailRecyclerAdapter;
 import com.ascentbrezie.brezie.async.FetchMoodDetailAsyncTask;
+import com.ascentbrezie.brezie.async.SendTransactionAsyncTask;
 import com.ascentbrezie.brezie.utils.Constants;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * Created by ADMIN on 21-10-2015.
@@ -42,6 +47,7 @@ public class MoodDetailActivity extends AppCompatActivity {
         Log.d(Constants.LOG_TAG,Constants.MOOD_DETAIL_ACTIVITY);
 
         getExtras();
+        initializeJsons();
         findViews();
         customActionBar();
         settingTheAdapter();
@@ -51,6 +57,17 @@ public class MoodDetailActivity extends AppCompatActivity {
     public void getExtras(){
 
         moodId = getIntent().getStringExtra("mood");
+    }
+
+    public void initializeJsons(){
+
+        Constants.transactionGrandParentJsonObject = new JSONObject();
+        Constants.transactionParentJsonArray = new JSONArray();
+        Constants.transactionParentJsonObject = new JSONObject();
+        Constants.transactionChildJsonArray = new JSONArray();
+        Constants.transactionChildJsonObject = new JSONObject();
+
+
     }
 
     public void findViews(){
@@ -112,7 +129,7 @@ public class MoodDetailActivity extends AppCompatActivity {
                     int height = sharedPreferences.getInt("height",0);
 
                     // specify an adapter (see also next example)
-                    moodDetailRecyclerAdapter = new MoodDetailRecyclerAdapter(MoodDetailActivity.this,width,height);
+                    moodDetailRecyclerAdapter = new MoodDetailRecyclerAdapter(MoodDetailActivity.this,width,height,Constants.moodDetailData);
                     moodDetailRecyclerView.setAdapter(moodDetailRecyclerAdapter);
 
                 }
@@ -123,6 +140,19 @@ public class MoodDetailActivity extends AppCompatActivity {
 
     public void sendTransaction(){
 
+
+        new SendTransactionAsyncTask(this, new SendTransactionAsyncTask.SendTransactionCallback() {
+            @Override
+            public void onStart(boolean status) {
+
+
+            }
+
+            @Override
+            public void onResult(boolean result) {
+
+            }
+        }).execute(Constants.transactionGrandParentJsonObject);
 
     }
 
@@ -135,22 +165,10 @@ public class MoodDetailActivity extends AppCompatActivity {
 
     }
 
-//
-//    @Override
-//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
-//
-//        Log.d(Constants.LOG_TAG," on restore instance is called ");
-//
-//        recyclerState = savedInstanceState.getParcelable("myState");
-//    }
-
-
     @Override
     protected void onPause() {
         super.onPause();
         sendTransaction();
-
 
     }
 

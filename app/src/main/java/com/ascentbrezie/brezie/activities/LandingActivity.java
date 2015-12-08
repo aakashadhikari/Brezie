@@ -112,7 +112,6 @@ public class LandingActivity extends ActionBarActivity {
 
         for(int i=0;i<6;i++){
 
-            Log.d(Constants.LOG_TAG," For loop is called ");
             View view = new View(this);
             view.setTag("mood_" + i);
             view.setOnClickListener(listener);

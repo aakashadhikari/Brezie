@@ -7,6 +7,7 @@ import com.ascentbrezie.brezie.data.ProfileData;
 import com.ascentbrezie.brezie.data.QuotesData;
 import com.ascentbrezie.brezie.data.TimelineData;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -28,7 +29,10 @@ public class Constants {
     //
     public static String nickName;
 
+    public static JSONObject transactionGrandParentJsonObject;
+    public static JSONArray transactionParentJsonArray;
     public static JSONObject transactionParentJsonObject;
+    public static JSONArray transactionChildJsonArray;
     public static JSONObject transactionChildJsonObject;
 
 
@@ -60,6 +64,7 @@ public class Constants {
     public static final String LOGIN_ASYNC_TASK=" LOGIN ASYNC TASK ";
     public static final String MOBILE_VERIFICATION_ASYNC_TASK=" MOBILE VERIFICATION ASYNC TASK ";
     public static final String REGISTER_ASYNC_TASK=" REGISTER ASYNC TASK ";
+    public static final String SEND_TRANSACTION_ASYNC_TASK=" SEND TRANSACTION ASYNC TASK ";
 
 
     // all the data

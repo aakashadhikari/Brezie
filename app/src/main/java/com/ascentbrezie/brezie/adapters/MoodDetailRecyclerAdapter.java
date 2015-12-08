@@ -18,7 +18,10 @@ import com.ascentbrezie.brezie.R;
 import com.ascentbrezie.brezie.activities.LoginOrRegisterActivity;
 import com.ascentbrezie.brezie.custom.CustomButton;
 import com.ascentbrezie.brezie.custom.CustomEditText;
+import com.ascentbrezie.brezie.data.MoodDetailData;
 import com.ascentbrezie.brezie.utils.Constants;
+
+import java.util.ArrayList;
 
 /**
  * Created by ADMIN on 25-09-2015.
@@ -35,11 +38,14 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
     private CustomEditText enterComments;
     private CustomButton addComment;
 
+    private ArrayList<MoodDetailData> moodDetailData;
 
-    public MoodDetailRecyclerAdapter(Context context, int width, int height) {
+    public MoodDetailRecyclerAdapter(Context context, int width, int height, ArrayList<MoodDetailData> moodDetailData) {
         this.context = context;
         this.width = width;
         this.height = height;
+        this.moodDetailData = moodDetailData;
+
         Log.d(Constants.LOG_TAG,Constants.MOOD_DETAIL_RECYCLER_ADAPTER);
     }
 
@@ -119,15 +125,16 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
     public void setViews(int position){
 
 
-        like.setTag("like_"+position);
+        like.setTag("like_" + position);
         like.setOnClickListener(listener);
 
-        share.setTag("share_"+position);
+        share.setTag("share_" + position);
         share.setOnClickListener(listener);
 
-        addComment.setTag("comment_"+position);
+        addComment.setTag("comment_" + position);
         addComment.setOnClickListener(listener);
 
+//        moodImage.setImageResource(images[position]);
         moodImage.setImageResource(images[position]);
 
     }
@@ -136,23 +143,36 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
     @Override
     public int getItemCount() {
 
-        return 5;
+        return moodDetailData.size();
     }
 
-    public void like(){
+    public void like(int position){
 
-
-    }
-
-    public void share(){
-
-
-
+        String id = moodDetailData.get(position).getImageId();
+        like.setImageResource(R.drawable.icon_selected_like);
+        notifyDataSetChanged();
+        addToJson(id,"like","1");
 
     }
 
-    public void addComment(){
+    public void share(int position){
 
+        String id = moodDetailData.get(position).getImageId();
+        share.setImageResource(R.drawable.icon_selected_share);
+        notifyDataSetChanged();
+        addToJson(id,"2","1");
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "Hello check out this cool App Brezie");
+        sendIntent.setType("text/plain");
+        context.startActivity(sendIntent);
+
+    }
+
+    public void addComment(int position){
+
+        moodDetailData.get(position).getImageId();
 
         String commentValue = enterComments.getText().toString();
 
@@ -170,6 +190,8 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
             String nickName = sharedPreferences.getString("nickName","null");
 
             if(nickName.equalsIgnoreCase("null")){
+
+
 
                 Intent i = new Intent(context, LoginOrRegisterActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -193,17 +215,26 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
     }
 
+    public void addToJson(String quoteId,String actionFlag,String action){
+
+
+
+    }
+
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
+            String tagDetails[] = v.getTag().toString().split("_");
+            int position = Integer.parseInt(tagDetails[1]);
+
             switch (v.getId()){
 
-                case R.id.like_included: like();
+                case R.id.like_included: like(position);
                     break;
-                case R.id.share_included: share();
+                case R.id.share_included: share(position);
                     break;
-                case R.id.add_comment_button_included: addComment();
+                case R.id.add_comment_button_included: addComment(position);
                     break;
 
 
