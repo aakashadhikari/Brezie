@@ -3,6 +3,8 @@ package com.ascentbrezie.brezie.activities;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.ascentbrezie.brezie.R;
+
 public class EditProfileActivity extends AppCompatActivity {
 
     @Override

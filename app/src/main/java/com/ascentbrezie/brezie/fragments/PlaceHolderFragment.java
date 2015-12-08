@@ -41,7 +41,7 @@ public class PlaceHolderFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_slider, container, false);
         TextView textView = (TextView) rootView.findViewById(R.id.list_item_text);
-        textView.setText(Constants.quotesData.get(getArguments().getInt(ARG_SECTION_NUMBER)).getQuotes());
+        textView.setText(Constants.quotesData.get(getArguments().getInt(ARG_SECTION_NUMBER)).getQuote());
         return rootView;
     }
 }

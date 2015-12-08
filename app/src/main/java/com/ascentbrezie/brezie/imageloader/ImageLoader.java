@@ -6,7 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.ImageView;
 
-import com.healthyfood.eatrite.R;
+
+import com.ascentbrezie.brezie.R;
 
 import java.io.File;
 import java.io.FileInputStream;

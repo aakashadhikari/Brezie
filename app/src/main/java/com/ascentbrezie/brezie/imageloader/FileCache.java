@@ -2,7 +2,7 @@ package com.ascentbrezie.brezie.imageloader;
 
 import android.content.Context;
 
-import com.healthyfood.eatrite.utils.Constants;
+import com.ascentbrezie.brezie.utils.Constants;
 
 import java.io.File;
 

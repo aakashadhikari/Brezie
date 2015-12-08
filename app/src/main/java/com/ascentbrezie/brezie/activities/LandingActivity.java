@@ -26,7 +26,6 @@ import com.ascentbrezie.brezie.adapters.QuoteSlideAdapter;
 import com.ascentbrezie.brezie.async.FetchQuotesForDayAsyncTask;
 import com.ascentbrezie.brezie.data.QuotesData;
 import com.ascentbrezie.brezie.utils.Constants;
-import com.daimajia.slider.library.SliderLayout;
 
 import java.util.ArrayList;
 
@@ -36,7 +35,6 @@ public class LandingActivity extends ActionBarActivity {
     private View a, b, c, d, e, f;
     private LinearLayout tabLayout;
     private Toolbar toolbar;
-    private SliderLayout sliderLayout;
     private ProgressDialog progressDialog;
     TextView textView;
     static String[] quptes = {"This is 1", "ythitrlks fljksa fss", "ashflkasjf hfkjashf hbfkjsa shsa kjhsakh s", "this is more tsexfvkl", "finally this is the last"};
@@ -120,11 +118,7 @@ public class LandingActivity extends ActionBarActivity {
     public void populateTabs() {
 
         tabLayout.removeAllViews();
-<<<<<<< HEAD
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
-=======
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME, MODE_PRIVATE);
->>>>>>> saeed
         int width = sharedPreferences.getInt("width", 0);
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, width / 6);
@@ -132,11 +126,7 @@ public class LandingActivity extends ActionBarActivity {
         layoutParams.weight = 1;
 
         for (int i = 0; i < 6; i++) {
-
-<<<<<<< HEAD
-=======
             Log.d(Constants.LOG_TAG, " For loop is called ");
->>>>>>> saeed
             View view = new View(this);
             view.setTag("mood_" + i);
             view.setOnClickListener(listener);

@@ -95,8 +95,6 @@ public class FetchQuotesForDayAsyncTask extends AsyncTask<String, Void, Boolean>
 
                 inputStream = httpURLConnection.getInputStream();
                 String response = convertInputStreamToString(inputStream);
-
-<<<<<<< HEAD
                 Log.d(Constants.LOG_TAG," The response is "+response);
 
                 JSONObject jsonObject = new JSONObject(response);
@@ -105,14 +103,6 @@ public class FetchQuotesForDayAsyncTask extends AsyncTask<String, Void, Boolean>
 
                     String quote = jsonArray.getString(i);
                     Constants.quotesData.add(new QuotesData(quote));
-=======
-                Log.d(Constants.LOG_TAG, " The response is " + response);
-                JSONObject jsonObject = new JSONObject(response);
-                JSONArray jsonArray = jsonObject.getJSONArray("quotes");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    String s = jsonArray.getString(i);
-                    Constants.quotesData.add(new QuotesData(s));
->>>>>>> saeed
                 }
 
                 return true;
