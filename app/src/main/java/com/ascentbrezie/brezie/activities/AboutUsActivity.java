@@ -10,7 +10,8 @@ import com.ascentbrezie.brezie.utils.Constants;
 /**
  * Created by ADMIN on 24-10-2015.
  */
-public class  AboutUsActivity extends Activity {
+public class AboutUsActivity extends Activity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

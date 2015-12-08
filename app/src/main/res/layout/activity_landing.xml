@@ -12,6 +12,7 @@
         android:layout_height="wrap_content" />
 
     <android.support.v4.view.ViewPager
+
         android:padding="@dimen/padding"
         android:id="@+id/slider_landing_activity"
         android:layout_width="match_parent"
@@ -25,7 +26,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/slider_landing_activity"
         android:id="@+id/arrow_image_landing_activity"
-        android:src="@drawable/arrow_down" />
+        android:src="@drawable/icon_arrow_down" />
 
     <LinearLayout
         android:id="@+id/tabs_layout_landing_activity"
