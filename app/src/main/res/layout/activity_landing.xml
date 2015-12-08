@@ -25,7 +25,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/slider_landing_activity"
         android:id="@+id/arrow_image_landing_activity"
-        android:src="@drawable/arrow_down" />
+        android:src="@drawable/icon_arrow_down" />
 
     <LinearLayout
         android:id="@+id/tabs_layout_landing_activity"
