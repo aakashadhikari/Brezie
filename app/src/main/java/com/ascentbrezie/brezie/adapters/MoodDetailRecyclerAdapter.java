@@ -160,7 +160,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
         String id = moodDetailData.get(position).getImageId();
         share.setImageResource(R.drawable.icon_selected_share);
         notifyDataSetChanged();
-        addToJson(id,"2","1");
+        addToJson(id,"4","1");
 
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
@@ -172,12 +172,11 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
     public void addComment(int position){
 
-        moodDetailData.get(position).getImageId();
+        String id = moodDetailData.get(position).getImageId();
 
         String commentValue = enterComments.getText().toString();
 
-        Log.d(Constants.LOG_TAG," The comment value is "+commentValue);
-
+        addToJson(id,"2","1");
 //        if(commentValue.equalsIgnoreCase("")){
 //
 //            Toast.makeText(context, "No comment", Toast.LENGTH_SHORT).show();
@@ -186,28 +185,28 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 //        else{
 
 
-            SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
-            String nickName = sharedPreferences.getString("nickName","null");
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
+        String nickName = sharedPreferences.getString("nickName","null");
 
-            if(nickName.equalsIgnoreCase("null")){
+        if(nickName.equalsIgnoreCase("null")){
 
 
 
-                Intent i = new Intent(context, LoginOrRegisterActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(i);
+            Intent i = new Intent(context, LoginOrRegisterActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
 
-            }
-            else{
+        }
+        else{
 
-                TextView tv = new TextView(context);
-                LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                tv.setLayoutParams(layoutParams1);
-                tv.setText(nickName+" : "+enterComments.getText().toString());
-                tv.setTextSize(18F);
-                displayComments.addView(tv);
+            TextView tv = new TextView(context);
+            LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            tv.setLayoutParams(layoutParams1);
+            tv.setText(nickName+" : "+enterComments.getText().toString());
+            tv.setTextSize(18F);
+            displayComments.addView(tv);
 
-            }
+        }
 
 
 //        }
@@ -218,29 +217,59 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
     public void addToJson(String quoteId,String actionFlag,String action){
 
 
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
+        String userId = sharedPreferences.getString("userId","null");
 
-    }
+        try{
 
-    View.OnClickListener listener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
+            Constants.transactionParentJsonObject.put("quote_id",userId);
+            Constants.transactionParentJsonObject.put("action_flag",actionFlag);
+            Constants.transactionParentJsonObject.put("action",action);
 
-            String tagDetails[] = v.getTag().toString().split("_");
-            int position = Integer.parseInt(tagDetails[1]);
+            if(actionFlag.equalsIgnoreCase("2")){
 
-            switch (v.getId()){
+                Constants.transactionChildJsonObject.put("nickname","nickname");
+                Constants.transactionChildJsonObject.put("comment","abc1234");
 
-                case R.id.like_included: like(position);
-                    break;
-                case R.id.share_included: share(position);
-                    break;
-                case R.id.add_comment_button_included: addComment(position);
-                    break;
-
+                // This array will hold the comments array
+                Constants.transactionChildJsonArray.put(Constants.transactionChildJsonObject);
 
             }
 
+            Constants.transactionParentJsonArray.put(Constants.transactionParentJsonObject);
+            Constants.transactionGrandParentJsonObject.put("user_id",userId);
+            Constants.transactionGrandParentJsonObject.put("transaction",Constants.transactionParentJsonArray);
+
         }
-    };
+        catch (Exception e){
+
+            e.printStackTrace();
+        }
+
+
+
+}
+
+View.OnClickListener listener = new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+
+        String tagDetails[] = v.getTag().toString().split("_");
+        int position = Integer.parseInt(tagDetails[1]);
+
+        switch (v.getId()){
+
+            case R.id.like_included: like(position);
+                break;
+            case R.id.share_included: share(position);
+                break;
+            case R.id.add_comment_button_included: addComment(position);
+                break;
+
+
+        }
+
+    }
+};
 
 }

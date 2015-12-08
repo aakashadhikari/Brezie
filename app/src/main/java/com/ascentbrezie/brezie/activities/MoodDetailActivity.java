@@ -146,6 +146,7 @@ public class MoodDetailActivity extends AppCompatActivity {
             public void onStart(boolean status) {
 
 
+
             }
 
             @Override
