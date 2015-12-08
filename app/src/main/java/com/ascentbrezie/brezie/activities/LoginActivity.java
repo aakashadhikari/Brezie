@@ -19,9 +19,9 @@ import com.ascentbrezie.brezie.utils.Constants;
 /**
  * Created by SAGAR on 11/28/2015.
  */
-public class LoginActivity extends Activity {
+public class  LoginActivity extends Activity {
 
-    CustomEditText number,password;
+    CustomEditText number, password;
     CustomButton login;
 
     ProgressDialog progressDialog;

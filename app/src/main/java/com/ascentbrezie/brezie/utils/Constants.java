@@ -3,7 +3,10 @@ package com.ascentbrezie.brezie.utils;
 import com.ascentbrezie.brezie.data.CommentsData;
 import com.ascentbrezie.brezie.data.KeyValuePairData;
 import com.ascentbrezie.brezie.data.MoodDetailData;
+<<<<<<< HEAD
 import com.ascentbrezie.brezie.data.ProfileData;
+=======
+>>>>>>> saeed
 import com.ascentbrezie.brezie.data.QuotesData;
 import com.ascentbrezie.brezie.data.TimelineData;
 
@@ -74,6 +77,7 @@ public class Constants {
     public static ArrayList<ProfileData> profileData;
     public static ArrayList<QuotesData> quotesData;
     public static ArrayList<TimelineData> timelineData;
+    public static ArrayList<QuotesData> quotesData;
 
     // all the developer links
     public static final String splashUrl = "http://brezie.in/dev/Brezie/splash.php";
