@@ -194,6 +194,10 @@ public class LandingActivity extends ActionBarActivity {
 
         if(nickname.equalsIgnoreCase("null")){
 
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("route","profile");
+            editor.commit();
+
             Intent i = new Intent(LandingActivity.this,LoginOrRegisterActivity.class);
             startActivity(i);
         }

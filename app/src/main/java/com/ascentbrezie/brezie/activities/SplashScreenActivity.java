@@ -38,13 +38,12 @@ public class SplashScreenActivity extends Activity{
 
         GPSTracker tracker = new GPSTracker(this);
     if (!tracker.canGetLocation()) {
-        Toast.makeText(getApplicationContext(), ("Unable to find"), Toast.LENGTH_LONG).show();
-        Log.d(Constants.LOG_TAG, "Unable to find");
+        Toast.makeText(getApplicationContext(), ("Unable to get your location"), Toast.LENGTH_LONG).show();
+        Log.d(Constants.LOG_TAG, "Unable to get location");
         tracker.showSettingsAlert();
     } else {
         latitude = tracker.getLatitude();
         longitude = tracker.getLongitude();
-        Toast.makeText(getApplicationContext(), ("Lat" +tracker.getLatitude() + "Lon" +tracker.getLongitude()), Toast.LENGTH_LONG).show();
         Log.d(Constants.LOG_TAG, "Lat " + tracker.getLatitude() + " Lon " + tracker.getLongitude());
 
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME, MODE_PRIVATE);

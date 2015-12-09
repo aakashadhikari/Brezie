@@ -96,6 +96,7 @@ public class LoginAsyncTask extends AsyncTask<String,Void,Boolean> {
 
                 if(status.equalsIgnoreCase("true")){
 
+                    Constants.nickname = jsonObject.getString("nickname");
                     return true;
                 }
                 else if(status.equalsIgnoreCase("false")){

@@ -7,38 +7,56 @@ import java.util.List;
  */
 public class MoodDetailData {
 
-    String quoteId,imageId,imageUrl,likesCounter,commentsCounter,usedAsCounter;
+    String quoteId,likesCounter,commentsCounter,usedAsCounter,backgroundUrl,commentsCount;
     List<CommentsData> commentsData;
     boolean isLiked;
 
-    public MoodDetailData(String quoteId,String commentsCounter,String likesCounter,String shareCounter,String usedAsCounter,List<CommentsData> commentsData){
+    public MoodDetailData(String quoteId,String commentsCounter,String likesCounter,String shareCounter,String usedAsCounter,List<CommentsData> commentsData,String commentsCount){
 
         this.quoteId = quoteId;
         this.commentsCounter = commentsCounter;
         this.likesCounter = likesCounter;
         this.usedAsCounter = usedAsCounter;
         this.commentsData = commentsData;
+        this.commentsCount = commentsCount;
 
     }
 
-    public MoodDetailData(String likesCounter, String commentsCounter, String usedAsCounter, List<CommentsData> commentsData) {
-        this.likesCounter = likesCounter;
+    // This will be used when backgroundUrl is available
+    public MoodDetailData(String quoteId,String commentsCounter,String likesCounter,String shareCounter,String usedAsCounter,String backgroundUrl,List<CommentsData> commentsData,String commentsCount){
+
+        this.quoteId = quoteId;
         this.commentsCounter = commentsCounter;
-        this.usedAsCounter = usedAsCounter;
-        this.commentsData = commentsData;
-    }
-
-
-    public MoodDetailData(String imageId, String imageUrl, String likesCounter, String commentsCounter, String usedAsCounter, List<CommentsData> commentsData, boolean isLiked) {
-        this.imageId = imageId;
-        this.imageUrl = imageUrl;
         this.likesCounter = likesCounter;
-        this.commentsCounter = commentsCounter;
         this.usedAsCounter = usedAsCounter;
+        this.backgroundUrl = backgroundUrl;
         this.commentsData = commentsData;
-        this.isLiked = isLiked;
+
     }
 
+    public String getCommentsCount() {
+        return commentsCount;
+    }
+
+    public void setCommentsCount(String commentsCount) {
+        this.commentsCount = commentsCount;
+    }
+
+    public String getQuoteId() {
+        return quoteId;
+    }
+
+    public void setQuoteId(String quoteId) {
+        this.quoteId = quoteId;
+    }
+
+    public String getBackgroundUrl() {
+        return backgroundUrl;
+    }
+
+    public void setBackgroundUrl(String backgroundUrl) {
+        this.backgroundUrl = backgroundUrl;
+    }
 
     public boolean isLiked() {
         return isLiked;
@@ -46,22 +64,6 @@ public class MoodDetailData {
 
     public void setIsLiked(boolean isLiked) {
         this.isLiked = isLiked;
-    }
-
-    public String getImageId() {
-        return imageId;
-    }
-
-    public void setImageId(String imageId) {
-        this.imageId = imageId;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public String getLikesCounter() {

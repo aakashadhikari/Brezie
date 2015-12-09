@@ -1,6 +1,7 @@
 package com.ascentbrezie.brezie.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -30,10 +31,10 @@ public class MoodDetailActivity extends AppCompatActivity {
     private RecyclerView.Adapter moodDetailRecyclerAdapter;
     private RecyclerView.LayoutManager moodDetailLayoutManager;
 
-    private Toolbar toolbar;
-    private int width,height;
     private String moodId,userId,latitude,longitude;
     private ProgressDialog progressDialog;
+
+    private String quoteId,comment;
 
     private Parcelable recyclerState;
 
@@ -57,6 +58,7 @@ public class MoodDetailActivity extends AppCompatActivity {
     public void getExtras(){
 
         moodId = getIntent().getStringExtra("mood");
+
     }
 
     public void initializeJsons(){
@@ -131,6 +133,8 @@ public class MoodDetailActivity extends AppCompatActivity {
                     // specify an adapter (see also next example)
                     moodDetailRecyclerAdapter = new MoodDetailRecyclerAdapter(MoodDetailActivity.this,width,height,Constants.moodDetailData);
                     moodDetailRecyclerView.setAdapter(moodDetailRecyclerAdapter);
+
+
 
                 }
             }

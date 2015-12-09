@@ -27,7 +27,7 @@ public class Constants {
     public static String referenceCode;
 
     //
-    public static String nickName;
+    public static String nickname;
 
     public static JSONObject transactionGrandParentJsonObject;
     public static JSONArray transactionParentJsonArray;

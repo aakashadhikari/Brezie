@@ -29,6 +29,13 @@
                 layout="@layout/include_like_and_share"
                 android:layout_gravity="right"
                 />
+            <com.ascentbrezie.brezie.custom.CustomTextView
+                android:id="@+id/comments_count_text_mood_detail_activity"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_small"
+                android:layout_margin="@dimen/margin_small"
+                />
             <LinearLayout
                 android:id="@+id/display_comments_layout_mood_detail_activity"
                 android:layout_width="fill_parent"

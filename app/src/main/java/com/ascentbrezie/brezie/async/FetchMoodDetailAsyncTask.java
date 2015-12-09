@@ -110,6 +110,7 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
                     likeCounter = jsonObject.getString("like_counter");
                     shareCounter = jsonObject.getString("share_counter");
                     usedAsCounter = jsonObject.getString("usedas_counter");
+//                    backgroundUrl = jsonObject.getString("background_url");
 
                     JSONArray nestedJsonArray = jsonObject.getJSONArray("comments");
                     for(int j=0;j<nestedJsonArray.length();j++){
@@ -123,11 +124,11 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
 
                     }
 
-                    Constants.moodDetailData.add(new MoodDetailData(quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,commentsData));
+                    String commentsCount = String.valueOf(nestedJsonArray.length());
+//                    Constants.moodDetailData.add(new MoodDetailData(quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,backgroundUrl,commentsData,commentsCount));
+                    Constants.moodDetailData.add(new MoodDetailData(quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,commentsData,commentsCount));
 
                 }
-
-
 
                 return true;
             }

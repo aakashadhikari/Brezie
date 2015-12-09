@@ -7,6 +7,8 @@ import android.util.Log;
 import com.ascentbrezie.brezie.data.KeyValuePairData;
 import com.ascentbrezie.brezie.utils.Constants;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -91,9 +93,18 @@ public class MobileVerificationAsyncTask extends AsyncTask<String,Void,Boolean> 
 
                 Log.d(Constants.LOG_TAG," The response is "+response);
 
-//                Constants.nickName
+                JSONObject jsonObject = new JSONObject(response);
+                String status = jsonObject.getString("status");
 
-                return true;
+                if(status.equalsIgnoreCase("true")){
+
+                    Constants.nickname = jsonObject.getString("nickname");
+                    return true;
+                }
+                else if(status.equalsIgnoreCase("false")){
+
+                    return false;
+                }
             }
 
             return false;
