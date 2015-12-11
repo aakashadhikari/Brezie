@@ -9,7 +9,6 @@ import com.google.android.gms.iid.InstanceIDListenerService;
  */
 public class MyInstanceIDListenerService extends InstanceIDListenerService {
 
-
     private static final String TAG = "MyInstanceIDLS";
 
     /**
@@ -25,5 +24,4 @@ public class MyInstanceIDListenerService extends InstanceIDListenerService {
         startService(intent);
     }
     // [END refresh_token]
-
 }

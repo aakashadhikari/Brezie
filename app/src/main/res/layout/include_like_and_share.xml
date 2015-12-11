@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/padding_small"
         android:layout_margin="@dimen/margin_small"
-        android:src="@drawable/icon_unselected_share"
         />
 
     <ImageView
@@ -23,7 +22,6 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/padding_small"
         android:layout_margin="@dimen/margin_small"
-        android:src="@drawable/icon_unselected_like"
         />
 
 

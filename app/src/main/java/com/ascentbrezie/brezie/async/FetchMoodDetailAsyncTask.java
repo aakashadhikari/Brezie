@@ -38,7 +38,7 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
     private HttpURLConnection httpURLConnection;
     private List<CommentsData>commentsData;
 
-    private String quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter;
+    private String quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,backgroundUrl;
 
     public interface FetchMoodDetailCallback{
 
@@ -110,7 +110,7 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
                     likeCounter = jsonObject.getString("like_counter");
                     shareCounter = jsonObject.getString("share_counter");
                     usedAsCounter = jsonObject.getString("usedas_counter");
-//                    backgroundUrl = jsonObject.getString("background_url");
+                    backgroundUrl = jsonObject.getString("quote_path");
 
                     JSONArray nestedJsonArray = jsonObject.getJSONArray("comments");
                     for(int j=0;j<nestedJsonArray.length();j++){
@@ -125,8 +125,8 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
                     }
 
                     String commentsCount = String.valueOf(nestedJsonArray.length());
-//                    Constants.moodDetailData.add(new MoodDetailData(quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,backgroundUrl,commentsData,commentsCount));
-                    Constants.moodDetailData.add(new MoodDetailData(quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,commentsData,commentsCount));
+                    Constants.moodDetailData.add(new MoodDetailData(quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,backgroundUrl,commentsData,commentsCount,false,false));
+//                    Constants.moodDetailData.add(new MoodDetailData(quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,commentsData,commentsCount));
 
                 }
 

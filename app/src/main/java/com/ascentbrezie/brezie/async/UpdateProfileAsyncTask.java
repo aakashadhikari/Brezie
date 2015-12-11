@@ -4,10 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.ascentbrezie.brezie.data.KeyValuePairData;
 import com.ascentbrezie.brezie.utils.Constants;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -19,57 +17,67 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by SAGAR on 12/7/2015.
+ * Created by ADMIN on 09-11-2015.
  */
-public class SendTransactionAsyncTask extends AsyncTask<JSONObject,Void,Boolean> {
+public class UpdateProfileAsyncTask extends AsyncTask<String,Void,Boolean> {
 
-    Context context;
-    SendTransactionCallback callback;
+    private Context context;
+    private UpdateProfileCallback callback;
+    private InputStream inputStream;
+    private OutputStream outputStream;
+    private BufferedWriter bufferedWriter;
+    private URL url;
+    private HttpURLConnection httpURLConnection;
 
-    HttpURLConnection httpURLConnection;
-    InputStream inputStream;
-    OutputStream outputStream;
-    BufferedWriter bufferedWriter;
-    URL url;
-
-
-    public interface SendTransactionCallback{
+    public interface UpdateProfileCallback {
 
         public void onStart(boolean status);
         public void onResult(boolean result);
-
     }
 
-    public SendTransactionAsyncTask(Context context, SendTransactionCallback callback) {
+    public UpdateProfileAsyncTask(Context context, UpdateProfileCallback callback) {
         this.context = context;
         this.callback = callback;
+
+
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-
+        callback.onStart(true);
     }
 
     @Override
-    protected Boolean doInBackground(JSONObject... params) {
+    protected Boolean doInBackground(String... params) {
 
-        Log.d(Constants.LOG_TAG, Constants.SEND_TRANSACTION_ASYNC_TASK);
-        Log.d(Constants.LOG_TAG," The object to be sent is "+params[0]);
+        Log.d(Constants.LOG_TAG,Constants.SEND_EDITTED_PROFILE_ASYNC_TASK);
+        Log.d(Constants.LOG_TAG," The url to be fetched is "+params[0]);
 
         try{
 
-            url = new URL(Constants.sendTransactionUrl);
+            url = new URL(params[0]);
             httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setDoInput(true);
             httpURLConnection.setDoOutput(true);
+
+            List<KeyValuePairData> keyValuePairData = new ArrayList<KeyValuePairData>();
+            keyValuePairData.add(new KeyValuePairData("nickname",params[1]));
+            keyValuePairData.add(new KeyValuePairData("first_name",params[2]));
+            keyValuePairData.add(new KeyValuePairData("last_name",params[3]));
+            keyValuePairData.add(new KeyValuePairData("number",params[4]));
+            keyValuePairData.add(new KeyValuePairData("email",params[5]));
+            keyValuePairData.add(new KeyValuePairData("date_of_birth",params[6]));
+            keyValuePairData.add(new KeyValuePairData("gender",params[7]));
 
             outputStream = httpURLConnection.getOutputStream();
 
             bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
-            bufferedWriter.write("transaction_data="+String.valueOf(params[0]));
+            bufferedWriter.write(constructPostParameters(keyValuePairData));
             bufferedWriter.flush();
 
             int statusCode = httpURLConnection.getResponseCode();
@@ -87,16 +95,15 @@ public class SendTransactionAsyncTask extends AsyncTask<JSONObject,Void,Boolean>
 
             return false;
 
-
         }
         catch(Exception e){
 
             e.printStackTrace();
 
         }
-        finally {
+        finally{
 
-            try{
+            try {
 
                 if(inputStream != null){
 
@@ -108,11 +115,32 @@ public class SendTransactionAsyncTask extends AsyncTask<JSONObject,Void,Boolean>
                 e.printStackTrace();
             }
 
-
         }
 
-
         return false;
+    }
+
+    public String constructPostParameters(List<KeyValuePairData> keyValuePairData){
+
+        String result="";
+        boolean firstTime=true;
+
+        for(KeyValuePairData data : keyValuePairData){
+
+            if (firstTime) {
+                firstTime = false;
+            } else {
+
+                result += "&";
+            }
+
+            result += data.getKey();
+            result += "=";
+            result += data.getValue();
+        }
+        Log.d(Constants.LOG_TAG," the sent parameters "+result);
+        return result;
+
     }
 
     public String convertInputStreamToString(InputStream inputStream) throws IOException {
@@ -120,7 +148,7 @@ public class SendTransactionAsyncTask extends AsyncTask<JSONObject,Void,Boolean>
         String line="";
         String result="";
 
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        BufferedReader  bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
         while((line = bufferedReader.readLine())!=null) {
 
@@ -139,22 +167,7 @@ public class SendTransactionAsyncTask extends AsyncTask<JSONObject,Void,Boolean>
     @Override
     protected void onPostExecute(Boolean result) {
         super.onPostExecute(result);
-        if(result){
-
-            clearJson();
-        }
+        Log.d(Constants.LOG_TAG," The value returned is "+result);
         callback.onResult(result);
-
-    }
-
-    private void clearJson() {
-
-        Constants.transactionGrandParentJsonObject = new JSONObject();
-        Constants.transactionParentJsonObject = new JSONObject();
-        Constants.transactionParentJsonArray = new JSONArray();
-        Constants.transactionChildJsonObject = new JSONObject();
-        Constants.transactionChildJsonArray = new JSONArray();
-
-
     }
 }

@@ -63,6 +63,7 @@ public class MoodDetailActivity extends AppCompatActivity {
 
     public void initializeJsons(){
 
+        Constants.transactionGrandParentJsonArray = new JSONArray();
         Constants.transactionGrandParentJsonObject = new JSONObject();
         Constants.transactionParentJsonArray = new JSONArray();
         Constants.transactionParentJsonObject = new JSONObject();
@@ -143,6 +144,7 @@ public class MoodDetailActivity extends AppCompatActivity {
     }
 
     public void sendTransaction(){
+
 
 
         new SendTransactionAsyncTask(this, new SendTransactionAsyncTask.SendTransactionCallback() {

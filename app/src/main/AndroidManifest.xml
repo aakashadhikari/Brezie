@@ -62,6 +62,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.ascentbrezie.brezie.activities.UpdateProfileActivity"
+            android:label="@string/app_name"/>
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
@@ -86,6 +89,9 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name="com.ascentbrezie.brezie.gcm.RegistrationIntentService"
+            android:exported="false"/>
     </application>
 
 </manifest>

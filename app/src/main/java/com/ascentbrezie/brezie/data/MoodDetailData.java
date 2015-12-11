@@ -1,5 +1,6 @@
 package com.ascentbrezie.brezie.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,9 +10,10 @@ public class MoodDetailData {
 
     String quoteId,likesCounter,commentsCounter,usedAsCounter,backgroundUrl,commentsCount;
     List<CommentsData> commentsData;
-    boolean isLiked;
+    boolean isLiked,isShared;
+    String newComment;
 
-    public MoodDetailData(String quoteId,String commentsCounter,String likesCounter,String shareCounter,String usedAsCounter,List<CommentsData> commentsData,String commentsCount){
+    public MoodDetailData(String quoteId,String commentsCounter,String likesCounter,String shareCounter,String usedAsCounter,List<CommentsData> commentsData,String commentsCount,boolean isLiked,boolean isShared){
 
         this.quoteId = quoteId;
         this.commentsCounter = commentsCounter;
@@ -23,7 +25,7 @@ public class MoodDetailData {
     }
 
     // This will be used when backgroundUrl is available
-    public MoodDetailData(String quoteId,String commentsCounter,String likesCounter,String shareCounter,String usedAsCounter,String backgroundUrl,List<CommentsData> commentsData,String commentsCount){
+    public MoodDetailData(String quoteId,String commentsCounter,String likesCounter,String shareCounter,String usedAsCounter,String backgroundUrl,List<CommentsData> commentsData,String commentsCount,boolean isLiked,boolean isShared){
 
         this.quoteId = quoteId;
         this.commentsCounter = commentsCounter;
@@ -34,8 +36,24 @@ public class MoodDetailData {
 
     }
 
+    public boolean isShared() {
+        return isShared;
+    }
+
+    public void setIsShared(boolean isShared) {
+        this.isShared = isShared;
+    }
+
     public String getCommentsCount() {
         return commentsCount;
+    }
+
+    public String getNewComment() {
+        return newComment;
+    }
+
+    public void setNewComment(String newComment) {
+        this.newComment = newComment;
     }
 
     public void setCommentsCount(String commentsCount) {

@@ -1,23 +1,34 @@
 package com.ascentbrezie.brezie.activities;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ascentbrezie.brezie.R;
 import com.ascentbrezie.brezie.async.FetchUserIdAsyncTask;
+import com.ascentbrezie.brezie.gcm.QuickstartPreferences;
+import com.ascentbrezie.brezie.gcm.RegistrationIntentService;
 import com.ascentbrezie.brezie.utils.Constants;
 import com.ascentbrezie.brezie.utils.GPSTracker;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 /**
  * Created by ADMIN on 25-09-2015.
@@ -28,7 +39,13 @@ public class SplashScreenActivity extends Activity{
     private int width, height;
     protected LocationManager locationManager;
     private String deviceId;
-    double latitude, longitude;
+    private double latitude, longitude;
+    private String notificationId;
+
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private ProgressBar mRegistrationProgressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,30 +53,35 @@ public class SplashScreenActivity extends Activity{
         setContentView(R.layout.activity_splash_screen);
         Log.d(Constants.LOG_TAG, Constants.SPLASH_SCREEN_ACTIVITY);
 
-        GPSTracker tracker = new GPSTracker(this);
-    if (!tracker.canGetLocation()) {
-        Toast.makeText(getApplicationContext(), ("Unable to get your location"), Toast.LENGTH_LONG).show();
-        Log.d(Constants.LOG_TAG, "Unable to get location");
-        tracker.showSettingsAlert();
-    } else {
-        latitude = tracker.getLatitude();
-        longitude = tracker.getLongitude();
-        Log.d(Constants.LOG_TAG, "Lat " + tracker.getLatitude() + " Lon " + tracker.getLongitude());
-
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("latitude", String.valueOf(tracker.getLatitude()));
-        editor.putString("longitude", String.valueOf(tracker.getLongitude()));
-        editor.commit();
-
-    }
-
-
+        getLatitudeLongitude();
         findViews();
         loadAnimation();
         getScreenResolution();
         getDeviceId();
-        sendDeviceId();
+        registerForGCMService();
+
+    }
+
+    public void getLatitudeLongitude(){
+
+        GPSTracker tracker = new GPSTracker(this);
+        if (!tracker.canGetLocation()) {
+            Toast.makeText(getApplicationContext(), ("Unable to get your location"), Toast.LENGTH_LONG).show();
+            Log.d(Constants.LOG_TAG, "Unable to get location");
+            tracker.showSettingsAlert();
+        } else {
+            latitude = tracker.getLatitude();
+            longitude = tracker.getLongitude();
+            Log.d(Constants.LOG_TAG, "Lat " + tracker.getLatitude() + " Lon " + tracker.getLongitude());
+
+            SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("latitude", String.valueOf(tracker.getLatitude()));
+            editor.putString("longitude", String.valueOf(tracker.getLongitude()));
+            editor.commit();
+
+        }
+
 
     }
 
@@ -106,34 +128,63 @@ public class SplashScreenActivity extends Activity{
 
     }
 
-    public void sendDeviceId() {
+    public void registerForGCMService(){
 
-        String url = Constants.splashUrl;
-        new FetchUserIdAsyncTask(this, new FetchUserIdAsyncTask.FetchUserIdCallback() {
+
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
-            public void onStart(boolean status) {
+            public void onReceive(Context context, Intent intent) {
 
+                SharedPreferences sharedPreferences =
+                        PreferenceManager.getDefaultSharedPreferences(context);
+                boolean sentToken = sharedPreferences
+                        .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
 
             }
+        };
 
-            @Override
-            public void onResult(boolean result) {
+        if (checkPlayServices()) {
+            // Start IntentService to register this application with GCM.
+            Intent intent = new Intent(this, RegistrationIntentService.class);
+            startService(intent);
+        }
 
-                if (true) {
-
-                    SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME, MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("userId", Constants.userId);
-                    editor.putString("referenceCode", Constants.referenceCode);
-                    editor.commit();
-
-
-                    Intent i = new Intent(SplashScreenActivity.this, LandingActivity.class);
-                    startActivity(i);
-                }
-
-            }
-        }).execute(url, deviceId);
 
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(QuickstartPreferences.REGISTRATION_COMPLETE));
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        super.onPause();
+    }
+
+    /**
+     * Check the device to make sure it has the Google Play Services APK. If
+     * it doesn't, display a dialog that allows users to download the APK from
+     * the Google Play Store or enable it in the device's system settings.
+     */
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i(Constants.LOG_TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
 }

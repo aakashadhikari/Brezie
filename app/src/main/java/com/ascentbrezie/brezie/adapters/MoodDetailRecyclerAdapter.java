@@ -3,7 +3,13 @@ package com.ascentbrezie.brezie.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +30,12 @@ import com.ascentbrezie.brezie.data.MoodDetailData;
 import com.ascentbrezie.brezie.imageloader.ImageLoader;
 import com.ascentbrezie.brezie.utils.Constants;
 
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +59,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
     private ImageLoader imageLoader;
     private String route;
     private SharedPreferences sharedPreferences;
+    private ViewHolder myViewHolder;
 
     public MoodDetailRecyclerAdapter(Context context, int width, int height, ArrayList<MoodDetailData> moodDetailData) {
         this.context = context;
@@ -93,6 +106,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
         findViews(viewHolder);
         setCardView();
         setViews(i);
+
     }
 
     public void findViews(ViewHolder holder){
@@ -121,24 +135,61 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
     }
 
-    public void setViews(int position){
+    public void setViews(final int position){
 
-        commentsCount.setText("Total Comments : "+moodDetailData.get(position).getCommentsCount());
+        commentsCount.setText("Total Comments : " + moodDetailData.get(position).getCommentsCount());
         addCommentsToLayout(position);
 
-        imageLoader.DisplayImage(moodDetailData.get(position).getBackgroundUrl(),moodImage);
+        imageLoader.DisplayImage(moodDetailData.get(position).getBackgroundUrl(), moodImage);
+
+        enterComments.setTag("extract_" + position);
+        enterComments.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                moodDetailData.get(position).setNewComment(s.toString());
+            }
+        });
+
+        if(moodDetailData.get(position).isLiked()){
+
+            like.setImageResource(R.drawable.icon_selected_like);
+            moodDetailData.get(position).isLiked();
+        }
+        else{
+
+            like.setImageResource(R.drawable.icon_unselected_like);
+        }
 
         like.setTag("like_" + position);
         like.setOnClickListener(listener);
+
+        if(moodDetailData.get(position).isShared()){
+
+            share.setImageResource(R.drawable.icon_selected_share);
+            moodDetailData.get(position).setIsShared(true);
+
+        }
+        else{
+
+            share.setImageResource(R.drawable.icon_unselected_share);
+        }
 
         share.setTag("share_" + position);
         share.setOnClickListener(listener);
 
         addComment.setTag("comment_" + position);
         addComment.setOnClickListener(listener);
-
-//        moodImage.setImageResource(images[position]);
-//        moodImage.setImageResource(images[position]);
 
     }
 
@@ -166,24 +217,52 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
         if(route.equalsIgnoreCase("comment")){
 
             sharedPreferences = context.getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
-            String temp = sharedPreferences.getString("id_comment","null");
-            String id_comment[] = temp.split("_");
-            String nickname = sharedPreferences.getString("nickname","null");
+            String quoteId = sharedPreferences.getString("quoteId", "null");
+            String nickname = sharedPreferences.getString("nickname", "null");
 
-            int id = Integer.parseInt(id_comment[0]);
-            String comment = id_comment[1];
+            Log.d(Constants.LOG_TAG," The quote Id from sharepreferences "+quoteId);
+            String comment = getMoodDetailObject(quoteId);
+            Log.d(Constants.LOG_TAG," The quote Id received comment from  getMoodDetailObject "+comment);
 
             TextView tv = new TextView(context);
-            tv.setText(nickname+" : "+comment);
+            tv.setText(nickname + " : " + comment);
             LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             tv.setLayoutParams(layoutParams1);
             tv.setTextSize(18F);
             displayComments.addView(tv);
 
-            String temporary = String.valueOf(id);
-            addToJson(temporary,"2","1");
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.remove("comment");
+            editor.remove("quoteId");
+            editor.commit();
+
+
+            addToJson(quoteId, "2", "1",comment);
 
         }
+
+
+    }
+
+    public String getMoodDetailObject(String tempQuoteId){
+
+        Log.d(Constants.LOG_TAG," The quote Id received in getMoodDetailObject "+tempQuoteId);
+
+        String quoteId = tempQuoteId;
+        for(int i=0;i<moodDetailData.size();i++)
+        {
+
+            if(moodDetailData.get(i).getQuoteId().equalsIgnoreCase(quoteId))
+            {
+
+                Log.d(Constants.LOG_TAG," The new comment is "+moodDetailData.get(i).getNewComment());
+                return moodDetailData.get(i).getNewComment();
+            }
+
+        }
+
+        return "null";
 
 
     }
@@ -199,8 +278,9 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
         String id = moodDetailData.get(position).getQuoteId();
         like.setImageResource(R.drawable.icon_selected_like);
+        moodDetailData.get(position).setIsLiked(true);
         notifyDataSetChanged();
-        addToJson(id,"1","1");
+        addToJson(id,"1","1",null);
 
     }
 
@@ -208,22 +288,30 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
         String id = moodDetailData.get(position).getQuoteId();
         share.setImageResource(R.drawable.icon_selected_share);
+        moodDetailData.get(position).setIsShared(true);
         notifyDataSetChanged();
-        addToJson(id,"4","1");
+        addToJson(id,"4","1",null);
 
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "Hello check out this cool App Brezie");
-        sendIntent.setType("text/plain");
-        context.startActivity(sendIntent);
+
+        Bitmap b = BitmapFactory.decodeResource(context.getResources(), R.drawable.background_1);
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("image/*");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        b.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(),
+                b, "Title", "Check out this quote");
+        Uri imageUri =  Uri.parse(path);
+        share.putExtra(Intent.EXTRA_STREAM, imageUri);
+        context.startActivity(Intent.createChooser(share, "Select"));
+
 
     }
 
     public void addComment(int position){
 
-        String id = moodDetailData.get(position).getQuoteId();
-        String commentValue = enterComments.getText().toString();
+        String quoteId = moodDetailData.get(position).getQuoteId();
 
+        Log.d(Constants.LOG_TAG," The quote Id put in sharepreferences "+quoteId);
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
         String nickname = sharedPreferences.getString("nickname","null");
 
@@ -231,15 +319,12 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("route", "comment");
-            editor.putString("id_comment",id+"_"+commentValue);
+            editor.putString("quoteId",quoteId);
             editor.commit();
-
-            Log.d(Constants.LOG_TAG," the id comment entered is "+id+"_"+commentValue);
 
             Intent i = new Intent(context, LoginOrRegisterActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
-
 
         }
         else{
@@ -251,28 +336,33 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
             tv.setTextSize(18F);
             displayComments.addView(tv);
             enterComments.setText("");
-            addToJson(id,"2","1");
+            addToJson(quoteId,"2","1",enterComments.getText().toString());
 
         }
 
     }
 
-    public void addToJson(String quoteId,String actionFlag,String action){
+    public void addToJson(String quoteId,String action,String actionFlag,String comment){
 
+        Log.d(Constants.LOG_TAG," add to json called  values : quoteId "+quoteId+" action : "+action+" actionFlag "+actionFlag+" comment "+comment);
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
-        String userId = sharedPreferences.getString("userId","null");
+        String userId = sharedPreferences.getString("userId", "null");
+        String nickname = sharedPreferences.getString("nickname","null");
 
         try{
 
-            Constants.transactionParentJsonObject.put("quote_id",quoteId);
-            Constants.transactionParentJsonObject.put("action_flag",actionFlag);
-            Constants.transactionParentJsonObject.put("action",action);
+            Constants.transactionParentJsonObject = new JSONObject();
+            Constants.transactionParentJsonObject.put("quote_id",Integer.parseInt(quoteId));
+            Constants.transactionParentJsonObject.put("action",Integer.parseInt(action));
+            Constants.transactionParentJsonObject.put("action_flag",Integer.parseInt(actionFlag));
+
 
             if(actionFlag.equalsIgnoreCase("2")){
 
-                Constants.transactionChildJsonObject.put("nickname","nickname");
-                Constants.transactionChildJsonObject.put("comment","abc1234");
+                Constants.transactionChildJsonObject = new JSONObject();
+                Constants.transactionChildJsonObject.put("nickname",nickname);
+                Constants.transactionChildJsonObject.put("comment",comment);
 
                 // This array will hold the comments array
                 Constants.transactionChildJsonArray.put(Constants.transactionChildJsonObject);
@@ -281,7 +371,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
             }
 
             Constants.transactionParentJsonArray.put(Constants.transactionParentJsonObject);
-            Constants.transactionGrandParentJsonObject.put("user_id",userId);
+            Constants.transactionGrandParentJsonObject.put("user_id",Integer.parseInt(userId));
             Constants.transactionGrandParentJsonObject.put("transaction",Constants.transactionParentJsonArray);
 
         }
@@ -289,8 +379,6 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
             e.printStackTrace();
         }
-
-
 
 }
 

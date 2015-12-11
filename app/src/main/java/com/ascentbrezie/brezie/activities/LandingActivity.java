@@ -2,10 +2,15 @@ package com.ascentbrezie.brezie.activities;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
+import android.preference.PreferenceManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -19,13 +24,18 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ascentbrezie.brezie.R;
 import com.ascentbrezie.brezie.adapters.QuoteSlideAdapter;
 import com.ascentbrezie.brezie.async.FetchQuotesForDayAsyncTask;
 import com.ascentbrezie.brezie.data.QuotesData;
+import com.ascentbrezie.brezie.gcm.QuickstartPreferences;
+import com.ascentbrezie.brezie.gcm.RegistrationIntentService;
 import com.ascentbrezie.brezie.utils.Constants;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.ArrayList;
 
@@ -37,7 +47,6 @@ public class LandingActivity extends ActionBarActivity {
     private Toolbar toolbar;
     private ProgressDialog progressDialog;
     TextView textView;
-    static String[] quptes = {"This is 1", "ythitrlks fljksa fss", "ashflkasjf hfkjashf hbfkjsa shsa kjhsakh s", "this is more tsexfvkl", "finally this is the last"};
     static int current = 0;
     private QuoteSlideAdapter quoteSlideAdapter;
     private ViewPager viewPager;
@@ -45,6 +54,15 @@ public class LandingActivity extends ActionBarActivity {
     private Handler handler;
     private Runnable runnable;
     private Animation animation;
+    private int images[] = {R.drawable.icon_mood_happy,R.drawable.icon_mood_motivated,R.drawable.icon_mood_loved,R.drawable.icon_mood_spiritual,R.drawable.icon_mood_romantic,R.drawable.icon_mood_naughty};
+
+
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private static final String TAG = "MainActivity";
+
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private ProgressBar mRegistrationProgressBar;
+    private TextView mInformationTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +74,7 @@ public class LandingActivity extends ActionBarActivity {
         findViews();
         customActionBar();
         fetchData();
-        //setTheSlider();
+
     }
 
 
@@ -65,7 +83,6 @@ public class LandingActivity extends ActionBarActivity {
         tabLayout = (LinearLayout) findViewById(R.id.tabs_layout_landing_activity);
         pointer = (ImageView) findViewById(R.id.arrow_image_landing_activity);
         toolbar = (Toolbar) findViewById(R.id.toolbar_landing_activity);
-//        sliderLayout = (SliderLayout)findViewById(R.id.slider_landing_activity);
     }
 
     public void customActionBar() {
@@ -130,7 +147,7 @@ public class LandingActivity extends ActionBarActivity {
             View view = new View(this);
             view.setTag("mood_" + i);
             view.setOnClickListener(listener);
-            view.setBackground(getResources().getDrawable(R.drawable.background_outline));
+            view.setBackground(getResources().getDrawable(images[i]));
             tabLayout.addView(view, layoutParams);
         }
 
@@ -204,6 +221,7 @@ public class LandingActivity extends ActionBarActivity {
         else{
 
             Intent i = new Intent(LandingActivity.this,ProfileActivity.class);
+//            Intent i = new Intent(LandingActivity.this,UpdateProfileActivity.class);
             startActivity(i);
         }
 
@@ -222,8 +240,8 @@ public class LandingActivity extends ActionBarActivity {
         Intent i;
         switch (item.getItemId()) {
 
-            case R.id.action_profile: fetchProfile();
-                break;
+//            case R.id.action_profile: fetchProfile();
+//                break;
 //            case R.id.action_settings: i = new Intent(LandingActivity.this,SettingsActivity.class);
 //                startActivity(i);
 //                break;
@@ -238,9 +256,9 @@ public class LandingActivity extends ActionBarActivity {
 
     @Override
     protected void onStop() {
-//        sliderLayout.stopAutoCycle();
         super.onStop();
     }
+
 
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
