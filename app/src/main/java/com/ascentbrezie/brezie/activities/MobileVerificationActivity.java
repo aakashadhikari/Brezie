@@ -27,7 +27,7 @@ public class MobileVerificationActivity extends Activity {
     private CustomButton verify;
 
     private ProgressDialog progressDialog;
-    private String numberValue,passwordValue,nickNameValue;
+    private String numberValue,passwordValue,nickNameValue,otpValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,7 @@ public class MobileVerificationActivity extends Activity {
         numberValue = i.getStringExtra("number");
         passwordValue = i.getStringExtra("password");
         nickNameValue = i.getStringExtra("nickname");
+        otpValue = i.getStringExtra("otp");
 
 
     }
@@ -62,6 +63,8 @@ public class MobileVerificationActivity extends Activity {
     public void setViews(){
 
         number.setText(numberValue);
+        otp.setText(otpValue);
+
         verify.setOnClickListener(listener);
 
     }

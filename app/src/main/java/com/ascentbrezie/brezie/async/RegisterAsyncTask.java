@@ -97,6 +97,7 @@ public class RegisterAsyncTask extends AsyncTask<String,Void,Boolean> {
 
                 if(status.equalsIgnoreCase("true")){
 
+                    Constants.otp = jsonObject.getString("otp");
                     return true;
                 }
                 else if(status.equalsIgnoreCase("false")){
