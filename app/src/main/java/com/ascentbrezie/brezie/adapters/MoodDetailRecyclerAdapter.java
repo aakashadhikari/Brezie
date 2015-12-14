@@ -148,12 +148,13 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
     public void setViews(final int position){
 
         commentsCount.setText("Total Comments : " + moodDetailData.get(position).getCommentsCount());
-        addCommentsToLayout(position);
 
         imageLoader.DisplayImage(moodDetailData.get(position).getBackgroundUrl(), moodImage);
 
         enterComments.setTag("extract_" + position);
         displayComments.setTag("layout_"+position);
+
+        addCommentsToLayout(position);
 
         if(moodDetailData.get(position).isLiked()){
 
@@ -190,7 +191,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
     public void addCommentsToLayout(int position){
 
-        List<CommentsData> commentsData = Constants.moodDetailData.get(position).getCommentsData();
+        List<CommentsData> commentsData = moodDetailData.get(position).getCommentsData();
 
         displayComments.removeAllViews();
         for(int i=0;i<commentsData.size();i++)
@@ -246,7 +247,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         b.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(context.getContentResolver(),
-                b, "Title", "Check out this quote");
+                b, "BrezieImages", "Check out this quote");
         Uri imageUri =  Uri.parse(path);
         share.putExtra(Intent.EXTRA_STREAM, imageUri);
         share.putExtra(Intent.EXTRA_TEXT,"You can also view such beautiful quotes");
