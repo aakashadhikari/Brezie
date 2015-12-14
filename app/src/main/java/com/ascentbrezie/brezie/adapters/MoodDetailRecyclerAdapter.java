@@ -62,15 +62,25 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
     private String route;
     private SharedPreferences sharedPreferences;
     private ViewHolder myViewHolder;
+    private String moodId;
 
-    public MoodDetailRecyclerAdapter(Context context, int width, int height, ArrayList<MoodDetailData> moodDetailData) {
+    public MoodDetailRecyclerAdapter(Context context,int width, int height, ArrayList<MoodDetailData> moodDetailData) {
         this.context = context;
         this.width = width;
         this.height = height;
         this.moodDetailData = moodDetailData;
         imageLoader = new ImageLoader(context);
 
+        Log.d(Constants.LOG_TAG,Constants.MOOD_DETAIL_RECYCLER_ADAPTER);
+    }
 
+    public MoodDetailRecyclerAdapter(Context context,String moodId,int width, int height, ArrayList<MoodDetailData> moodDetailData) {
+        this.context = context;
+        this.moodId = moodId;
+        this.width = width;
+        this.height = height;
+        this.moodDetailData = moodDetailData;
+        imageLoader = new ImageLoader(context);
 
         Log.d(Constants.LOG_TAG,Constants.MOOD_DETAIL_RECYCLER_ADAPTER);
     }
@@ -250,6 +260,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
             editor.putString("route", "comment");
             editor.putString("quoteId",quoteId);
             editor.putString("comment",et.getText().toString());
+            editor.putString("moodId",moodId);
             editor.commit();
 
             Intent i = new Intent(context, LoginOrRegisterActivity.class);

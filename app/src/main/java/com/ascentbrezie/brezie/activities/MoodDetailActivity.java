@@ -42,6 +42,7 @@ public class MoodDetailActivity extends AppCompatActivity {
     private Parcelable recyclerState;
     private SharedPreferences sharedPreferences;
     private String route;
+    private boolean cycleComplete;
 
 
 
@@ -62,7 +63,17 @@ public class MoodDetailActivity extends AppCompatActivity {
 
     public void getExtras(){
 
-        moodId = getIntent().getStringExtra("mood");
+        sharedPreferences = getSharedPreferences(Constants.APP_NAME, MODE_PRIVATE);
+        cycleComplete = sharedPreferences.getBoolean("isCommentCycleComplete", false);
+        if(cycleComplete){
+
+            moodId = sharedPreferences.getString("moodId","null");
+        }
+        else{
+
+            moodId = getIntent().getStringExtra("mood");
+        }
+
 
     }
 
@@ -108,7 +119,7 @@ public class MoodDetailActivity extends AppCompatActivity {
     public void fetchData(){
 
 
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
         userId = sharedPreferences.getString("userId","null");
         latitude = sharedPreferences.getString("latitude","null");
         longitude = sharedPreferences.getString("longitude", "null");
@@ -130,13 +141,10 @@ public class MoodDetailActivity extends AppCompatActivity {
             public void onResult(boolean result) {
 
                 progressDialog.dismiss();
-                if(result){
-
-                    SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME, MODE_PRIVATE);
+                if(result) {
+                    sharedPreferences = getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
                     int width = sharedPreferences.getInt("width", 0);
                     int height = sharedPreferences.getInt("height", 0);
-
-                    boolean cycleComplete = sharedPreferences.getBoolean("isCommentCycleComplete", false);
 
                     if(cycleComplete){
 
@@ -145,9 +153,9 @@ public class MoodDetailActivity extends AppCompatActivity {
 
 //                        Constants.moodDetailData.get
                             sharedPreferences = getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
-                            String quoteId = sharedPreferences.getString("quoteId","null");
-                            String nickname = sharedPreferences.getString("nickname",null);
-                            String comment = sharedPreferences.getString("comment",null);
+                            String quoteId = sharedPreferences.getString("quoteId", "null");
+                            String nickname = sharedPreferences.getString("nickname", null);
+                            String comment = sharedPreferences.getString("comment", null);
 
                             getQuoteObject(quoteId).getCommentsData().add(new CommentsData(comment,nickname));
 
@@ -155,6 +163,7 @@ public class MoodDetailActivity extends AppCompatActivity {
                             editor.remove("route");
                             editor.remove("comment");
                             editor.remove("isCommentCycleComplete");
+                            editor.remove("moodId");
                             editor.commit();
 
                             // specify an adapter (see also next example)
@@ -174,7 +183,7 @@ public class MoodDetailActivity extends AppCompatActivity {
                     else{
 
                         // specify an adapter (see also next example)
-                        moodDetailRecyclerAdapter = new MoodDetailRecyclerAdapter(MoodDetailActivity.this,width,height,Constants.moodDetailData);
+                        moodDetailRecyclerAdapter = new MoodDetailRecyclerAdapter(MoodDetailActivity.this,moodId,width,height,Constants.moodDetailData);
                         moodDetailRecyclerView.setAdapter(moodDetailRecyclerAdapter);
                     }
 

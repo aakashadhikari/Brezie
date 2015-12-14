@@ -1,5 +1,9 @@
 package com.ascentbrezie.brezie.data;
 
+import android.util.Log;
+
+import com.ascentbrezie.brezie.utils.Constants;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,20 +12,24 @@ import java.util.List;
  */
 public class MoodDetailData {
 
-    String quoteId,likesCounter,commentsCounter,usedAsCounter,backgroundUrl,commentsCount;
+    String quoteId,likesCounter,commentsCounter,usedAsCounter,backgroundUrl,commentsCount,shareCounter;
     List<CommentsData> commentsData;
     boolean isLiked,isShared;
 
-    // This will be used when backgroundUrl is available
-    public MoodDetailData(String quoteId,String commentsCounter,String likesCounter,String shareCounter,String usedAsCounter,String backgroundUrl,List<CommentsData> commentsData,String commentsCount,boolean isLiked,boolean isShared){
 
+    public MoodDetailData(String quoteId, String commentsCounter, String likesCounter, String shareCounter, String usedAsCounter, String backgroundUrl, List<CommentsData> commentsData, String commentsCount, boolean isLiked, boolean isShared) {
         this.quoteId = quoteId;
         this.commentsCounter = commentsCounter;
         this.likesCounter = likesCounter;
+        this.shareCounter = shareCounter;
         this.usedAsCounter = usedAsCounter;
         this.backgroundUrl = backgroundUrl;
         this.commentsData = commentsData;
+        this.commentsCount = commentsCount;
+        this.isLiked = isLiked;
+        this.isShared = isShared;
 
+        Log.d(Constants.LOG_TAG,Constants.MOOD_DETAIL_RECYCLER_ADAPTER);
     }
 
     public boolean isShared() {

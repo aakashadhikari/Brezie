@@ -124,8 +124,8 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
                     }
 
                     String commentsCount = String.valueOf(nestedJsonArray.length());
+                    Log.d(Constants.LOG_TAG," the comments count is "+commentsCount);
                     Constants.moodDetailData.add(new MoodDetailData(quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,backgroundUrl,commentsData,commentsCount,false,false));
-//                    Constants.moodDetailData.add(new MoodDetailData(quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,commentsData,commentsCount));
 
                 }
 
