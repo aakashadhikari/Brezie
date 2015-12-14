@@ -167,7 +167,7 @@ public class MoodDetailActivity extends AppCompatActivity {
                             editor.commit();
 
                             // specify an adapter (see also next example)
-                            moodDetailRecyclerAdapter = new MoodDetailRecyclerAdapter(MoodDetailActivity.this,width,height,Constants.moodDetailData);
+                            moodDetailRecyclerAdapter = new MoodDetailRecyclerAdapter(MoodDetailActivity.this,quoteId,comment,width,height,Constants.moodDetailData);
                             moodDetailRecyclerView.setAdapter(moodDetailRecyclerAdapter);
 
                         }
@@ -175,7 +175,7 @@ public class MoodDetailActivity extends AppCompatActivity {
 
 
                             // specify an adapter (see also next example)
-                            moodDetailRecyclerAdapter = new MoodDetailRecyclerAdapter(MoodDetailActivity.this,width,height,Constants.moodDetailData);
+                            moodDetailRecyclerAdapter = new MoodDetailRecyclerAdapter(MoodDetailActivity.this,moodId,width,height,Constants.moodDetailData);
                             moodDetailRecyclerView.setAdapter(moodDetailRecyclerAdapter);
                         }
 

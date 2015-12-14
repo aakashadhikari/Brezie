@@ -63,13 +63,18 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
     private SharedPreferences sharedPreferences;
     private ViewHolder myViewHolder;
     private String moodId;
+    private String quoteId,comment;
 
-    public MoodDetailRecyclerAdapter(Context context,int width, int height, ArrayList<MoodDetailData> moodDetailData) {
+    public MoodDetailRecyclerAdapter(Context context,String quoteId,String comment,int width, int height, ArrayList<MoodDetailData> moodDetailData) {
         this.context = context;
         this.width = width;
         this.height = height;
         this.moodDetailData = moodDetailData;
+        this.quoteId = quoteId;
+        this.comment = comment;
         imageLoader = new ImageLoader(context);
+
+        addToJson(quoteId,"2","1",comment);
 
         Log.d(Constants.LOG_TAG,Constants.MOOD_DETAIL_RECYCLER_ADAPTER);
     }

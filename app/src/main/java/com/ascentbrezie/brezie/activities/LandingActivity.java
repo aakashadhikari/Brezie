@@ -221,7 +221,6 @@ public class LandingActivity extends ActionBarActivity {
         else{
 
             Intent i = new Intent(LandingActivity.this,ProfileActivity.class);
-//            Intent i = new Intent(LandingActivity.this,UpdateProfileActivity.class);
             startActivity(i);
         }
 
@@ -240,8 +239,8 @@ public class LandingActivity extends ActionBarActivity {
         Intent i;
         switch (item.getItemId()) {
 
-//            case R.id.action_profile: fetchProfile();
-//                break;
+            case R.id.action_profile: fetchProfile();
+                break;
 //            case R.id.action_settings: i = new Intent(LandingActivity.this,SettingsActivity.class);
 //                startActivity(i);
 //                break;
