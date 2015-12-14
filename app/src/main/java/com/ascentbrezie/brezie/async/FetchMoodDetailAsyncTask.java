@@ -79,9 +79,8 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
             httpURLConnection.setDoOutput(true);
 
             List<KeyValuePairData> keyValuePairData = new ArrayList<KeyValuePairData>();
-//            keyValuePairData.add(new KeyValuePairData("user_id",params[1]));
-            keyValuePairData.add(new KeyValuePairData("user_id","2"));
-            keyValuePairData.add(new KeyValuePairData("mood_id","1"));
+            keyValuePairData.add(new KeyValuePairData("user_id",params[1]));
+            keyValuePairData.add(new KeyValuePairData("mood_id",params[2]));
             keyValuePairData.add(new KeyValuePairData("latitude",params[3]));
             keyValuePairData.add(new KeyValuePairData("longitude",params[4]));
 

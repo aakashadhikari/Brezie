@@ -284,8 +284,6 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
     public void addToJson(String quoteId,String action,String actionFlag,String comment){
 
-        Log.d(Constants.LOG_TAG," add to json called  values : quoteId "+quoteId+" action : "+action+" actionFlag "+actionFlag+" comment "+comment);
-
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
         String userId = sharedPreferences.getString("userId", "null");
         String nickname = sharedPreferences.getString("nickname","null");
