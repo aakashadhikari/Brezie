@@ -64,6 +64,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
     private ViewHolder myViewHolder;
     private String moodId;
     private String quoteId,comment;
+    private File cacheDir;
 
     public MoodDetailRecyclerAdapter(Context context,String quoteId,String comment,int width, int height, ArrayList<MoodDetailData> moodDetailData) {
         this.context = context;
@@ -231,8 +232,15 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
         notifyDataSetChanged();
         addToJson(id,"4","1",null);
 
+        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
+            cacheDir=new File(android.os.Environment.getExternalStorageDirectory(), Constants.APP_NAME);
+        else
+            cacheDir=context.getCacheDir();
 
-        Bitmap b = BitmapFactory.decodeResource(context.getResources(), R.drawable.background_1);
+        String fileName  = String.valueOf(moodDetailData.get(position).getBackgroundUrl().hashCode());
+        File f = new File(cacheDir, fileName);
+
+        Bitmap b = BitmapFactory.decodeFile(f.getPath());
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("image/*");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -241,6 +249,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
                 b, "Title", "Check out this quote");
         Uri imageUri =  Uri.parse(path);
         share.putExtra(Intent.EXTRA_STREAM, imageUri);
+        share.putExtra(Intent.EXTRA_TEXT,"You can also view such beautiful quotes");
         context.startActivity(Intent.createChooser(share, "Select"));
 
 
