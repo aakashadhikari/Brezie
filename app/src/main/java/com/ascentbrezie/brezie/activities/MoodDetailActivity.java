@@ -1,6 +1,7 @@
 package com.ascentbrezie.brezie.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -17,6 +18,8 @@ import com.ascentbrezie.brezie.R;
 import com.ascentbrezie.brezie.adapters.MoodDetailRecyclerAdapter;
 import com.ascentbrezie.brezie.async.FetchMoodDetailAsyncTask;
 import com.ascentbrezie.brezie.async.SendTransactionAsyncTask;
+import com.ascentbrezie.brezie.data.CommentsData;
+import com.ascentbrezie.brezie.data.MoodDetailData;
 import com.ascentbrezie.brezie.utils.Constants;
 
 import org.json.JSONArray;
@@ -37,6 +40,8 @@ public class MoodDetailActivity extends AppCompatActivity {
     private String quoteId,comment;
 
     private Parcelable recyclerState;
+    private SharedPreferences sharedPreferences;
+    private String route;
 
 
 
@@ -106,7 +111,7 @@ public class MoodDetailActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
         userId = sharedPreferences.getString("userId","null");
         latitude = sharedPreferences.getString("latitude","null");
-        longitude = sharedPreferences.getString("longitude","null");
+        longitude = sharedPreferences.getString("longitude", "null");
 
         String url = Constants.moodDetailUrl;
 
@@ -127,15 +132,51 @@ public class MoodDetailActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 if(result){
 
-                    SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
-                    int width = sharedPreferences.getInt("width",0);
-                    int height = sharedPreferences.getInt("height",0);
+                    SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME, MODE_PRIVATE);
+                    int width = sharedPreferences.getInt("width", 0);
+                    int height = sharedPreferences.getInt("height", 0);
 
-                    // specify an adapter (see also next example)
-                    moodDetailRecyclerAdapter = new MoodDetailRecyclerAdapter(MoodDetailActivity.this,width,height,Constants.moodDetailData);
-                    moodDetailRecyclerView.setAdapter(moodDetailRecyclerAdapter);
+                    boolean cycleComplete = sharedPreferences.getBoolean("isCommentCycleComplete", false);
+
+                    if(cycleComplete){
+
+                        boolean isViaCommentRoute = checkRoute();
+                        if(isViaCommentRoute){
+
+//                        Constants.moodDetailData.get
+                            sharedPreferences = getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
+                            String quoteId = sharedPreferences.getString("quoteId","null");
+                            String nickname = sharedPreferences.getString("nickname",null);
+                            String comment = sharedPreferences.getString("comment",null);
+
+                            getQuoteObject(quoteId).getCommentsData().add(new CommentsData(comment,nickname));
+
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.remove("route");
+                            editor.remove("comment");
+                            editor.remove("isCommentCycleComplete");
+                            editor.commit();
+
+                            // specify an adapter (see also next example)
+                            moodDetailRecyclerAdapter = new MoodDetailRecyclerAdapter(MoodDetailActivity.this,width,height,Constants.moodDetailData);
+                            moodDetailRecyclerView.setAdapter(moodDetailRecyclerAdapter);
+
+                        }
+                        else{
 
 
+                            // specify an adapter (see also next example)
+                            moodDetailRecyclerAdapter = new MoodDetailRecyclerAdapter(MoodDetailActivity.this,width,height,Constants.moodDetailData);
+                            moodDetailRecyclerView.setAdapter(moodDetailRecyclerAdapter);
+                        }
+
+                    }
+                    else{
+
+                        // specify an adapter (see also next example)
+                        moodDetailRecyclerAdapter = new MoodDetailRecyclerAdapter(MoodDetailActivity.this,width,height,Constants.moodDetailData);
+                        moodDetailRecyclerView.setAdapter(moodDetailRecyclerAdapter);
+                    }
 
                 }
             }
@@ -143,8 +184,39 @@ public class MoodDetailActivity extends AppCompatActivity {
 
     }
 
-    public void sendTransaction(){
 
+    public boolean checkRoute(){
+
+        sharedPreferences = getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
+        route = sharedPreferences.getString("route","null");
+        if(route.equalsIgnoreCase("comment")){
+            return true;
+        }
+        return false;
+
+    }
+
+    public MoodDetailData getQuoteObject(String quoteId){
+
+        int b = Integer.parseInt(quoteId);
+
+        for (int i =0; i< Constants.moodDetailData.size();i++){
+
+            Log.d(Constants.LOG_TAG, " The quote Id is " + Constants.moodDetailData.get(i).getQuoteId() + " the check Id is " + quoteId);
+            int a = Integer.parseInt(Constants.moodDetailData.get(i).getQuoteId());
+            if(a == b){
+
+                return Constants.moodDetailData.get(i);
+
+            }
+
+        }
+
+        return null;
+    }
+
+
+    public void sendTransaction(){
 
 
         new SendTransactionAsyncTask(this, new SendTransactionAsyncTask.SendTransactionCallback() {

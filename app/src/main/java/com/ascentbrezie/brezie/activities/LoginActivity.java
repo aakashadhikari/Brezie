@@ -89,8 +89,8 @@ public class  LoginActivity extends Activity {
 
                     SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("nickname",Constants.nickname);
-                    editor.commit();
+                    editor.putString("nickname", Constants.nickname);
+
 
                     String route = sharedPreferences.getString("route","null");
 
@@ -99,12 +99,18 @@ public class  LoginActivity extends Activity {
                         Intent i = new Intent(LoginActivity.this,ProfileActivity.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);
+
+                        editor.commit();
+
                     }
                     else if (route.equalsIgnoreCase("comment")){
 
                         Intent i = new Intent(LoginActivity.this,MoodDetailActivity.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);
+
+                        editor.putBoolean("isCommentCycleComplete",true);
+                        editor.commit();
                     }
 
 

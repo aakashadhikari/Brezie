@@ -5,7 +5,7 @@ package com.ascentbrezie.brezie.data;
  */
 public class CommentsData {
 
-    String comment, nickName;
+    String comment,nickName;
 
     public CommentsData(String comment, String nickName) {
         this.comment = comment;

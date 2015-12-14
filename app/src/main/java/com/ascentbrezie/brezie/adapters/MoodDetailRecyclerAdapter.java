@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +31,7 @@ import com.ascentbrezie.brezie.data.MoodDetailData;
 import com.ascentbrezie.brezie.imageloader.ImageLoader;
 import com.ascentbrezie.brezie.utils.Constants;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -68,17 +70,9 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
         this.moodDetailData = moodDetailData;
         imageLoader = new ImageLoader(context);
 
-        checkRoute();
+
 
         Log.d(Constants.LOG_TAG,Constants.MOOD_DETAIL_RECYCLER_ADAPTER);
-    }
-
-    public void checkRoute(){
-
-        sharedPreferences = context.getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
-        route = sharedPreferences.getString("route","null");
-
-
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -130,7 +124,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
         int cardHeight = height-20;
 
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(cardWidth,cardHeight);
-        layoutParams.setMargins(10,10,0,0);
+        layoutParams.setMargins(10, 10, 0, 0);
         rowLayout.setLayoutParams(layoutParams);
 
     }
@@ -143,23 +137,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
         imageLoader.DisplayImage(moodDetailData.get(position).getBackgroundUrl(), moodImage);
 
         enterComments.setTag("extract_" + position);
-        enterComments.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                moodDetailData.get(position).setNewComment(s.toString());
-            }
-        });
+        displayComments.setTag("layout_"+position);
 
         if(moodDetailData.get(position).isLiked()){
 
@@ -209,60 +187,6 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
             displayComments.addView(tv);
 
         }
-        /**
-         * This case will only take place when the user has not logged in to the system
-         * and trying to add a comment
-         * That time he has to follow a cycle of LoginRegister -> Login / Register-> Return here
-         * **/
-        if(route.equalsIgnoreCase("comment")){
-
-            sharedPreferences = context.getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
-            String quoteId = sharedPreferences.getString("quoteId", "null");
-            String nickname = sharedPreferences.getString("nickname", "null");
-
-            Log.d(Constants.LOG_TAG," The quote Id from sharepreferences "+quoteId);
-            String comment = getMoodDetailObject(quoteId);
-            Log.d(Constants.LOG_TAG," The quote Id received comment from  getMoodDetailObject "+comment);
-
-            TextView tv = new TextView(context);
-            tv.setText(nickname + " : " + comment);
-            LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            tv.setLayoutParams(layoutParams1);
-            tv.setTextSize(18F);
-            displayComments.addView(tv);
-
-
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.remove("comment");
-            editor.remove("quoteId");
-            editor.commit();
-
-
-            addToJson(quoteId, "2", "1",comment);
-
-        }
-
-
-    }
-
-    public String getMoodDetailObject(String tempQuoteId){
-
-        Log.d(Constants.LOG_TAG," The quote Id received in getMoodDetailObject "+tempQuoteId);
-
-        String quoteId = tempQuoteId;
-        for(int i=0;i<moodDetailData.size();i++)
-        {
-
-            if(moodDetailData.get(i).getQuoteId().equalsIgnoreCase(quoteId))
-            {
-
-                Log.d(Constants.LOG_TAG," The new comment is "+moodDetailData.get(i).getNewComment());
-                return moodDetailData.get(i).getNewComment();
-            }
-
-        }
-
-        return "null";
 
 
     }
@@ -280,7 +204,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
         like.setImageResource(R.drawable.icon_selected_like);
         moodDetailData.get(position).setIsLiked(true);
         notifyDataSetChanged();
-        addToJson(id,"1","1",null);
+        addToJson(id, "1", "1", null);
 
     }
 
@@ -307,19 +231,25 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
     }
 
-    public void addComment(int position){
+    public void addComment(ViewParent v,int position){
 
         String quoteId = moodDetailData.get(position).getQuoteId();
 
-        Log.d(Constants.LOG_TAG," The quote Id put in sharepreferences "+quoteId);
+        // This line will give us the edit text of that particular mood Image
+        CustomEditText et  = (CustomEditText)((LinearLayout) v.getParent()).findViewWithTag("extract_" + position);
+        LinearLayout displayCommentHere = (LinearLayout)((LinearLayout) v.getParent()).findViewWithTag("layout_" + position);
+
+
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
         String nickname = sharedPreferences.getString("nickname","null");
+
 
         if(nickname.equalsIgnoreCase("null")){
 
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("route", "comment");
             editor.putString("quoteId",quoteId);
+            editor.putString("comment",et.getText().toString());
             editor.commit();
 
             Intent i = new Intent(context, LoginOrRegisterActivity.class);
@@ -329,14 +259,24 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
         }
         else{
 
+
             TextView tv = new TextView(context);
             LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             tv.setLayoutParams(layoutParams1);
-            tv.setText(nickname + " : " + enterComments.getText().toString());
+            tv.setText(nickname + " : " + et.getText().toString());
             tv.setTextSize(18F);
-            displayComments.addView(tv);
-            enterComments.setText("");
-            addToJson(quoteId,"2","1",enterComments.getText().toString());
+            displayCommentHere.addView(tv);
+
+
+            (moodDetailData.get(position).getCommentsData()).add(new CommentsData(et.getText().toString(),nickname));
+            notifyDataSetChanged();
+
+            // First we will add the value to the json and then clear the edittext
+            // If we clear the edittext first and then the set the json then the json will
+            // not be able to receive the data
+            addToJson(quoteId, "2", "1", et.getText().toString());
+            et.setText("");
+
 
         }
 
@@ -358,7 +298,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
             Constants.transactionParentJsonObject.put("action_flag",Integer.parseInt(actionFlag));
 
 
-            if(actionFlag.equalsIgnoreCase("2")){
+            if(action.equalsIgnoreCase("2")){
 
                 Constants.transactionChildJsonObject = new JSONObject();
                 Constants.transactionChildJsonObject.put("nickname",nickname);
@@ -367,6 +307,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
                 // This array will hold the comments array
                 Constants.transactionChildJsonArray.put(Constants.transactionChildJsonObject);
                 Constants.transactionParentJsonObject.put("comments",Constants.transactionChildJsonArray);
+                Constants.transactionChildJsonArray = new JSONArray();
 
             }
 
@@ -388,6 +329,7 @@ View.OnClickListener listener = new View.OnClickListener() {
 
         String tagDetails[] = v.getTag().toString().split("_");
         int position = Integer.parseInt(tagDetails[1]);
+        ViewParent parent = v.getParent();
 
         switch (v.getId()){
 
@@ -395,7 +337,8 @@ View.OnClickListener listener = new View.OnClickListener() {
                 break;
             case R.id.share_included: share(position);
                 break;
-            case R.id.add_comment_button_included: addComment(position);
+            case R.id.add_comment_button_included:
+                addComment(parent,position);
                 break;
 
 
