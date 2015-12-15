@@ -132,11 +132,10 @@ public class FetchProfileDetailsAsyncTask extends AsyncTask<String,Void,Boolean>
                 e.printStackTrace();
             }
 
-
-
         }
 
-        return false;
+        return true;
+//        return false;
     }
 
 

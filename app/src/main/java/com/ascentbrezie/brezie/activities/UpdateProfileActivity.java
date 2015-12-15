@@ -3,6 +3,7 @@ package com.ascentbrezie.brezie.activities;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -101,8 +102,14 @@ public class UpdateProfileActivity extends AppCompatActivity {
             public void onResult(boolean result) {
                 progressDialog.dismiss();
                 if (result) {
+
+                    Intent i = new Intent(getApplicationContext(),ProfileActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+
                     Toast.makeText(UpdateProfileActivity.this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
-                    onBackPressed();
+
+
                 } else {
                     Toast.makeText(UpdateProfileActivity.this, "Please try again!", Toast.LENGTH_SHORT).show();
                 }

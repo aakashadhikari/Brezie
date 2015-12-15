@@ -26,6 +26,7 @@ public class Constants {
     public static String userId;
     public static String referenceCode;
     public static String otp;
+    public static String quoteOfTheDay;
 
     //
     public static String nickname;
@@ -64,6 +65,7 @@ public class Constants {
     // all the async tasks
     public static final String FETCH_MOOD_DETAIL_ASYNC_TASK=" FETCH MOOD DETAIL ASYNC TASK ";
     public static final String FETCH_PROFILE_DETAILS_ASYNC_TASK=" FETCH_PROFILE_DETAILS_ASYNC_TASK ";
+    public static final String FETCH_QUOTE_OF_THE_DAY_ASYNC_TASK=" FETCH QUOTE OF THE DAY ASYNC TASK ";
     public static final String FETCH_QUOTES_FOR_DAY_ASYNC_TASK=" FETCH QUOTES FOR DAY ASYNC TASK ";
     public static final String FETCH_USER_ID_ASYNC_TASK=" FETCH USER ID ASYNC TASK ";
     public static final String LOGIN_ASYNC_TASK=" LOGIN ASYNC TASK ";
@@ -82,26 +84,28 @@ public class Constants {
     public static ArrayList<TimelineData> timelineData;
 
     // all the developer links
-    public static final String splashUrl = "http://brezie.in/dev/Brezie/splash.php";
-    public static final String landingUrl = "http://brezie.in/dev/Brezie/landing.php";
-    public static final String moodDetailUrl = "http://brezie.in/dev/Brezie/mood_detail.php";
-    public static final String profileUrl = "http://brezie.in/dev/Brezie/profile.php";
-    public static final String registerUrl = "http://brezie.in/dev/Brezie/register.php";
-    public static final String verifyUrl = "http://brezie.in/dev/Brezie/verify.php";
-    public static final String loginUrl = "http://brezie.in/dev/Brezie/login.php";
-    public static final String updateProfileUrl = "http://www.brezie.in/dev/Brezie/updateProfile.php";
-    public static final String sendTransactionUrl = "http://www.brezie.in/dev/Brezie/transaction.php";
-    public static final String sendNotificationUrl = "http://www.brezie.in/dev/Brezie/send_notification.php";
+//    public static final String quoteOfDayUrl = "http://brezie.in/dev/Brezie/getquoteoftheday.php";
+//    public static final String splashUrl = "http://brezie.in/dev/Brezie/splash.php";
+//    public static final String landingUrl = "http://brezie.in/dev/Brezie/landing.php";
+//    public static final String moodDetailUrl = "http://brezie.in/dev/Brezie/mood_detail.php";
+//    public static final String profileUrl = "http://brezie.in/dev/Brezie/profile.php";
+//    public static final String registerUrl = "http://brezie.in/dev/Brezie/register.php";
+//    public static final String verifyUrl = "http://brezie.in/dev/Brezie/verify.php";
+//    public static final String loginUrl = "http://brezie.in/dev/Brezie/login.php";
+//    public static final String updateProfileUrl = "http://www.brezie.in/dev/Brezie/updateProfile.php";
+//    public static final String sendTransactionUrl = "http://www.brezie.in/dev/Brezie/transaction.php";
+//    public static final String sendNotificationUrl = "http://www.brezie.in/dev/Brezie/send_notification.php";
 
     // all the prod links
-//    public static final String splashUrl = "http://brezie.com/brezieprod/splash.php";
-//    public static final String landingUrl = "http://brezie.com/brezieprod/landing.php";
-//    public static final String loginUrl = "http://brezie.com/brezieprod/login.php";
-//    public static final String moodDetailUrl = "http://brezie.com/brezieprod/mood_detail.php";
-//    public static final String profileUrl = "http://brezie.com/brezieprod/profile.php";
-//    public static final String registerUrl = "http://brezie.com/brezieprod/register.php";
-//    public static final String verifyUrl = "http://brezie.com/brezieprod/verify.php";
-//    public static final String updateProfileUrl = "http://brezie.com/brezieprod/updateProfile.php";
-//    public static final String sendTransactionUrl = "http://brezie.com/brezieprod/transaction.php";
+    public static final String quoteOfDayUrl = "http://brezie.com/brezieprod/getquoteoftheday.php";
+    public static final String splashUrl = "http://brezie.com/brezieprod/splash.php";
+    public static final String landingUrl = "http://brezie.com/brezieprod/landing.php";
+    public static final String moodDetailUrl = "http://brezie.com/brezieprod/mood_detail.php";
+    public static final String profileUrl = "http://brezie.com/brezieprod/profile.php";
+    public static final String registerUrl = "http://brezie.com/brezieprod/register.php";
+    public static final String verifyUrl = "http://brezie.com/brezieprod/verify.php";
+    public static final String loginUrl = "http://brezie.com/brezieprod/login.php";
+    public static final String updateProfileUrl = "http://brezie.com/brezieprod/updateProfile.php";
+    public static final String sendTransactionUrl = "http://brezie.com/brezieprod/transaction.php";
 
 }

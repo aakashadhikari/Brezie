@@ -30,14 +30,6 @@
         android:padding="@dimen/padding"
         />
 
-    <include
-        android:id="@+id/stats_layout_profile_activity"
-        layout="@layout/layout_personal_stats"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/name_text_profile_activity"
-        />
-
     <com.ascentbrezie.brezie.custom.CircularImageView
         android:id="@+id/fab_image_profile_activity"
         android:layout_width="56dp"
