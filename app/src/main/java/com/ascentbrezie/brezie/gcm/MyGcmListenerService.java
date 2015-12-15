@@ -12,6 +12,8 @@ import android.util.Log;
 
 import com.ascentbrezie.brezie.R;
 import com.ascentbrezie.brezie.activities.SplashScreenActivity;
+import com.ascentbrezie.brezie.async.FetchQuoteOfTheDayAsyncTask;
+import com.ascentbrezie.brezie.utils.Constants;
 import com.google.android.gms.gcm.GcmListenerService;
 
 /**
@@ -63,24 +65,44 @@ public class MyGcmListenerService extends GcmListenerService {
      *
      * @param message GCM message received.
      */
-    private void sendNotification(String message) {
-        Intent intent = new Intent(this, SplashScreenActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+    private void sendNotification(final String message) {
 
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.icon_arrow_down)
-                .setContentTitle("GCM Message")
-                .setContentText(message)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
+        String url = Constants.quoteOfDayUrl;
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        new FetchQuoteOfTheDayAsyncTask(getApplicationContext(), new FetchQuoteOfTheDayAsyncTask.FetchQuoteofTheDayCallback() {
+            @Override
+            public void onStart(boolean status) {
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+            }
+            @Override
+            public void onResult(boolean result) {
+
+                if(result){
+
+                    Intent intent = new Intent(getApplicationContext(), SplashScreenActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0 /* Request code */, intent,
+                            PendingIntent.FLAG_ONE_SHOT);
+
+                    Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(getApplicationContext())
+                            .setSmallIcon(R.drawable.icon_arrow_down)
+                            .setContentTitle("Brezie")
+                            .setContentText(Constants.quoteOfTheDay)
+                            .setAutoCancel(true)
+                            .setSound(defaultSoundUri)
+                            .setContentIntent(pendingIntent);
+
+                    NotificationManager notificationManager =
+                            (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                    notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+
+                }
+
+            }
+        }).execute(url);
+
+
     }
 }

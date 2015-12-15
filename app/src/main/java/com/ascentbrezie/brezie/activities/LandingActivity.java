@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ascentbrezie.brezie.R;
 import com.ascentbrezie.brezie.adapters.QuoteSlideAdapter;
@@ -63,6 +64,7 @@ public class LandingActivity extends ActionBarActivity {
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private ProgressBar mRegistrationProgressBar;
     private TextView mInformationTextView;
+    private int counter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,6 +211,7 @@ public class LandingActivity extends ActionBarActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
         String nickname = sharedPreferences.getString("nickname","null");
 
+
         if(nickname.equalsIgnoreCase("null")){
 
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -254,10 +257,20 @@ public class LandingActivity extends ActionBarActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-    }
+    public void onBackPressed() {
 
+        counter++;
+        if(counter %2 == 0)
+        {
+
+
+        }
+        else{
+
+            Toast.makeText(LandingActivity.this, " Press Back Again to exit", Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
