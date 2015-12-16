@@ -252,7 +252,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
                 b, "BrezieImages", "Check out this quote");
         Uri imageUri =  Uri.parse(path);
         share.putExtra(Intent.EXTRA_STREAM, imageUri);
-        share.putExtra(Intent.EXTRA_TEXT,"You can also view such beautiful quotes");
+        share.putExtra(Intent.EXTRA_TEXT,"You can also view such beautiful quotes by downloading http://play.google.com/store/apps/details?id=" + context.getPackageName());
         context.startActivity(Intent.createChooser(share, "Select"));
 
 
