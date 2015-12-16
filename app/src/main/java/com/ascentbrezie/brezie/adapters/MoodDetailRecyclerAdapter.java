@@ -1,5 +1,6 @@
 package com.ascentbrezie.brezie.adapters;
 
+import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -50,7 +51,6 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
     private int width,height;
 
     private ImageView moodImage,like,share;
-    private int images[] = {R.drawable.q1,R.drawable.q2,R.drawable.q3,R.drawable.q4,R.drawable.q5};
 
     private LinearLayout rowLayout,displayComments;
     private CustomEditText enterComments;
@@ -147,7 +147,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
     public void setViews(final int position){
 
-        commentsCount.setText("Total Comments : " + moodDetailData.get(position).getCommentsCount());
+        commentsCount.setText(moodDetailData.get(position).getCommentsCount() +" Comments");
 
         imageLoader.DisplayImage(moodDetailData.get(position).getBackgroundUrl(), moodImage);
 
@@ -191,6 +191,8 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
     public void addCommentsToLayout(int position){
 
+
+        Log.d(Constants.LOG_TAG, " The comments data size is " + moodDetailData.get(position).getCommentsData());
         List<CommentsData> commentsData = moodDetailData.get(position).getCommentsData();
 
         displayComments.removeAllViews();
@@ -252,6 +254,31 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
         share.putExtra(Intent.EXTRA_STREAM, imageUri);
         share.putExtra(Intent.EXTRA_TEXT,"You can also view such beautiful quotes");
         context.startActivity(Intent.createChooser(share, "Select"));
+
+
+    }
+
+    public void setAsWallpaper(int position){
+
+        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
+            cacheDir=new File(android.os.Environment.getExternalStorageDirectory(), Constants.APP_NAME);
+        else
+            cacheDir=context.getCacheDir();
+
+        String fileName  = String.valueOf(moodDetailData.get(position).getBackgroundUrl().hashCode());
+        File f = new File(cacheDir, fileName);
+
+        Bitmap b = BitmapFactory.decodeFile(f.getPath());
+
+        WallpaperManager wallpaperManager = WallpaperManager.getInstance(context);
+        try{
+
+            wallpaperManager.setBitmap(b);
+        }
+        catch (Exception e){
+
+            e.printStackTrace();
+        }
 
 
     }
@@ -361,6 +388,8 @@ View.OnClickListener listener = new View.OnClickListener() {
                 break;
             case R.id.share_included: share(position);
                 break;
+//            case R.id.set_as_wallpaper_included: setAsWallpaper(position);
+//                break;
             case R.id.add_comment_button_included:
                 addComment(parent,position);
                 break;

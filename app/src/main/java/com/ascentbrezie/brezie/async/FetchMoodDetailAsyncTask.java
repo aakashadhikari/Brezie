@@ -55,6 +55,12 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
         else{
             Constants.moodDetailData = new ArrayList<MoodDetailData>();
         }
+        if(commentsData !=null){
+           commentsData.clear();
+        }
+        else{
+            commentsData = new ArrayList<CommentsData>();
+        }
 
     }
 
@@ -124,7 +130,6 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
                     }
 
                     String commentsCount = String.valueOf(nestedJsonArray.length());
-                    Log.d(Constants.LOG_TAG," the comments count is "+commentsCount);
                     Constants.moodDetailData.add(new MoodDetailData(quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,backgroundUrl,commentsData,commentsCount,false,false));
 
                 }
