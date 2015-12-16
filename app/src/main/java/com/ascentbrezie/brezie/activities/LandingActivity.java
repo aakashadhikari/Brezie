@@ -268,6 +268,7 @@ public class LandingActivity extends ActionBarActivity {
         if(counter %2 == 0)
         {
 
+            finish();
 
         }
         else{
