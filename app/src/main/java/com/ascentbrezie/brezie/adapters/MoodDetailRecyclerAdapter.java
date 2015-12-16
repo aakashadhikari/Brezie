@@ -194,12 +194,10 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
 
         List<CommentsData> commentsData = moodDetailData.get(position).getCommentsData();
-        Log.d(Constants.LOG_TAG," The comments data size for position "+position+" is "+commentsData.size());
 
         displayComments.removeAllViews();
         RelativeLayout tempRootView = (RelativeLayout) displayComments.getRootView();
         LinearLayout tempView = (LinearLayout) tempRootView.findViewWithTag("layout_" + position);
-        Log.d(Constants.LOG_TAG," Layout found is "+tempView.toString());
 
         for(int i=0;i<commentsData.size();i++)
         {

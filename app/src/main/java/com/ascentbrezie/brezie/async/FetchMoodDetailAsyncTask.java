@@ -118,15 +118,14 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
                     backgroundUrl = jsonObject.getString("quote_path");
 
                     JSONArray nestedJsonArray = jsonObject.getJSONArray("comments");
+                    commentsData = new ArrayList<CommentsData>();
                     for(int j=0;j<nestedJsonArray.length();j++){
 
                         JSONObject nestedJsonObject = nestedJsonArray.getJSONObject(j);
                         String nickName = nestedJsonObject.getString("nickname");
                         String comment = nestedJsonObject.getString("comment_text");
 
-                        commentsData = new ArrayList<CommentsData>();
                         commentsData.add(new CommentsData(comment,nickName));
-
                     }
 
                     String commentsCount = String.valueOf(nestedJsonArray.length());
