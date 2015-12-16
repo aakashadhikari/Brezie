@@ -3,14 +3,10 @@ package com.ascentbrezie.brezie.activities;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
-import android.preference.PreferenceManager;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -32,11 +28,7 @@ import com.ascentbrezie.brezie.R;
 import com.ascentbrezie.brezie.adapters.QuoteSlideAdapter;
 import com.ascentbrezie.brezie.async.FetchQuotesForDayAsyncTask;
 import com.ascentbrezie.brezie.data.QuotesData;
-import com.ascentbrezie.brezie.gcm.QuickstartPreferences;
-import com.ascentbrezie.brezie.gcm.RegistrationIntentService;
 import com.ascentbrezie.brezie.utils.Constants;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.ArrayList;
 
@@ -55,7 +47,7 @@ public class LandingActivity extends ActionBarActivity {
     private Handler handler;
     private Runnable runnable;
     private Animation animation;
-    private int images[] = {R.drawable.icon_mood_happy,R.drawable.icon_mood_motivated,R.drawable.icon_mood_loved,R.drawable.icon_mood_spiritual,R.drawable.icon_mood_romantic,R.drawable.icon_mood_naughty};
+    private int moods[] = {R.drawable.mood_happy,R.drawable.mood_motivated,R.drawable.mood_loved,R.drawable.mood_spiritual,R.drawable.mood_romantic,R.drawable.mood_naughty};
 
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -149,7 +141,7 @@ public class LandingActivity extends ActionBarActivity {
             View view = new View(this);
             view.setTag("mood_" + i);
             view.setOnClickListener(listener);
-            view.setBackground(getResources().getDrawable(images[i]));
+            view.setBackground(getResources().getDrawable(moods[i]));
             tabLayout.addView(view, layoutParams);
         }
 
@@ -229,6 +221,17 @@ public class LandingActivity extends ActionBarActivity {
 
     }
 
+    public void shareTheApp(){
+
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("text/plain");
+        share.putExtra(Intent.EXTRA_TEXT,"http://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName());
+        Intent mailer = Intent.createChooser(share , null);
+        mailer.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(mailer);
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -250,6 +253,8 @@ public class LandingActivity extends ActionBarActivity {
             case R.id.action_about_us:
                 i = new Intent(LandingActivity.this, AboutUsActivity.class);
                 startActivity(i);
+                break;
+            case R.id.action_share_the_app: shareTheApp();
                 break;
         }
 
@@ -293,7 +298,6 @@ public class LandingActivity extends ActionBarActivity {
 //
 //            Log.d(Constants.LOG_TAG," Calling the MoodDetailActivity");
 //
-////            Intent i = new Intent(LandingActivity.this, DeleteActivity.class);
 //            Intent i = new Intent(LandingActivity.this, MoodDetailActivity.class);
 //            startActivity(i);
 //

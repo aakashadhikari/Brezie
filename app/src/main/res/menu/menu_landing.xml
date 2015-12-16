@@ -15,4 +15,8 @@
         android:title="@string/action_about_us"
         android:orderInCategory="100"
         app:showAsAction="never" />
+    <item android:id="@+id/action_share_the_app"
+        android:title="@string/action_share_the_app"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
 </menu>
