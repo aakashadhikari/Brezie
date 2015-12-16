@@ -20,26 +20,12 @@ import android.widget.ImageView;
  */
 public class CircularImageView extends ImageView {
 
-    public CircularImageView(Context context) {
-        super(context);
-    }
-
-    public CircularImageView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public CircularImageView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public CircularImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+    public CircularImageView(Context ctx, AttributeSet attrs) {
+        super(ctx, attrs);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
 
         Drawable drawable = getDrawable();
 
@@ -88,5 +74,6 @@ public class CircularImageView extends ImageView {
 
         return output;
     }
+
 }
 

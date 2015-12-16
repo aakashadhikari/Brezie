@@ -10,13 +10,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.ascentbrezie.brezie.R;
 import com.ascentbrezie.brezie.async.FetchProfileDetailsAsyncTask;
 import com.ascentbrezie.brezie.custom.CircularImageView;
+import com.ascentbrezie.brezie.custom.CustomTextView;
 import com.ascentbrezie.brezie.utils.Constants;
 
 /**
@@ -27,6 +30,7 @@ public class ProfileActivity extends Activity {
     private ImageView coverImage;
     private CircularImageView profileImage,editProfile;
     private ProgressDialog progressDialog;
+    private CustomTextView name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,7 @@ public class ProfileActivity extends Activity {
         coverImage = (ImageView) findViewById(R.id.cover_image_profile_activity);
         profileImage = (CircularImageView) findViewById(R.id.profile_image_profile_activity);
         editProfile = (CircularImageView) findViewById(R.id.fab_image_profile_activity);
+        name = (CustomTextView) findViewById(R.id.name_text_profile_activity);
     }
 
     public void fetchData(){
@@ -81,12 +86,33 @@ public class ProfileActivity extends Activity {
                 }
 
             }
-        }).execute(url,userId);
+        }).execute(url, userId);
 
 
     }
 
     public void setViews(){
+
+        if(!Constants.profileData.get(0).getFirst_name().equalsIgnoreCase("null")){
+
+            if(!Constants.profileData.get(0).getLast_name().equalsIgnoreCase("null")){
+
+                name.setText(Constants.profileData.get(0).getFirst_name()+" "+Constants.profileData.get(0).getLast_name());
+            }
+            else{
+
+                name.setText("Welcome "+Constants.profileData.get(0).getFirst_name());
+            }
+
+        }
+        else if(!Constants.profileData.get(0).getLast_name().equalsIgnoreCase("null")){
+            name.setText("Welcome "+Constants.profileData.get(0).getLast_name());
+        }
+        else{
+
+            name.setText("Welcome Guest");
+        }
+
 
         editProfile.setOnClickListener(listener);
 
@@ -94,17 +120,17 @@ public class ProfileActivity extends Activity {
 
     public void alignProfileImage(){
 
-        Log.d(Constants.LOG_TAG," coverImage " +coverImage.getBottom());
-        Log.d(Constants.LOG_TAG," coverImage height " +coverImage.getHeight());
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME, MODE_PRIVATE);
+        int height = sharedPreferences.getInt("height", 0);
+        int width = sharedPreferences.getInt("width", 0);
 
-        Bitmap b = ((BitmapDrawable)coverImage.getBackground()).getBitmap();
+        coverImage.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, height/2));
 
-        int marginTop = b.getHeight()-75;
 
-        Log.d(Constants.LOG_TAG," margin top is "+marginTop);
+        int marginTop = coverImage.getLayoutParams().height - 75;
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(150,150);
-        layoutParams.addRule(Gravity.CENTER);
+        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
         layoutParams.topMargin = marginTop;
         profileImage.setLayoutParams(layoutParams);
 
