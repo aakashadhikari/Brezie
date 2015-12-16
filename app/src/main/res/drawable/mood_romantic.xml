@@ -16,7 +16,7 @@
         </shape>
     </item>
     <item
-        android:drawable="@drawable/icon_mood_happy"
+        android:drawable="@drawable/icon_mood_romantic"
         android:bottom="@dimen/margin_small"
         android:top="@dimen/margin_small"
         android:right="@dimen/margin_small"
