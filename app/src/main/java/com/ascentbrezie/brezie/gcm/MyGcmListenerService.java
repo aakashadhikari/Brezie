@@ -12,7 +12,6 @@ import android.util.Log;
 
 import com.ascentbrezie.brezie.R;
 import com.ascentbrezie.brezie.activities.SplashScreenActivity;
-import com.ascentbrezie.brezie.async.FetchQuoteOfTheDayAsyncTask;
 import com.ascentbrezie.brezie.utils.Constants;
 import com.google.android.gms.gcm.GcmListenerService;
 
