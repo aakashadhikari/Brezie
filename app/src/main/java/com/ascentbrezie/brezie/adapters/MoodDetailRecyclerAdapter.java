@@ -19,6 +19,7 @@ import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -192,10 +193,14 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
     public void addCommentsToLayout(int position){
 
 
-        Log.d(Constants.LOG_TAG, " The comments data size is " + moodDetailData.get(position).getCommentsData());
         List<CommentsData> commentsData = moodDetailData.get(position).getCommentsData();
+        Log.d(Constants.LOG_TAG," The comments data size for position "+position+" is "+commentsData.size());
 
         displayComments.removeAllViews();
+        RelativeLayout tempRootView = (RelativeLayout) displayComments.getRootView();
+        LinearLayout tempView = (LinearLayout) tempRootView.findViewWithTag("layout_" + position);
+        Log.d(Constants.LOG_TAG," Layout found is "+tempView.toString());
+
         for(int i=0;i<commentsData.size();i++)
         {
             TextView tv = new TextView(context);
@@ -203,7 +208,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
             LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             tv.setLayoutParams(layoutParams1);
             tv.setTextSize(18F);
-            displayComments.addView(tv);
+            tempView.addView(tv);
 
         }
 
@@ -252,7 +257,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
                 b, "BrezieImages", "Check out this quote");
         Uri imageUri =  Uri.parse(path);
         share.putExtra(Intent.EXTRA_STREAM, imageUri);
-        share.putExtra(Intent.EXTRA_TEXT,"You can also view such beautiful quotes by downloading http://play.google.com/store/apps/details?id=" + context.getPackageName());
+        share.putExtra(Intent.EXTRA_TEXT,"Get many more amazing quotes like this only on Brezie. Free download now at http://play.google.com/store/apps/details?id=" + context.getPackageName());
         context.startActivity(Intent.createChooser(share, "Select"));
 
 

@@ -12,21 +12,34 @@
         android:layout_height="wrap_content" />
 
     <android.support.v4.view.ViewPager
-
-        android:padding="@dimen/padding"
         android:id="@+id/slider_landing_activity"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_centerInParent="true" />
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/padding"/>
+
+    <com.ascentbrezie.brezie.custom.CustomTextView
+        android:id="@+id/mood_text_landing_activity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Make me feel..."
+        android:layout_below="@+id/slider_landing_activity"
+        android:textSize="@dimen/text_size_extra_large"
+        android:textColor="@color/white"
+        android:padding="@dimen/padding_small"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        />
 
     <ImageView
+        android:id="@+id/arrow_image_landing_activity"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:visibility="gone"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/slider_landing_activity"
-        android:id="@+id/arrow_image_landing_activity"
-        android:src="@drawable/icon_arrow_down" />
+        android:src="@drawable/icon_arrow_down"
+        android:layout_below="@id/mood_text_landing_activity"
+        />
 
     <LinearLayout
         android:id="@+id/tabs_layout_landing_activity"

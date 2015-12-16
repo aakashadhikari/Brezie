@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.ascentbrezie.brezie.R;
 import com.ascentbrezie.brezie.adapters.QuoteSlideAdapter;
 import com.ascentbrezie.brezie.async.FetchQuotesForDayAsyncTask;
+import com.ascentbrezie.brezie.custom.CustomTextView;
 import com.ascentbrezie.brezie.data.QuotesData;
 import com.ascentbrezie.brezie.utils.Constants;
 
@@ -47,6 +48,7 @@ public class LandingActivity extends ActionBarActivity {
     private Handler handler;
     private Runnable runnable;
     private Animation animation;
+    private CustomTextView moodText;
     private int moods[] = {R.drawable.mood_happy,R.drawable.mood_motivated,R.drawable.mood_loved,R.drawable.mood_spiritual,R.drawable.mood_romantic,R.drawable.mood_naughty};
 
 
@@ -76,6 +78,7 @@ public class LandingActivity extends ActionBarActivity {
 
         tabLayout = (LinearLayout) findViewById(R.id.tabs_layout_landing_activity);
         pointer = (ImageView) findViewById(R.id.arrow_image_landing_activity);
+        moodText = (CustomTextView) findViewById(R.id.mood_text_landing_activity);
         toolbar = (Toolbar) findViewById(R.id.toolbar_landing_activity);
     }
 
@@ -183,10 +186,12 @@ public class LandingActivity extends ActionBarActivity {
                 current = position;
                 if (position < Constants.quotesData.size() - 1) {
                     pointer.setVisibility(View.GONE);
+                    moodText.setVisibility(View.GONE);
                     pointer.clearAnimation();
                 } else {
                     animation = AnimationUtils.loadAnimation(LandingActivity.this, R.anim.blink);
                     pointer.setVisibility(View.VISIBLE);
+                    moodText.setVisibility(View.VISIBLE);
                     pointer.startAnimation(animation);
                 }
             }
@@ -225,7 +230,7 @@ public class LandingActivity extends ActionBarActivity {
 
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
-        share.putExtra(Intent.EXTRA_TEXT,"http://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName());
+        share.putExtra(Intent.EXTRA_TEXT,"Get many more amazing quotes like this only on Brezie. Free download now at http://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName());
         Intent mailer = Intent.createChooser(share , null);
         mailer.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(mailer);
