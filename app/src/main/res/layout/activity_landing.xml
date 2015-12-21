@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_landing"
+    android:background="@drawable/background_landing_activity"
     tools:context=".LandingActivity">
 
     <include
@@ -22,13 +22,20 @@
         android:id="@+id/mood_text_landing_activity"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Make me feel..."
-        android:layout_below="@+id/slider_landing_activity"
         android:textSize="@dimen/text_size_extra_large"
         android:textColor="@color/white"
-        android:padding="@dimen/padding_small"
-        android:gravity="center_horizontal"
         android:visibility="gone"
+        android:gravity="center_horizontal"
+        />
+    <com.ascentbrezie.brezie.custom.CustomTextView
+        android:id="@+id/prompt_text_landing_activity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size"
+        android:textColor="@color/white"
+        android:padding="@dimen/padding_small"
+        android:visibility="gone"
+        android:gravity="center_horizontal"
         />
 
     <ImageView
@@ -38,7 +45,7 @@
         android:visibility="gone"
         android:layout_centerHorizontal="true"
         android:src="@drawable/icon_arrow_down"
-        android:layout_below="@id/mood_text_landing_activity"
+        android:layout_below="@id/prompt_text_landing_activity"
         />
 
     <LinearLayout

@@ -13,7 +13,7 @@
         />
 
     <include
-        layout="@layout/include_like_and_share"
+        layout="@layout/layout_like_and_share"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/display_quote_image_temp_activity"

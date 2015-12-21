@@ -21,6 +21,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +35,7 @@ import com.ascentbrezie.brezie.utils.Constants;
 import java.util.ArrayList;
 
 
-public class LandingActivity extends ActionBarActivity {
+public class LandingActivity extends ActionBarActivity implements ViewPager.OnPageChangeListener{
 
     private View a, b, c, d, e, f;
     private LinearLayout tabLayout;
@@ -48,7 +49,7 @@ public class LandingActivity extends ActionBarActivity {
     private Handler handler;
     private Runnable runnable;
     private Animation animation;
-    private CustomTextView moodText;
+    private CustomTextView moodText,promptText;
     private int moods[] = {R.drawable.mood_happy,R.drawable.mood_motivated,R.drawable.mood_loved,R.drawable.mood_spiritual,R.drawable.mood_romantic,R.drawable.mood_naughty};
 
 
@@ -76,9 +77,11 @@ public class LandingActivity extends ActionBarActivity {
 
     public void findViews() {
 
+        Log.d(Constants.LOG_TAG, " find Views called");
         tabLayout = (LinearLayout) findViewById(R.id.tabs_layout_landing_activity);
         pointer = (ImageView) findViewById(R.id.arrow_image_landing_activity);
         moodText = (CustomTextView) findViewById(R.id.mood_text_landing_activity);
+        promptText = (CustomTextView) findViewById(R.id.prompt_text_landing_activity);
         toolbar = (Toolbar) findViewById(R.id.toolbar_landing_activity);
     }
 
@@ -93,12 +96,12 @@ public class LandingActivity extends ActionBarActivity {
 
     public void fetchData() {
 
+        Log.d(Constants.LOG_TAG, " fetch Data called ");
 
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME, MODE_PRIVATE);
         String userId = sharedPreferences.getString("userId", "null");
 
         String url = Constants.landingUrl;
-        Constants.quotesData = new ArrayList<>();
         new FetchQuotesForDayAsyncTask(getApplicationContext(), new FetchQuotesForDayAsyncTask.FetchQuotesForDayCallback() {
             @Override
             public void onStart(boolean status) {
@@ -107,7 +110,6 @@ public class LandingActivity extends ActionBarActivity {
                 progressDialog.setTitle(Constants.APP_NAME);
                 progressDialog.setMessage("Loading...Please Wait");
                 progressDialog.show();
-
 
             }
 
@@ -131,6 +133,8 @@ public class LandingActivity extends ActionBarActivity {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void populateTabs() {
 
+        Log.d(Constants.LOG_TAG," populate tabs ");
+
         tabLayout.removeAllViews();
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
         int width = sharedPreferences.getInt("width", 0);
@@ -148,17 +152,40 @@ public class LandingActivity extends ActionBarActivity {
             tabLayout.addView(view, layoutParams);
         }
 
+        setLayoutForOtherViews();
+
+    }
+
+    public void setLayoutForOtherViews(){
+
+        RelativeLayout.LayoutParams layoutParams1 = new RelativeLayout.LayoutParams(50,50);
+        layoutParams1.addRule(RelativeLayout.ABOVE, R.id.tabs_layout_landing_activity);
+        layoutParams1.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        layoutParams1.setMargins(0, 5, 0, 5);
+        pointer.setLayoutParams(layoutParams1);
+
+        RelativeLayout.LayoutParams layoutParams2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams2.addRule(RelativeLayout.ABOVE, R.id.arrow_image_landing_activity);
+        promptText.setLayoutParams(layoutParams2);
+
+        RelativeLayout.LayoutParams layoutParams3 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams3.addRule(RelativeLayout.ABOVE,R.id.prompt_text_landing_activity);
+        moodText.setLayoutParams(layoutParams3);
+
 
     }
 
     public void setViews() {
 
+        moodText.setText("Make me feel...");
+        promptText.setText("(Click on an Emozie to proceed)");
 
     }
 
 
     public void setTheSlider() {
-        ArrayList<QuotesData> quotesData = Constants.quotesData;
+
+        Log.d(Constants.LOG_TAG," set The slider ");
 
         quoteSlideAdapter = new QuoteSlideAdapter(getSupportFragmentManager());
         viewPager = (ViewPager) findViewById(R.id.slider_landing_activity);
@@ -170,40 +197,16 @@ public class LandingActivity extends ActionBarActivity {
                 if (current < Constants.quotesData.size()) {
                     viewPager.setCurrentItem(current++, true);
                 }
-                handler.postDelayed(this, 3000);
+                handler.postDelayed(this, 4000);
             }
         };
-        handler.postDelayed(runnable, 3000);
+        handler.postDelayed(runnable, 4000);
+        viewPager.setOnPageChangeListener(this);
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                current = position;
-                if (position < Constants.quotesData.size() - 1) {
-                    pointer.setVisibility(View.GONE);
-                    moodText.setVisibility(View.GONE);
-                    pointer.clearAnimation();
-                } else {
-                    animation = AnimationUtils.loadAnimation(LandingActivity.this, R.anim.blink);
-                    pointer.setVisibility(View.VISIBLE);
-                    moodText.setVisibility(View.VISIBLE);
-                    pointer.startAnimation(animation);
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
     }
 
     public void fetchProfile(){
+
 
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
         String nickname = sharedPreferences.getString("nickname","null");
@@ -250,8 +253,8 @@ public class LandingActivity extends ActionBarActivity {
         Intent i;
         switch (item.getItemId()) {
 
-            case R.id.action_profile: fetchProfile();
-                break;
+//            case R.id.action_profile: fetchProfile();
+//                break;
 //            case R.id.action_settings: i = new Intent(LandingActivity.this,SettingsActivity.class);
 //                startActivity(i);
 //                break;
@@ -286,17 +289,46 @@ public class LandingActivity extends ActionBarActivity {
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
             handler.removeCallbacks(runnable);
+
             String tagDetails[] = v.getTag().toString().split("_");
             int position = Integer.parseInt(tagDetails[1])+1;
 
-            Log.d(Constants.LOG_TAG, " the mood id is " + position);
 
             Intent i = new Intent(getApplicationContext(), MoodDetailActivity.class);
             i.putExtra("mood", String.valueOf(position));
             startActivity(i);
         }
     };
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        current = position;
+        if (position < Constants.quotesData.size() - 1) {
+            pointer.setVisibility(View.GONE);
+            moodText.setVisibility(View.GONE);
+            promptText.setVisibility(View.GONE);
+            pointer.clearAnimation();
+        } else {
+            animation = AnimationUtils.loadAnimation(LandingActivity.this, R.anim.blink);
+            pointer.setVisibility(View.VISIBLE);
+            moodText.setVisibility(View.VISIBLE);
+            promptText.setVisibility(View.VISIBLE);
+            pointer.startAnimation(animation);
+        }
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
 
 //    View.OnClickListener listener = new View.OnClickListener() {
 //        @Override

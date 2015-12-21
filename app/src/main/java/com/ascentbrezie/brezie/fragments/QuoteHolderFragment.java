@@ -46,6 +46,7 @@ public class QuoteHolderFragment extends Fragment {
         TextView textView = (TextView) rootView.findViewById(R.id.list_item_text);
         textView.setText(Constants.quotesData.get(getArguments().getInt(ARG_SECTION_NUMBER)).getQuote());
         return rootView;
+
     }
 }
 

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     >
+
     <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         >
@@ -13,8 +14,9 @@
             android:id="@+id/row_layout"
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@color/white"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginRight="@dimen/margin_large"
             >
 
             <ImageView
@@ -26,7 +28,7 @@
             <include
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                layout="@layout/include_like_and_share"
+                layout="@layout/layout_like_and_share"
                 android:layout_gravity="right"
                 />
             <com.ascentbrezie.brezie.custom.CustomTextView
@@ -39,19 +41,20 @@
             <LinearLayout
                 android:id="@+id/display_comments_layout_mood_detail_activity"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:orientation="vertical"
                 android:layout_margin="@dimen/margin_small"
                 />
 
-            <include
-                layout="@layout/layout_add_comments"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_small"
-                />
-
-
         </LinearLayout>
     </ScrollView>
+
+    <!--<include-->
+        <!--android:id="@+id/abc"-->
+        <!--layout="@layout/layout_add_comments"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--/>-->
+
 </RelativeLayout>

@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -53,6 +54,8 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
     private ImageView moodImage,like,share;
 
+//    private LinearLayout abc;
+    private Button abc;
     private LinearLayout rowLayout,displayComments;
     private CustomEditText enterComments;
     private CustomButton addComment;
@@ -93,6 +96,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
+
         View v;
         public ViewHolder(View itemView) {
             super(itemView);
@@ -122,6 +126,8 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
     public void findViews(ViewHolder holder){
 
+//        abc = (Button)holder.v.findViewById(R.id.abc);
+//        abc = (LinearLayout) holder.v.findViewById(R.id.abc);
         rowLayout = (LinearLayout) holder.v.findViewById(R.id.row_layout);
         moodImage = (ImageView) holder.v.findViewById(R.id.quote_image_mood_detail_activity);
 
@@ -129,33 +135,44 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
         share = (ImageView) holder.v.findViewById(R.id.share_included);
 
 
-        commentsCount = (CustomTextView) holder.v.findViewById(R.id.comments_count_text_mood_detail_activity);
-        displayComments = (LinearLayout) holder.v.findViewById(R.id.display_comments_layout_mood_detail_activity);
-        enterComments = (CustomEditText) holder.v.findViewById(R.id.add_comment_edit_included);
-        addComment = (CustomButton) holder.v.findViewById(R.id.add_comment_button_included);
+//        commentsCount = (CustomTextView) holder.v.findViewById(R.id.comments_count_text_mood_detail_activity);
+//        displayComments = (LinearLayout) holder.v.findViewById(R.id.display_comments_layout_mood_detail_activity);
+//        enterComments = (CustomEditText) holder.v.findViewById(R.id.add_comment_edit_included);
+//        addComment = (CustomButton) holder.v.findViewById(R.id.add_comment_button_included);
     }
 
     public void setCardView(){
+//
+//        int cardWidth = width-20;
+//        int cardHeight = height-20;
 
-        int cardWidth = width-20;
-        int cardHeight = height-20;
+//        RelativeLayout.LayoutParams layoutParams1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        layoutParams1.setMargins(10, 0, 10,20);
+//        layoutParams1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+//        abc.setLayoutParams(layoutParams1);
 
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(cardWidth,cardHeight);
-        layoutParams.setMargins(10, 10, 0, 0);
-        rowLayout.setLayoutParams(layoutParams);
+//        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(cardWidth, ViewGroup.LayoutParams.FILL_PARENT);
+//        layoutParams.setMargins(10, 10, 0, 0);
+//        rowLayout.setLayoutParams(layoutParams);
+
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(width,width);
+        moodImage.setLayoutParams(layoutParams);
 
     }
 
     public void setViews(final int position){
 
-        commentsCount.setText(moodDetailData.get(position).getCommentsCount() +" Comments");
+
+        moodImage.setLayoutParams(new LinearLayout.LayoutParams(width, width));
+
+//        commentsCount.setText(moodDetailData.get(position).getCommentsCount() + " Comments");
 
         imageLoader.DisplayImage(moodDetailData.get(position).getBackgroundUrl(), moodImage);
 
-        enterComments.setTag("extract_" + position);
-        displayComments.setTag("layout_"+position);
+//        enterComments.setTag("extract_" + position);
+//        displayComments.setTag("layout_"+position);
 
-        addCommentsToLayout(position);
+//        addCommentsToLayout(position);
 
         if(moodDetailData.get(position).isLiked()){
 
@@ -184,8 +201,8 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
         share.setTag("share_" + position);
         share.setOnClickListener(listener);
 
-        addComment.setTag("comment_" + position);
-        addComment.setOnClickListener(listener);
+//        addComment.setTag("comment_" + position);
+//        addComment.setOnClickListener(listener);
 
     }
 
@@ -291,8 +308,8 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
         String quoteId = moodDetailData.get(position).getQuoteId();
 
         // This line will give us the edit text of that particular mood Image
-        CustomEditText et  = (CustomEditText)((LinearLayout) v.getParent()).findViewWithTag("extract_" + position);
-        LinearLayout displayCommentHere = (LinearLayout)((LinearLayout) v.getParent()).findViewWithTag("layout_" + position);
+        CustomEditText et  = (CustomEditText)((RelativeLayout) v.getParent()).findViewWithTag("extract_" + position);
+        LinearLayout displayCommentHere = (LinearLayout)((RelativeLayout) v.getParent()).findViewWithTag("layout_" + position);
 
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);

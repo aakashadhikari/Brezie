@@ -13,6 +13,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.ascentbrezie.brezie.R;
 import com.ascentbrezie.brezie.adapters.MoodDetailRecyclerAdapter;
@@ -48,8 +50,8 @@ public class MoodDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_detail);
         Log.d(Constants.LOG_TAG,Constants.MOOD_DETAIL_ACTIVITY);
 

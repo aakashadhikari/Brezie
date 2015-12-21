@@ -2,7 +2,7 @@
 <resources>
 
     <color name="black">#000</color>
-    <color name="transparent_black">#CC000000</color>
+    <color name="transparent_black">#80000000</color>
     <color name="app_color">#00C2BD</color>
 
 
