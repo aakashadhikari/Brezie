@@ -5,23 +5,23 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 
-import com.ascentbrezie.brezie.fragments.QuoteHolderFragment;
+import com.ascentbrezie.brezie.fragments.IntroQuoteHolderFragment;
 import com.ascentbrezie.brezie.utils.Constants;
 
 /**
  * Created by ADMIN on 07-12-2015.
  */
-public class QuoteSlideAdapter extends FragmentPagerAdapter {
+public class IntroQuoteSliderAdapter extends FragmentPagerAdapter {
 
-    public QuoteSlideAdapter(FragmentManager fm) {
+    public IntroQuoteSliderAdapter(FragmentManager fm) {
         super(fm);
-        Log.d(Constants.LOG_TAG,Constants.QUOTE_SLIDE_ADAPTER);
+        Log.d(Constants.LOG_TAG,Constants.INTRO_QUOTE_SLIDER_ADAPTER);
     }
 
     @Override
     public Fragment getItem(int position) {
 
-        return QuoteHolderFragment.newInstance(position);
+        return IntroQuoteHolderFragment.newInstance(position);
     }
 
     @Override

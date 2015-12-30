@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.ascentbrezie.brezie.custom.CustomTextView
         android:id="@+id/list_item_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="@dimen/padding_large"
         android:layout_centerInParent="true"
-        android:textColor="#FFF"
-        android:textSize="22sp" />
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_double_extra_large" />
 
 </RelativeLayout>

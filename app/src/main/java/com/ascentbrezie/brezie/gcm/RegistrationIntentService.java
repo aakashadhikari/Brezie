@@ -102,10 +102,6 @@ public class RegistrationIntentService extends IntentService {
                     editor.putString("referenceCode", Constants.referenceCode);
                     editor.commit();
 
-
-                    Intent i = new Intent(getApplicationContext(), LandingActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(i);
                 }
 
             }

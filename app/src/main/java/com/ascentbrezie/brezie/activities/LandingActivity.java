@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -26,16 +27,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ascentbrezie.brezie.R;
-import com.ascentbrezie.brezie.adapters.QuoteSlideAdapter;
+import com.ascentbrezie.brezie.adapters.IntroQuoteSliderAdapter;
 import com.ascentbrezie.brezie.async.FetchQuotesForDayAsyncTask;
 import com.ascentbrezie.brezie.custom.CustomTextView;
-import com.ascentbrezie.brezie.data.QuotesData;
 import com.ascentbrezie.brezie.utils.Constants;
 
-import java.util.ArrayList;
 
-
-public class LandingActivity extends ActionBarActivity implements ViewPager.OnPageChangeListener{
+public class LandingActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener{
 
     private View a, b, c, d, e, f;
     private LinearLayout tabLayout;
@@ -43,7 +41,7 @@ public class LandingActivity extends ActionBarActivity implements ViewPager.OnPa
     private ProgressDialog progressDialog;
     TextView textView;
     static int current = 0;
-    private QuoteSlideAdapter quoteSlideAdapter;
+    private IntroQuoteSliderAdapter introQuoteSliderAdapter;
     private ViewPager viewPager;
     private ImageView pointer;
     private Handler handler;
@@ -71,6 +69,7 @@ public class LandingActivity extends ActionBarActivity implements ViewPager.OnPa
         findViews();
         customActionBar();
         fetchData();
+
 
     }
 
@@ -187,9 +186,9 @@ public class LandingActivity extends ActionBarActivity implements ViewPager.OnPa
 
         Log.d(Constants.LOG_TAG," set The slider ");
 
-        quoteSlideAdapter = new QuoteSlideAdapter(getSupportFragmentManager());
-        viewPager = (ViewPager) findViewById(R.id.slider_landing_activity);
-        viewPager.setAdapter(quoteSlideAdapter);
+        introQuoteSliderAdapter = new IntroQuoteSliderAdapter(getSupportFragmentManager());
+        viewPager = (ViewPager) findViewById(R.id.view_pager_landing_activity);
+        viewPager.setAdapter(introQuoteSliderAdapter);
         handler = new Handler();
         runnable = new Runnable() {
             @Override
@@ -231,12 +230,19 @@ public class LandingActivity extends ActionBarActivity implements ViewPager.OnPa
 
     public void shareTheApp(){
 
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
+        String userId = sharedPreferences.getString("userId", "null");
+        String referenceCode = sharedPreferences.getString("referenceCode","null");
+
+
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("text/plain");
-        share.putExtra(Intent.EXTRA_TEXT,"Get many more amazing quotes like this only on Brezie. Free download now at http://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName());
+        share.putExtra(Intent.EXTRA_TEXT, "Get many more amazing quotes like this only on Brezie. Free download now by clicking on the following link \n"
+                + Constants.shareUrl + "user_id=" + userId + "&ref_code=" + referenceCode);
         Intent mailer = Intent.createChooser(share , null);
         mailer.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(mailer);
+
 
     }
 
@@ -258,6 +264,10 @@ public class LandingActivity extends ActionBarActivity implements ViewPager.OnPa
 //            case R.id.action_settings: i = new Intent(LandingActivity.this,SettingsActivity.class);
 //                startActivity(i);
 //                break;
+            case R.id.action_user_guide:
+                i = new Intent(LandingActivity.this, TutorialActivity.class);
+                startActivity(i);
+                break;
             case R.id.action_about_us:
                 i = new Intent(LandingActivity.this, AboutUsActivity.class);
                 startActivity(i);
@@ -295,9 +305,8 @@ public class LandingActivity extends ActionBarActivity implements ViewPager.OnPa
             String tagDetails[] = v.getTag().toString().split("_");
             int position = Integer.parseInt(tagDetails[1])+1;
 
-
             Intent i = new Intent(getApplicationContext(), MoodDetailActivity.class);
-            i.putExtra("mood", String.valueOf(position));
+            i.putExtra("moodId", String.valueOf(position));
             startActivity(i);
         }
     };
@@ -334,9 +343,9 @@ public class LandingActivity extends ActionBarActivity implements ViewPager.OnPa
 //        @Override
 //        public void onClick(View view) {
 //
-//            Log.d(Constants.LOG_TAG," Calling the MoodDetailActivity");
+//            Log.d(Constants.LOG_TAG," Calling the PreviousMoodDetailActivity");
 //
-//            Intent i = new Intent(LandingActivity.this, MoodDetailActivity.class);
+//            Intent i = new Intent(LandingActivity.this, PreviousMoodDetailActivity.class);
 //            startActivity(i);
 //
 ////            ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation(LandingActivity.this, view, "abc");
