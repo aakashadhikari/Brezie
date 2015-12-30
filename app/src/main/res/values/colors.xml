@@ -4,6 +4,7 @@
     <color name="black">#000</color>
     <color name="transparent_black">#80000000</color>
     <color name="app_color">#00C2BD</color>
+    <color name="comment_font_color">#7C7C7C</color>
 
 
     <color name="background_smoke">#CECECE</color>
