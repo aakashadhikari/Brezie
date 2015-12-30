@@ -88,15 +88,18 @@ public class MyGcmListenerService extends GcmListenerService {
                     NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(getApplicationContext())
                             .setSmallIcon(R.drawable.icon_notification)
                             .setContentTitle("Brezie")
-                            .setContentText(Constants.quoteOfTheDay)
+                            .setStyle(new NotificationCompat.BigTextStyle().bigText(Constants.quoteOfTheDay))
                             .setAutoCancel(true)
                             .setSound(defaultSoundUri)
                             .setContentIntent(pendingIntent);
+
+//                    .setContentText(Constants.quoteOfTheDay)
 
                     NotificationManager notificationManager =
                             (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
                     notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+
 
                 }
 
