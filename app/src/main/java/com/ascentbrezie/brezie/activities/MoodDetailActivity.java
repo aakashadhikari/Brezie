@@ -2,21 +2,15 @@ package com.ascentbrezie.brezie.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.os.PersistableBundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.ascentbrezie.brezie.R;
+import com.ascentbrezie.brezie.adapters.MoodDetailFragmentAdapter;
 import com.ascentbrezie.brezie.adapters.MoodDetailRecyclerAdapter;
 import com.ascentbrezie.brezie.async.FetchMoodDetailAsyncTask;
 import com.ascentbrezie.brezie.async.SendTransactionAsyncTask;
@@ -28,15 +22,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Created by ADMIN on 21-10-2015.
+ * Created by SAGAR on 12/28/2015.
  */
-public class MoodDetailActivity extends AppCompatActivity {
+public class MoodDetailActivity extends ActionBarActivity implements ViewPager.OnPageChangeListener{
 
-    private RecyclerView moodDetailRecyclerView;
-    private RecyclerView.Adapter moodDetailRecyclerAdapter;
-    private RecyclerView.LayoutManager moodDetailLayoutManager;
+    private ViewPager viewPager;
+    private MoodDetailFragmentAdapter adapter;
 
-    private String moodId,userId,latitude,longitude;
+
+    private String moodId,userId,latitude,longitude,screenCategory;
     private ProgressDialog progressDialog;
 
     private String quoteId,comment;
@@ -45,26 +39,36 @@ public class MoodDetailActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private String route;
     private boolean cycleComplete;
-
-
+    private int offset = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_mood_detail);
-        Log.d(Constants.LOG_TAG,Constants.MOOD_DETAIL_ACTIVITY);
+
+        Log.d(Constants.LOG_TAG, Constants.MOOD_DETAIL_ACTIVITY);
 
         getExtras();
         initializeJsons();
         findViews();
         customActionBar();
-        settingTheAdapter();
         fetchData();
+
+
     }
 
     public void getExtras(){
 
+        /**
+         * Whenever a person comments on any of the quotes we first check if he is valid user or not
+         * by asking him for login credentials or asking him to register
+         * Once the registration is done we re direct him to this page again
+         *
+         * The if condition checks if the we are coming to this screen
+         * via the comment cycle or we are coming to this screen via
+         * the landing screen
+         * **/
         sharedPreferences = getSharedPreferences(Constants.APP_NAME, MODE_PRIVATE);
         cycleComplete = sharedPreferences.getBoolean("isCommentCycleComplete", false);
         if(cycleComplete){
@@ -73,9 +77,8 @@ public class MoodDetailActivity extends AppCompatActivity {
         }
         else{
 
-            moodId = getIntent().getStringExtra("mood");
+            moodId = getIntent().getStringExtra("moodId");
         }
-
 
     }
 
@@ -88,13 +91,14 @@ public class MoodDetailActivity extends AppCompatActivity {
         Constants.transactionChildJsonArray = new JSONArray();
         Constants.transactionChildJsonObject = new JSONObject();
 
-
     }
+
 
     public void findViews(){
 
-//        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        moodDetailRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_mood_detail_activity);
+        viewPager = (ViewPager) findViewById(R.id.view_pager_temp_mood_detail_activity);
+
+
     }
 
     public void customActionBar(){
@@ -104,27 +108,15 @@ public class MoodDetailActivity extends AppCompatActivity {
 
     }
 
-
-    public void settingTheAdapter(){
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        moodDetailRecyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
-        moodDetailLayoutManager = new LinearLayoutManager(MoodDetailActivity.this,LinearLayoutManager.HORIZONTAL,false);
-        moodDetailRecyclerView.setLayoutManager(moodDetailLayoutManager);
-
-
-    }
-
     public void fetchData(){
 
 
         sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
-        userId = sharedPreferences.getString("userId","null");
+        userId = sharedPreferences.getString("userId", "null");
         latitude = sharedPreferences.getString("latitude","null");
         longitude = sharedPreferences.getString("longitude", "null");
+        screenCategory = sharedPreferences.getString("screenCategory", "null");
+
 
         String url = Constants.moodDetailUrl;
 
@@ -168,33 +160,31 @@ public class MoodDetailActivity extends AppCompatActivity {
                             editor.remove("moodId");
                             editor.commit();
 
-                            // specify an adapter (see also next example)
-                            moodDetailRecyclerAdapter = new MoodDetailRecyclerAdapter(MoodDetailActivity.this,quoteId,comment,width,height,Constants.moodDetailData);
-                            moodDetailRecyclerView.setAdapter(moodDetailRecyclerAdapter);
+                            getLastSeenQuote();
+                            settingTheAdapter();
 
                         }
                         else{
 
+                            getLastSeenQuote();
+                            settingTheAdapter();
 
-                            // specify an adapter (see also next example)
-                            moodDetailRecyclerAdapter = new MoodDetailRecyclerAdapter(MoodDetailActivity.this,moodId,width,height,Constants.moodDetailData);
-                            moodDetailRecyclerView.setAdapter(moodDetailRecyclerAdapter);
                         }
 
                     }
                     else{
 
-                        // specify an adapter (see also next example)
-                        moodDetailRecyclerAdapter = new MoodDetailRecyclerAdapter(MoodDetailActivity.this,moodId,width,height,Constants.moodDetailData);
-                        moodDetailRecyclerView.setAdapter(moodDetailRecyclerAdapter);
+                        getLastSeenQuote();
+                        settingTheAdapter();
                     }
 
                 }
             }
-        }).execute(url, userId, moodId, latitude, longitude);
+        }).execute(url, userId, moodId, latitude, longitude,screenCategory);
+
+
 
     }
-
 
     public boolean checkRoute(){
 
@@ -207,13 +197,13 @@ public class MoodDetailActivity extends AppCompatActivity {
 
     }
 
+
     public MoodDetailData getQuoteObject(String quoteId){
 
         int b = Integer.parseInt(quoteId);
 
         for (int i =0; i< Constants.moodDetailData.size();i++){
 
-            Log.d(Constants.LOG_TAG, " The quote Id is " + Constants.moodDetailData.get(i).getQuoteId() + " the check Id is " + quoteId);
             int a = Integer.parseInt(Constants.moodDetailData.get(i).getQuoteId());
             if(a == b){
 
@@ -226,6 +216,48 @@ public class MoodDetailActivity extends AppCompatActivity {
         return null;
     }
 
+
+    public void getLastSeenQuote(){
+
+        /**
+         * wasInMood variable is used to store the value of the
+         * quote that was last seen by the user
+         * **/
+
+        boolean wasInMood = sharedPreferences.contains("mood_" + moodId);
+        if(wasInMood){
+
+            String quoteId = String.valueOf(sharedPreferences.getInt("mood_"+moodId,0));
+            for(int i =0;i<Constants.moodDetailData.size();i++){
+
+                if(Constants.moodDetailData.get(i).getQuoteId().equalsIgnoreCase(quoteId)){
+
+                    offset = i;
+
+                }
+
+            }
+
+            Log.d(Constants.LOG_TAG," the offset is "+offset);
+        }
+        else{
+
+            offset = 0;
+        }
+
+
+
+    }
+
+    public void settingTheAdapter(){
+
+
+        adapter = new MoodDetailFragmentAdapter(getSupportFragmentManager(),moodId);
+        viewPager.setOnPageChangeListener(this);
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(offset);
+
+    }
 
     public void sendTransaction(){
 
@@ -247,29 +279,37 @@ public class MoodDetailActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        recyclerState = moodDetailLayoutManager.onSaveInstanceState();
-        outState.putParcelable("myState",recyclerState);
-
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         sendTransaction();
+    }
+
+    public void saveLastSeen(int position){
+
+        int quoteId = Integer.parseInt(Constants.moodDetailData.get(position).getQuoteId());
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("mood_" + moodId, quoteId);
+        editor.commit();
+
+
 
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        if(recyclerState != null){
+    }
 
-            moodDetailLayoutManager.onRestoreInstanceState(recyclerState);
-        }
+    @Override
+    public void onPageSelected(int position) {
+
+        saveLastSeen(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
 
     }
 }

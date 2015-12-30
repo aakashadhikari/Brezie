@@ -9,15 +9,12 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -39,20 +36,18 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by ADMIN on 25-09-2015.
  */
-public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRecyclerAdapter.ViewHolder> {
+public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRecyclerAdapter.ViewHolder>{
 
     private Context context;
     private int width,height;
 
-    private ImageView moodImage,like,share;
+    private ImageView moodImage,like,share,download;
 
 //    private LinearLayout abc;
     private Button abc;
@@ -69,7 +64,13 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
     private String moodId;
     private String quoteId,comment;
     private File cacheDir;
+    public static int focussedOn;
 
+
+    /**
+     * This constructor will be called whenever we coming through
+     * the comment cycle
+     * **/
     public MoodDetailRecyclerAdapter(Context context,String quoteId,String comment,int width, int height, ArrayList<MoodDetailData> moodDetailData) {
         this.context = context;
         this.width = width;
@@ -84,6 +85,10 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
         Log.d(Constants.LOG_TAG,Constants.MOOD_DETAIL_RECYCLER_ADAPTER);
     }
 
+    /**
+     * This construtor will be called normally whenever we are calling the mood
+     * detail activity
+     * **/
     public MoodDetailRecyclerAdapter(Context context,String moodId,int width, int height, ArrayList<MoodDetailData> moodDetailData) {
         this.context = context;
         this.moodId = moodId;
@@ -113,6 +118,8 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
+
+
     }
 
     @Override
@@ -122,17 +129,27 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
         setCardView();
         setViews(i);
 
+        focussedOn = i;
+
+
+//        if((i%5) == 0){
+//
+//            fetchMoreData();
+//
+//        }
+
     }
 
     public void findViews(ViewHolder holder){
 
 //        abc = (Button)holder.v.findViewById(R.id.abc);
 //        abc = (LinearLayout) holder.v.findViewById(R.id.abc);
-        rowLayout = (LinearLayout) holder.v.findViewById(R.id.row_layout);
-        moodImage = (ImageView) holder.v.findViewById(R.id.quote_image_mood_detail_activity);
+        rowLayout = (LinearLayout) holder.v.findViewById(R.id.row_layout_mood_detail_holder_fragment);
+        moodImage = (ImageView) holder.v.findViewById(R.id.quote_image_mood_detail_holder_fragment);
 
         like = (ImageView) holder.v.findViewById(R.id.like_included);
         share = (ImageView) holder.v.findViewById(R.id.share_included);
+        download = (ImageView) holder.v.findViewById(R.id.download_included);
 
 
 //        commentsCount = (CustomTextView) holder.v.findViewById(R.id.comments_count_text_mood_detail_activity);
@@ -201,8 +218,34 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
         share.setTag("share_" + position);
         share.setOnClickListener(listener);
 
+        download.setImageResource(R.drawable.icon_download);
+        download.setTag("download_" + position);
+        download.setOnClickListener(listener);
+
 //        addComment.setTag("comment_" + position);
 //        addComment.setOnClickListener(listener);
+
+    }
+
+    public void fetchMoreData(){
+
+        String url = Constants.moodDetailUrl;
+        String moodId;
+        String quoteId;
+        String direction;
+
+//
+//        new FetchMoodDetailAsyncTask(context, new FetchMoodDetailAsyncTask.FetchMoodDetailCallback() {
+//            @Override
+//            public void onStart(boolean status) {
+//
+//            }
+//            @Override
+//            public void onResult(boolean result) {
+//
+//            }
+//        }).execute(url,moodId,quoteId,direction);
+
 
     }
 
@@ -272,9 +315,29 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
                 b, "BrezieImages", "Check out this quote");
         Uri imageUri =  Uri.parse(path);
         share.putExtra(Intent.EXTRA_STREAM, imageUri);
-        share.putExtra(Intent.EXTRA_TEXT,"Get many more amazing quotes like this only on Brezie. Free download now at http://play.google.com/store/apps/details?id=" + context.getPackageName());
+        share.putExtra(Intent.EXTRA_TEXT, "Get many more amazing quotes like this only on Brezie. Free download now at http://play.google.com/store/apps/details?id=" + context.getPackageName());
         context.startActivity(Intent.createChooser(share, "Select"));
 
+
+    }
+
+    public void download(int position){
+
+        String id = moodDetailData.get(position).getQuoteId();
+//        addToJson(id,"4","1",null);
+
+        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
+            cacheDir=new File(android.os.Environment.getExternalStorageDirectory(), Constants.APP_NAME);
+        else
+            cacheDir=context.getCacheDir();
+
+        String fileName  = String.valueOf(moodDetailData.get(position).getBackgroundUrl().hashCode());
+        File f = new File(cacheDir, fileName);
+
+        Bitmap b = BitmapFactory.decodeFile(f.getPath());
+        MediaStore.Images.Media.insertImage(context.getContentResolver(),
+                b, "BrezieImages", "Check out this quote");
+        Toast.makeText(context,"Image downloaded",Toast.LENGTH_SHORT).show();
 
     }
 
@@ -313,7 +376,7 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
 
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
-        String nickname = sharedPreferences.getString("nickname","null");
+        String nickname = sharedPreferences.getString("nickname", "null");
 
 
         if(nickname.equalsIgnoreCase("null")){
@@ -392,9 +455,9 @@ public class MoodDetailRecyclerAdapter extends RecyclerView.Adapter<MoodDetailRe
             e.printStackTrace();
         }
 
-}
+    }
 
-View.OnClickListener listener = new View.OnClickListener() {
+    View.OnClickListener listener = new View.OnClickListener() {
     @Override
     public void onClick(View v) {
 
@@ -407,6 +470,8 @@ View.OnClickListener listener = new View.OnClickListener() {
             case R.id.like_included: like(position);
                 break;
             case R.id.share_included: share(position);
+                break;
+            case R.id.download_included: download(position);
                 break;
 //            case R.id.set_as_wallpaper_included: setAsWallpaper(position);
 //                break;

@@ -38,11 +38,8 @@ public class Constants {
     public static JSONArray transactionChildJsonArray;
     public static JSONObject transactionChildJsonObject;
 
-
-
     // all the classes
     public static final String ABOUT_US_ACTIVITY = " ABOUT US ACTIVITY ";
-    public static final String UPDATE_PROFILE_ACTIVITY = " EDIT PROFILE ACTIVITY ";
     public static final String LANDING_ACTIVITY = " LANDING ACTIVITY ";
     public static final String LOGIN_ACTIVITY = " LOGIN ACTIVITY ";
     public static final String LOGIN_OR_REGISTER_ACTIVITY = " LOGIN OR REGISTER ACTIVITY ";
@@ -52,14 +49,16 @@ public class Constants {
     public static final String REGISTER_ACTIVITY = " REGISTER ACTIVITY ";
     public static final String SETTINGS_ACTIVITY = " SETTINGS ACTIVITY ";
     public static final String SPLASH_SCREEN_ACTIVITY = " SPLASH SCREEN ACTIVITY ";
-
+    public static final String TUTORIAL_ACTIVITY = " TUTORIAL ACTIVITY ";
+    public static final String UPDATE_PROFILE_ACTIVITY = " UPDATE PROFILE ACTIVITY ";
 
     // all the fragments
-    public static final String QUOTE_HOLDER_FRAGMENT = " QUOTE HOLDER FRAGMENT ";
+    public static final String INTRO_QUOTE_HOLDER_FRAGMENT = " INTRO QUOTE HOLDER FRAGMENT ";
+    public static final String MOOD_DETAIL_HOLDER_FRAGMENT = " MOOD DETAIL HOLDER FRAGMENT ";
 
     // all the adapters
     public static final String MOOD_DETAIL_RECYCLER_ADAPTER =" MOODS DETAIL RECYCLER ADAPTER ";
-    public static final String QUOTE_SLIDE_ADAPTER =" QUOTE SLIDE ADAPTER ";
+    public static final String INTRO_QUOTE_SLIDER_ADAPTER =" INTRO QUOTE SLIDER ADAPTER ";
     public static final String TIMELINE_RECYCLER_ADAPTER =" TIMELINE RECYCLER ADAPTER ";
 
     // all the async tasks
@@ -73,6 +72,7 @@ public class Constants {
     public static final String REGISTER_ASYNC_TASK=" REGISTER ASYNC TASK ";
     public static final String SEND_EDITTED_PROFILE_ASYNC_TASK=" SEND EDITTED PROFILE ASYNC TASK ";
     public static final String SEND_TRANSACTION_ASYNC_TASK=" SEND TRANSACTION ASYNC TASK ";
+    public static final String UPDATE_PROFILE_ASYNC_TASK=" UPDATE PROFILE ASYNC TASK ";
 
 
     // all the data
@@ -95,6 +95,7 @@ public class Constants {
 //    public static final String updateProfileUrl = "http://www.brezie.in/dev/Brezie/updateProfile.php";
 //    public static final String sendTransactionUrl = "http://www.brezie.in/dev/Brezie/transaction.php";
 //    public static final String sendNotificationUrl = "http://www.brezie.in/dev/Brezie/send_notification.php";
+//    public static final String shareUrl = "http://www.brezie.in/dev/Brezie/mobile.php?";
 
     // all the prod links
     public static final String quoteOfDayUrl = "http://brezie.com/brezieprod/getquoteoftheday.php";
@@ -107,5 +108,7 @@ public class Constants {
     public static final String loginUrl = "http://brezie.com/brezieprod/login.php";
     public static final String updateProfileUrl = "http://brezie.com/brezieprod/updateProfile.php";
     public static final String sendTransactionUrl = "http://brezie.com/brezieprod/transaction.php";
+    public static final String shareUrl = "http://www.brezie.com/brezieprod/mobile.php?";
+
 
 }

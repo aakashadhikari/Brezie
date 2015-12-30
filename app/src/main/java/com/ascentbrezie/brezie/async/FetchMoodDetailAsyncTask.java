@@ -39,6 +39,7 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
     private List<CommentsData>commentsData;
 
     private String quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,backgroundUrl;
+    private boolean isLiked;
 
     public interface FetchMoodDetailCallback{
 
@@ -55,7 +56,7 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
         else{
             Constants.moodDetailData = new ArrayList<MoodDetailData>();
         }
-        if(commentsData !=null){
+        if(commentsData != null){
            commentsData.clear();
         }
         else{
@@ -89,6 +90,7 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
             keyValuePairData.add(new KeyValuePairData("mood_id",params[2]));
             keyValuePairData.add(new KeyValuePairData("latitude",params[3]));
             keyValuePairData.add(new KeyValuePairData("longitude",params[4]));
+            keyValuePairData.add(new KeyValuePairData("screen_category",params[5]));
 
             outputStream = httpURLConnection.getOutputStream();
 
@@ -116,6 +118,7 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
                     shareCounter = jsonObject.getString("share_counter");
                     usedAsCounter = jsonObject.getString("usedas_counter");
                     backgroundUrl = jsonObject.getString("quote_path");
+                    isLiked = jsonObject.getBoolean("is_liked");
 
                     JSONArray nestedJsonArray = jsonObject.getJSONArray("comments");
                     commentsData = new ArrayList<CommentsData>();
@@ -129,7 +132,7 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
                     }
 
                     String commentsCount = String.valueOf(nestedJsonArray.length());
-                    Constants.moodDetailData.add(new MoodDetailData(quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,backgroundUrl,commentsData,commentsCount,false,false));
+                    Constants.moodDetailData.add(new MoodDetailData(quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,backgroundUrl,commentsData,commentsCount,isLiked,false));
 
                 }
 

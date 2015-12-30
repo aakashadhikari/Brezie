@@ -29,7 +29,6 @@ public class MoodDetailData {
         this.isLiked = isLiked;
         this.isShared = isShared;
 
-        Log.d(Constants.LOG_TAG,Constants.MOOD_DETAIL_RECYCLER_ADAPTER);
     }
 
     public boolean isShared() {
