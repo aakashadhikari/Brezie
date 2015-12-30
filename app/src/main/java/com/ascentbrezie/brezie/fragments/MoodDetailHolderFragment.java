@@ -24,6 +24,7 @@ import com.ascentbrezie.brezie.R;
 import com.ascentbrezie.brezie.activities.LoginOrRegisterActivity;
 import com.ascentbrezie.brezie.custom.CustomButton;
 import com.ascentbrezie.brezie.custom.CustomEditText;
+import com.ascentbrezie.brezie.custom.CustomLightTextView;
 import com.ascentbrezie.brezie.custom.CustomTextView;
 import com.ascentbrezie.brezie.data.CommentsData;
 import com.ascentbrezie.brezie.imageloader.ImageLoader;
@@ -41,7 +42,8 @@ import java.util.List;
  */
 public class MoodDetailHolderFragment extends Fragment {
 
-    private LinearLayout commentsLayout,footer;
+    private LinearLayout commentsLayout;
+    private RelativeLayout footer;
     private int position;
     private ImageLoader imageLoader;
     private File cacheDir;
@@ -103,7 +105,8 @@ public class MoodDetailHolderFragment extends Fragment {
         commentsCounter = (CustomTextView) v.findViewById(R.id.comments_count_text_mood_detail_holder_fragment);
         commentsLayout = (LinearLayout) v.findViewById(R.id.display_comments_layout_mood_detail_holder_fragment);
 
-        footer = (LinearLayout) v.findViewById(R.id.footer_layout_mood_detail_holder_fragment);
+        footer = (RelativeLayout) v.findViewById(R.id.footer_layout_mood_detail_holder_fragment);
+//        footer = (LinearLayout) v.findViewById(R.id.footer_layout_mood_detail_holder_fragment);
 
         editComment = (CustomEditText) v.findViewById(R.id.add_comment_edit_included);
         addComment = (CustomButton) v.findViewById(R.id.add_comment_button_included);
@@ -117,6 +120,12 @@ public class MoodDetailHolderFragment extends Fragment {
         RelativeLayout.LayoutParams layoutParams= new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
         layoutParams.addRule(RelativeLayout.ABOVE, R.id.footer_layout_mood_detail_holder_fragment);
         scrollView.setLayoutParams(layoutParams);
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Constants.APP_NAME,Context.MODE_PRIVATE);
+        int width = sharedPreferences.getInt("width", 0);
+
+        LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(width,width);
+        moodImage.setLayoutParams(layoutParams1);
 
     }
 
@@ -144,9 +153,9 @@ public class MoodDetailHolderFragment extends Fragment {
 
         for(int i =0 ;i<commentsData.size();i++){
 
-            CustomTextView customTextView = new CustomTextView(getActivity().getApplicationContext());
+            CustomLightTextView customTextView = new CustomLightTextView(getActivity().getApplicationContext());
             customTextView.setTextColor(getResources().getColor(R.color.black));
-            customTextView.setTextSize(20);
+            customTextView.setTextSize(16);
             customTextView.setText(commentsData.get(i).getNickName()+" : "+commentsData.get(i).getComment());
 
 
@@ -247,11 +256,11 @@ public class MoodDetailHolderFragment extends Fragment {
         else{
 
 
-            CustomTextView tv = new CustomTextView(getActivity());
+            CustomLightTextView tv = new CustomLightTextView(getActivity());
             LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             tv.setLayoutParams(layoutParams1);
             tv.setText(nickname + " : " + editComment.getText().toString());
-            tv.setTextSize(20);
+            tv.setTextSize(16);
             tv.setTextColor(getResources().getColor(R.color.black));
             commentsLayout.addView(tv);
 
