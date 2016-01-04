@@ -27,6 +27,7 @@ public class Constants {
     public static String referenceCode;
     public static String otp;
     public static String quoteOfTheDay;
+    public static String nextToRequest;
 
     //
     public static String nickname;
@@ -55,6 +56,7 @@ public class Constants {
     // all the fragments
     public static final String INTRO_QUOTE_HOLDER_FRAGMENT = " INTRO QUOTE HOLDER FRAGMENT ";
     public static final String MOOD_DETAIL_HOLDER_FRAGMENT = " MOOD DETAIL HOLDER FRAGMENT ";
+    public static final String TUTORIAL_HOLDER_FRAGMENT = " TUTORIAL HOLDER FRAGMENT ";
 
     // all the adapters
     public static final String MOOD_DETAIL_RECYCLER_ADAPTER =" MOODS DETAIL RECYCLER ADAPTER ";
@@ -76,7 +78,7 @@ public class Constants {
 
 
     // all the data
-    public static ArrayList<CommentsData> commentsData;
+//    public static ArrayList<CommentsData> commentsData;
     public static ArrayList<KeyValuePairData> keyValuePairData;
     public static ArrayList<MoodDetailData> moodDetailData;
     public static ArrayList<ProfileData> profileData;
@@ -102,6 +104,7 @@ public class Constants {
     public static final String splashUrl = "http://brezie.com/brezieprod/splash.php";
     public static final String landingUrl = "http://brezie.com/brezieprod/landing.php";
     public static final String moodDetailUrl = "http://brezie.com/brezieprod/mood_detail.php";
+//    public static final String moodDetailUrl = "http://brezie.com/brezieprod/new_mood_detail.php";
     public static final String profileUrl = "http://brezie.com/brezieprod/profile.php";
     public static final String registerUrl = "http://brezie.com/brezieprod/register.php";
     public static final String verifyUrl = "http://brezie.com/brezieprod/verify.php";

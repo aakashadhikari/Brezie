@@ -16,8 +16,8 @@
         android:id="@+id/view_pager_splash_screen_activity"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#52890F"
         />
+
     <com.ascentbrezie.brezie.custom.CustomTextView
         android:id="@+id/skip_or_continue_text_splash_screen_activity"
         android:layout_width="fill_parent"
@@ -25,6 +25,13 @@
         android:textSize="@dimen/text_size_extra_large"
         android:gravity="center_horizontal"
         android:padding="@dimen/padding_small"
+        />
+
+    <include
+        android:id="@+id/progress_dots_layout_splash_screen_activity"
+        layout="@layout/layout_progress_dots"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
         />
 
 </RelativeLayout>

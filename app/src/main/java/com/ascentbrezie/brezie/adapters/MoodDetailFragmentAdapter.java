@@ -36,4 +36,5 @@ public class MoodDetailFragmentAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return Constants.moodDetailData.size();
     }
+
 }

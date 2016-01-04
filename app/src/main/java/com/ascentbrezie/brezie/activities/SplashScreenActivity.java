@@ -1,12 +1,10 @@
 package com.ascentbrezie.brezie.activities;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Point;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -15,7 +13,6 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -27,12 +24,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ascentbrezie.brezie.R;
-import com.ascentbrezie.brezie.adapters.SplashScreenTutorialAdapter;
-import com.ascentbrezie.brezie.async.FetchUserIdAsyncTask;
+import com.ascentbrezie.brezie.adapters.TutorialAdapter;
 import com.ascentbrezie.brezie.custom.CustomTextView;
 import com.ascentbrezie.brezie.gcm.QuickstartPreferences;
 import com.ascentbrezie.brezie.gcm.RegistrationIntentService;
@@ -48,7 +43,7 @@ import java.io.File;
  */
 public class SplashScreenActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener{
 
-    private ImageView appName;
+    private ImageView appName,firstDot,secondDot,thirdDot,fourthDot;
     private int width, height;
     protected LocationManager locationManager;
     private String deviceId;
@@ -56,15 +51,21 @@ public class SplashScreenActivity extends AppCompatActivity implements ViewPager
     private String notificationId;
     private ViewPager viewPager;
 
+    private RelativeLayout progressDots;
+
     private CustomTextView skipOrContinue;
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private ProgressBar mRegistrationProgressBar;
 
-    private RelativeLayout.LayoutParams layoutParams,layoutParams1,layoutParams2,layoutParams3;
+    private RelativeLayout.LayoutParams viewPagerLayoutParams, skipOrContinueLayoutParams, layoutParams, appNameLayoutParams, progressDotsLayoutParams;
 
-    private SplashScreenTutorialAdapter adapter;
+    private TutorialAdapter adapter;
+    private int currentPosition;
+    private Handler handler;
+    private Runnable runnable;
+    private int viewPagerHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,6 @@ public class SplashScreenActivity extends AppCompatActivity implements ViewPager
         getScreenCategory();
         settingTheLayouts();
         isFirstTimeUser();
-        loadAnimation();
         getDeviceId();
         registerForGCMService();
 
@@ -114,6 +114,13 @@ public class SplashScreenActivity extends AppCompatActivity implements ViewPager
         viewPager = (ViewPager) findViewById(R.id.view_pager_splash_screen_activity);
         appName = (ImageView) findViewById(R.id.app_name_image_splash_screen_activity);
         skipOrContinue = (CustomTextView) findViewById(R.id.skip_or_continue_text_splash_screen_activity);
+
+
+        progressDots = (RelativeLayout) findViewById(R.id.progress_dots_layout_splash_screen_activity);
+        firstDot= (ImageView) findViewById(R.id.first_dot_included);
+        secondDot= (ImageView) findViewById(R.id.second_dot_included);
+        thirdDot= (ImageView) findViewById(R.id.third_dot_included);
+        fourthDot= (ImageView) findViewById(R.id.fourth_dot_included);
 
 
     }
@@ -173,26 +180,29 @@ public class SplashScreenActivity extends AppCompatActivity implements ViewPager
         SharedPreferences sharedPreference = getSharedPreferences(Constants.APP_NAME, MODE_PRIVATE);
         int height = sharedPreference.getInt("height", 0);
 
-        int viewPagerHeight = (height *60)/100;
+        viewPagerHeight = (height *70)/100;
 
-        layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,viewPagerHeight);
-        layoutParams.setMargins(5,5,5,5);
-        viewPager.setLayoutParams(layoutParams);
+        viewPagerLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,viewPagerHeight);
+        viewPagerLayoutParams.setMargins(5, 5, 5, 5);
+//        viewPager.setLayoutParams(viewPagerLayoutParams);
 
 
-        layoutParams1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams1.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        layoutParams1.addRule(RelativeLayout.BELOW, R.id.view_pager_splash_screen_activity);
-        skipOrContinue.setLayoutParams(layoutParams1);
+        skipOrContinueLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        skipOrContinueLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        skipOrContinueLayoutParams.addRule(RelativeLayout.BELOW, R.id.progress_dots_layout_splash_screen_activity);
+//        skipOrContinue.setLayoutParams(skipOrContinueLayoutParams);
 
-        layoutParams2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams2.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        layoutParams2.addRule(RelativeLayout.BELOW, R.id.skip_or_continue_text_splash_screen_activity);
-        appName.setLayoutParams(layoutParams2);
+        layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        layoutParams.addRule(RelativeLayout.BELOW, R.id.skip_or_continue_text_splash_screen_activity);
+//        appName.setLayoutParams(layoutParams);
 
-        layoutParams3 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams3.addRule(RelativeLayout.CENTER_IN_PARENT);
-        appName.setLayoutParams(layoutParams3);
+        appNameLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        appNameLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+//        appName.setLayoutParams(appNameLayoutParams);
+
+        progressDotsLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        progressDotsLayoutParams.addRule(RelativeLayout.BELOW, R.id.view_pager_splash_screen_activity);
 
 
     }
@@ -208,7 +218,10 @@ public class SplashScreenActivity extends AppCompatActivity implements ViewPager
 
             viewPager.setVisibility(View.GONE);
             skipOrContinue.setVisibility(View.GONE);
-            appName.setLayoutParams(layoutParams3);
+            progressDots.setVisibility(View.GONE);
+            appName.setImageResource(R.drawable.logo_with_name);
+            appName.setLayoutParams(appNameLayoutParams);
+            loadAnimation();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -222,6 +235,11 @@ public class SplashScreenActivity extends AppCompatActivity implements ViewPager
 
         }
         else{
+            viewPager.setLayoutParams(viewPagerLayoutParams);
+            skipOrContinue.setLayoutParams(skipOrContinueLayoutParams);
+            appName.setImageResource(R.drawable.logo_with_name_alternate);
+            appName.setLayoutParams(layoutParams);
+            progressDots.setLayoutParams(progressDotsLayoutParams);
             settingTheAdapter();
             setViews();
         }
@@ -233,12 +251,39 @@ public class SplashScreenActivity extends AppCompatActivity implements ViewPager
 
     public void settingTheAdapter(){
 
-        adapter = new SplashScreenTutorialAdapter(getSupportFragmentManager());
+        adapter = new TutorialAdapter(getSupportFragmentManager(),viewPagerHeight);
         viewPager.setAdapter(adapter);
+        viewPager.setOnPageChangeListener(this);
+
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+
+                if (currentPosition < 4) {
+
+                    viewPager.setCurrentItem(currentPosition++, true);
+
+                    if(currentPosition == 3){
+
+                        skipOrContinue.setText("Continue");
+                    }
+
+                }
+                handler.postDelayed(this, 2000);
+
+            }
+        };
+        handler.postDelayed(runnable, 1000);
+
+
+
 
     }
 
     public void setViews(){
+
+        firstDot.setImageResource(R.drawable.icon_selected_dot);
 
         skipOrContinue.setText("Skip");
         skipOrContinue.setOnClickListener(listener);
@@ -342,15 +387,31 @@ public class SplashScreenActivity extends AppCompatActivity implements ViewPager
     @Override
     public void onPageSelected(int position) {
 
-        if(position == 3){
+        currentPosition = position;
 
-            new Handler().post(new Runnable() {
-                @Override
-                public void run() {
+        switch (position){
 
-                    skipOrContinue.setText("Continue");
-                }
-            });
+            case 0: firstDot.setImageResource(R.drawable.icon_selected_dot);
+                secondDot.setImageResource(R.drawable.icon_unselected_dot);
+                thirdDot.setImageResource(R.drawable.icon_unselected_dot);
+                fourthDot.setImageResource(R.drawable.icon_unselected_dot);
+                break;
+            case 1: firstDot.setImageResource(R.drawable.icon_unselected_dot);
+                secondDot.setImageResource(R.drawable.icon_selected_dot);
+                thirdDot.setImageResource(R.drawable.icon_unselected_dot);
+                fourthDot.setImageResource(R.drawable.icon_unselected_dot);
+                break;
+            case 2: firstDot.setImageResource(R.drawable.icon_unselected_dot);
+                secondDot.setImageResource(R.drawable.icon_unselected_dot);
+                thirdDot.setImageResource(R.drawable.icon_selected_dot);
+                fourthDot.setImageResource(R.drawable.icon_unselected_dot);
+                break;
+            case 3:
+                firstDot.setImageResource(R.drawable.icon_unselected_dot);
+                secondDot.setImageResource(R.drawable.icon_unselected_dot);
+                thirdDot.setImageResource(R.drawable.icon_unselected_dot);
+                fourthDot.setImageResource(R.drawable.icon_selected_dot);
+                break;
 
         }
 

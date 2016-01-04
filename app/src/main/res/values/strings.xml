@@ -13,6 +13,15 @@
     <string name="animate_view">Animate View</string>
 
     <string name="text_about_us">Gifting Happiness</string>
-    <string name="text_version_number">Version 1.2.1</string>
+    <string name="text_version_number">Version 1.2.2</string>
+
+    <string-array name="tutorial_text">
+
+        <item name="tutorial_1">Good mood always</item>
+        <item name="tutorial_2">Refreshingly fresh content</item>
+        <item name="tutorial_3">Select an Emozie for mood specific content</item>
+        <item name="tutorial_4">Flaunt your mood</item>
+
+    </string-array>
 
 </resources>
