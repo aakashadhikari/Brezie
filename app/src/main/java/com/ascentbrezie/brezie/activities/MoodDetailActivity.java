@@ -6,12 +6,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.ascentbrezie.brezie.R;
 import com.ascentbrezie.brezie.adapters.MoodDetailFragmentAdapter;
-import com.ascentbrezie.brezie.adapters.MoodDetailRecyclerAdapter;
 import com.ascentbrezie.brezie.async.FetchMoodDetailAsyncTask;
 import com.ascentbrezie.brezie.async.SendTransactionAsyncTask;
 import com.ascentbrezie.brezie.data.CommentsData;
@@ -21,10 +20,12 @@ import com.ascentbrezie.brezie.utils.Constants;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by SAGAR on 12/28/2015.
  */
-public class MoodDetailActivity extends ActionBarActivity implements ViewPager.OnPageChangeListener{
+public class MoodDetailActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener{
 
     private ViewPager viewPager;
     private MoodDetailFragmentAdapter adapter;
@@ -40,6 +41,9 @@ public class MoodDetailActivity extends ActionBarActivity implements ViewPager.O
     private String route;
     private boolean cycleComplete;
     private int offset = 0;
+    private int prevPosition = 0;
+    private int tempPosition = 0;
+    String lastSeenQuoteId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +57,15 @@ public class MoodDetailActivity extends ActionBarActivity implements ViewPager.O
         initializeJsons();
         findViews();
         customActionBar();
-        fetchData();
+        if(wasInMood()){
 
+            Log.d(Constants.LOG_TAG," fetch data with direction 0 and last seen quote "+lastSeenQuoteId);
+            fetchData(lastSeenQuoteId, "0","new");
+        }
+        else{
+            Log.d(Constants.LOG_TAG," fetch data with direction 1 and last seen quote "+lastSeenQuoteId);
+            fetchData(lastSeenQuoteId,"1","new");
+        }
 
     }
 
@@ -71,9 +82,13 @@ public class MoodDetailActivity extends ActionBarActivity implements ViewPager.O
          * **/
         sharedPreferences = getSharedPreferences(Constants.APP_NAME, MODE_PRIVATE);
         cycleComplete = sharedPreferences.getBoolean("isCommentCycleComplete", false);
+        Log.d(Constants.LOG_TAG," is cycle complete "+cycleComplete);
         if(cycleComplete){
 
             moodId = sharedPreferences.getString("moodId","null");
+            comment = sharedPreferences.getString("comment","null");
+
+
         }
         else{
 
@@ -90,6 +105,9 @@ public class MoodDetailActivity extends ActionBarActivity implements ViewPager.O
         Constants.transactionParentJsonObject = new JSONObject();
         Constants.transactionChildJsonArray = new JSONArray();
         Constants.transactionChildJsonObject = new JSONObject();
+
+        Constants.moodDetailData = new ArrayList<MoodDetailData>();
+//        Constants.commentsData = new ArrayList<CommentsData>();
 
     }
 
@@ -108,8 +126,37 @@ public class MoodDetailActivity extends ActionBarActivity implements ViewPager.O
 
     }
 
-    public void fetchData(){
 
+    public boolean wasInMood(){
+
+        /**
+         * wasInMood variable is used to store the value of the
+         * quote that was last seen by the user
+         * **/
+
+        boolean wasInMood = sharedPreferences.contains("mood_" + moodId);
+        if(wasInMood){
+
+            lastSeenQuoteId = String.valueOf(sharedPreferences.getInt("mood_"+moodId,0));
+        }
+        else{
+
+            lastSeenQuoteId = "0";
+        }
+
+
+
+        return sharedPreferences.contains("mood_" + moodId);
+
+    }
+
+    /**
+     * We have introduced the third parameter orderStatus so that we can decide whether to
+     * show the progressDialog or not.
+     * If we are fetching NEW data then we are showing the progressDialog.
+     * If we are fetching MORE data then we are NOT showing the progressDialog
+     * **/
+    public void fetchData(String lastSeenQuoteId,String direction, final String orderStatus){
 
         sharedPreferences = getSharedPreferences(Constants.APP_NAME,MODE_PRIVATE);
         userId = sharedPreferences.getString("userId", "null");
@@ -135,6 +182,7 @@ public class MoodDetailActivity extends ActionBarActivity implements ViewPager.O
             public void onResult(boolean result) {
 
                 progressDialog.dismiss();
+
                 if(result) {
                     sharedPreferences = getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
                     int width = sharedPreferences.getInt("width", 0);
@@ -151,6 +199,7 @@ public class MoodDetailActivity extends ActionBarActivity implements ViewPager.O
                             String nickname = sharedPreferences.getString("nickname", null);
                             String comment = sharedPreferences.getString("comment", null);
 
+                            addToJson(quoteId,"2","1",comment);
                             getQuoteObject(quoteId).getCommentsData().add(new CommentsData(comment,nickname));
 
                             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -160,13 +209,12 @@ public class MoodDetailActivity extends ActionBarActivity implements ViewPager.O
                             editor.remove("moodId");
                             editor.commit();
 
-                            getLastSeenQuote();
+                            setLastSeenQuote();
                             settingTheAdapter();
 
                         }
                         else{
-
-                            getLastSeenQuote();
+                            setLastSeenQuote();
                             settingTheAdapter();
 
                         }
@@ -174,13 +222,13 @@ public class MoodDetailActivity extends ActionBarActivity implements ViewPager.O
                     }
                     else{
 
-                        getLastSeenQuote();
+                        setLastSeenQuote();
                         settingTheAdapter();
                     }
 
                 }
             }
-        }).execute(url, userId, moodId, latitude, longitude,screenCategory);
+        }).execute(url, userId, moodId, latitude,longitude,screenCategory,lastSeenQuoteId,direction);
 
 
 
@@ -217,7 +265,7 @@ public class MoodDetailActivity extends ActionBarActivity implements ViewPager.O
     }
 
 
-    public void getLastSeenQuote(){
+    public void setLastSeenQuote(){
 
         /**
          * wasInMood variable is used to store the value of the
@@ -227,16 +275,19 @@ public class MoodDetailActivity extends ActionBarActivity implements ViewPager.O
         boolean wasInMood = sharedPreferences.contains("mood_" + moodId);
         if(wasInMood){
 
-            String quoteId = String.valueOf(sharedPreferences.getInt("mood_"+moodId,0));
+            String qId = String.valueOf(sharedPreferences.getInt("mood_"+moodId,0));
+
             for(int i =0;i<Constants.moodDetailData.size();i++){
 
-                if(Constants.moodDetailData.get(i).getQuoteId().equalsIgnoreCase(quoteId)){
+
+                if(Constants.moodDetailData.get(i).getQuoteId().equalsIgnoreCase(qId)){
 
                     offset = i;
 
                 }
 
             }
+
 
             Log.d(Constants.LOG_TAG," the offset is "+offset);
         }
@@ -245,17 +296,56 @@ public class MoodDetailActivity extends ActionBarActivity implements ViewPager.O
             offset = 0;
         }
 
-
-
     }
 
+//    public void settingTheAdapter(String qId,String tempComment){
     public void settingTheAdapter(){
 
-
         adapter = new MoodDetailFragmentAdapter(getSupportFragmentManager(),moodId);
+        adapter.notifyDataSetChanged();
         viewPager.setOnPageChangeListener(this);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(offset);
+
+    }
+
+    public void addToJson(String quoteId,String action,String actionFlag,String comment){
+
+        Log.d(Constants.LOG_TAG," add to json called with quote Id "+quoteId+" action "+action+" actionFlag "+actionFlag+" comment "+comment);
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
+        String userId = sharedPreferences.getString("userId", "null");
+        String nickname = sharedPreferences.getString("nickname","null");
+
+        try{
+
+            Constants.transactionParentJsonObject = new JSONObject();
+            Constants.transactionParentJsonObject.put("quote_id",Integer.parseInt(quoteId));
+            Constants.transactionParentJsonObject.put("action",Integer.parseInt(action));
+            Constants.transactionParentJsonObject.put("action_flag",Integer.parseInt(actionFlag));
+
+
+            if(action.equalsIgnoreCase("2")){
+
+                Constants.transactionChildJsonObject = new JSONObject();
+                Constants.transactionChildJsonObject.put("nickname",nickname);
+                Constants.transactionChildJsonObject.put("comment",comment);
+
+                // This array will hold the comments array
+                Constants.transactionChildJsonArray.put(Constants.transactionChildJsonObject);
+                Constants.transactionParentJsonObject.put("comments",Constants.transactionChildJsonArray);
+                Constants.transactionChildJsonArray = new JSONArray();
+
+            }
+
+            Constants.transactionParentJsonArray.put(Constants.transactionParentJsonObject);
+            Constants.transactionGrandParentJsonObject.put("user_id",Integer.parseInt(userId));
+            Constants.transactionGrandParentJsonObject.put("transaction",Constants.transactionParentJsonArray);
+
+        }
+        catch (Exception e){
+
+            e.printStackTrace();
+        }
 
     }
 
@@ -306,6 +396,27 @@ public class MoodDetailActivity extends ActionBarActivity implements ViewPager.O
     public void onPageSelected(int position) {
 
         saveLastSeen(position);
+
+//        Log.d(Constants.LOG_TAG," The position is "+position);
+//        if((offset != 0) && (position == 2))
+//        {
+//
+//            String quoteId = Constants.moodDetailData.get(0).getQuoteId();
+//            Log.d(Constants.LOG_TAG, " the fetch data is called with direction -1 and quote Id "+quoteId);
+//            fetchData(quoteId,"-1","more");
+//        }
+//        else if(position == (Constants.moodDetailData.size()-2)){
+//
+//            Log.d(Constants.LOG_TAG," the fetch data is called with direction 1");
+//
+//            /**
+//             * We are sending the variable nextToRequest as it has the value of quoteId
+//             * that is +3 position from the current position
+//             * **/
+//            fetchData(Constants.nextToRequest, "1","more");
+//        }
+
+
     }
 
     @Override
