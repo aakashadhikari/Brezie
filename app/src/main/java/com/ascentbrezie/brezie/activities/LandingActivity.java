@@ -264,10 +264,10 @@ public class LandingActivity extends AppCompatActivity implements ViewPager.OnPa
 //            case R.id.action_settings: i = new Intent(LandingActivity.this,SettingsActivity.class);
 //                startActivity(i);
 //                break;
-            case R.id.action_user_guide:
-                i = new Intent(LandingActivity.this, TutorialActivity.class);
-                startActivity(i);
-                break;
+//            case R.id.action_user_guide:
+//                i = new Intent(LandingActivity.this, TutorialActivity.class);
+//                startActivity(i);
+//                break;
             case R.id.action_about_us:
                 i = new Intent(LandingActivity.this, AboutUsActivity.class);
                 startActivity(i);
