@@ -1,5 +1,10 @@
 package com.ascentbrezie.brezie.data;
 
+import android.util.Log;
+
+import com.ascentbrezie.brezie.utils.Constants;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,20 +12,56 @@ import java.util.List;
  */
 public class MoodDetailData {
 
-    String imageId,imageUrl,likesCounter,commentsCounter,usedAsCounter;
+    String quoteId,likesCounter,commentsCounter,usedAsCounter,backgroundUrl,commentsCount,shareCounter;
     List<CommentsData> commentsData;
-    boolean isLiked;
+    boolean isLiked,isShared;
 
-    public MoodDetailData(String imageId, String imageUrl, String likesCounter, String commentsCounter, String usedAsCounter, List<CommentsData> commentsData, boolean isLiked) {
-        this.imageId = imageId;
-        this.imageUrl = imageUrl;
-        this.likesCounter = likesCounter;
+
+    public MoodDetailData(String quoteId, String commentsCounter, String likesCounter, String shareCounter, String usedAsCounter, String backgroundUrl, List<CommentsData> commentsData, String commentsCount, boolean isLiked, boolean isShared) {
+        this.quoteId = quoteId;
         this.commentsCounter = commentsCounter;
+        this.likesCounter = likesCounter;
+        this.shareCounter = shareCounter;
         this.usedAsCounter = usedAsCounter;
+        this.backgroundUrl = backgroundUrl;
         this.commentsData = commentsData;
+        this.commentsCount = commentsCount;
         this.isLiked = isLiked;
+        this.isShared = isShared;
+
     }
 
+    public boolean isShared() {
+        return isShared;
+    }
+
+    public void setIsShared(boolean isShared) {
+        this.isShared = isShared;
+    }
+
+    public String getCommentsCount() {
+        return commentsCount;
+    }
+
+    public void setCommentsCount(String commentsCount) {
+        this.commentsCount = commentsCount;
+    }
+
+    public String getQuoteId() {
+        return quoteId;
+    }
+
+    public void setQuoteId(String quoteId) {
+        this.quoteId = quoteId;
+    }
+
+    public String getBackgroundUrl() {
+        return backgroundUrl;
+    }
+
+    public void setBackgroundUrl(String backgroundUrl) {
+        this.backgroundUrl = backgroundUrl;
+    }
 
     public boolean isLiked() {
         return isLiked;
@@ -28,22 +69,6 @@ public class MoodDetailData {
 
     public void setIsLiked(boolean isLiked) {
         this.isLiked = isLiked;
-    }
-
-    public String getImageId() {
-        return imageId;
-    }
-
-    public void setImageId(String imageId) {
-        this.imageId = imageId;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public String getLikesCounter() {

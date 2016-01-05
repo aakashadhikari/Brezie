@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="com.ascentbrezie.brezie.activities.UpdateProfileActivity">
+        <com.ascentbrezie.brezie.custom.CustomEditText
+            android:id="@+id/first_name_edit_update_profile_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="First Name" />
+        <com.ascentbrezie.brezie.custom.CustomEditText
+            android:id="@+id/last_name_edit_update_profile_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Last Name" />
+        <com.ascentbrezie.brezie.custom.CustomEditText
+            android:id="@+id/phone_edit_edit_update_profile_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone Number"
+            android:inputType="phone" />
+        <com.ascentbrezie.brezie.custom.CustomEditText
+            android:id="@+id/email_edit_update_profile_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email Address"
+            android:inputType="textEmailAddress"
+            />
+        <com.ascentbrezie.brezie.custom.CustomTextView
+            android:id="@+id/dob_text_update_profile_activity"
+            android:layout_width="match_parent"
+            android:text="Select your date of birth"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_large"
+            android:padding="@dimen/padding_large"
+            />
+
+        <RadioGroup
+            android:id="@+id/sex_radio_group_update_profile_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/male_radio_update_profile_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male" />
+            <RadioButton
+                android:id="@+id/female_radio_update_profile_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Female" />
+        </RadioGroup>
+
+        <com.ascentbrezie.brezie.custom.CustomButton
+            android:id="@+id/submit_button_update_profile_activity"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            />
+
+    </LinearLayout>
+</ScrollView>

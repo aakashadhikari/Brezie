@@ -96,6 +96,7 @@ public class RegisterActivity extends Activity {
                         i.putExtra("number",numberValue);
                         i.putExtra("password",passwordValue);
                         i.putExtra("nickname",nickNameValue);
+                        i.putExtra("otp",Constants.otp);
                         startActivity(i);
 
                     }

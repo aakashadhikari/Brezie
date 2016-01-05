@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_id": "brezie-1156",
+    "project_number": "919618370279",
+    "name": "Brezie"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919618370279:android:01fb4be72bce9c23",
+        "client_id": "android:com.ascentbrezie.brezie",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.ascentbrezie.brezie"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 2,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 1
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}

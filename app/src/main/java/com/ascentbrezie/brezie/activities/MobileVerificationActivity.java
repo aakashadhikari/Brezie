@@ -27,7 +27,7 @@ public class MobileVerificationActivity extends Activity {
     private CustomButton verify;
 
     private ProgressDialog progressDialog;
-    private String numberValue,passwordValue,nickNameValue;
+    private String numberValue,passwordValue,nickNameValue,otpValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,7 @@ public class MobileVerificationActivity extends Activity {
         numberValue = i.getStringExtra("number");
         passwordValue = i.getStringExtra("password");
         nickNameValue = i.getStringExtra("nickname");
+        otpValue = i.getStringExtra("otp");
 
 
     }
@@ -62,6 +63,8 @@ public class MobileVerificationActivity extends Activity {
     public void setViews(){
 
         number.setText(numberValue);
+        otp.setText(otpValue);
+
         verify.setOnClickListener(listener);
 
     }
@@ -92,10 +95,28 @@ public class MobileVerificationActivity extends Activity {
 
                     SharedPreferences sharedPreferences = getSharedPreferences(Constants.APP_NAME, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("nickName",Constants.nickName);
+                    editor.putString("nickname", Constants.nickname);
 
-                    Intent i = new Intent(MobileVerificationActivity.this,MoodDetailActivity.class);
-                    startActivity(i);
+                    String route = sharedPreferences.getString("route","null");
+
+                    if(route.equalsIgnoreCase("profile")){
+
+                        Intent i = new Intent(MobileVerificationActivity.this,ProfileActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
+
+                        editor.commit();
+                    }
+                    else if (route.equalsIgnoreCase("comment")){
+
+                        Intent i = new Intent(MobileVerificationActivity.this,MoodDetailActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
+
+                        editor.putBoolean("isCommentCycleComplete",true);
+                        editor.commit();
+
+                    }
 
                 }
                 else{

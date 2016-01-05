@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
     >
+
     <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/scroll_view_mood_detail_holder_fragment"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         >
         <LinearLayout
-            android:id="@+id/row_layout"
+            android:id="@+id/row_layout_mood_detail_holder_fragment"
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@color/white"
+            android:layout_height="wrap_content"
             >
 
             <ImageView
-                android:id="@+id/quote_image_mood_detail_activity"
+                android:id="@+id/quote_image_mood_detail_holder_fragment"
                 android:layout_width="fill_parent"
                 android:layout_height="300dp"
                 android:scaleType="centerCrop"
@@ -26,25 +28,33 @@
             <include
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                layout="@layout/include_like_and_share"
+                layout="@layout/layout_like_share_and_download"
                 android:layout_gravity="right"
                 />
-            <LinearLayout
-                android:id="@+id/display_comments_layout_mood_detail_activity"
+            <com.ascentbrezie.brezie.custom.CustomTextView
+                android:id="@+id/comments_count_text_mood_detail_holder_fragment"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_small"
+                android:layout_margin="@dimen/margin_small"
+                />
+            <LinearLayout
+                android:id="@+id/display_comments_layout_mood_detail_holder_fragment"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:orientation="vertical"
                 android:layout_margin="@dimen/margin_small"
                 />
 
-            <include
-                layout="@layout/layout_add_comments"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_small"
-                />
-
-
         </LinearLayout>
     </ScrollView>
+
+    <include
+        android:id="@+id/footer_layout_mood_detail_holder_fragment"
+        layout="@layout/layout_add_comments"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        />
+
 </RelativeLayout>

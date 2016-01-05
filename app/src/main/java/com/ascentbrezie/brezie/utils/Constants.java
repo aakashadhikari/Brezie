@@ -3,9 +3,11 @@ package com.ascentbrezie.brezie.utils;
 import com.ascentbrezie.brezie.data.CommentsData;
 import com.ascentbrezie.brezie.data.KeyValuePairData;
 import com.ascentbrezie.brezie.data.MoodDetailData;
+import com.ascentbrezie.brezie.data.ProfileData;
 import com.ascentbrezie.brezie.data.QuotesData;
 import com.ascentbrezie.brezie.data.TimelineData;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -23,14 +25,20 @@ public class Constants {
     //Splash Screen Variables
     public static String userId;
     public static String referenceCode;
+    public static String otp;
+    public static String quoteOfTheDay;
+    public static String nextToRequest;
+    public static boolean isEnd;
 
     //
-    public static String nickName;
+    public static String nickname;
 
+    public static JSONArray transactionGrandParentJsonArray;
+    public static JSONObject transactionGrandParentJsonObject;
+    public static JSONArray transactionParentJsonArray;
     public static JSONObject transactionParentJsonObject;
+    public static JSONArray transactionChildJsonArray;
     public static JSONObject transactionChildJsonObject;
-
-
 
     // all the classes
     public static final String ABOUT_US_ACTIVITY = " ABOUT US ACTIVITY ";
@@ -43,45 +51,68 @@ public class Constants {
     public static final String REGISTER_ACTIVITY = " REGISTER ACTIVITY ";
     public static final String SETTINGS_ACTIVITY = " SETTINGS ACTIVITY ";
     public static final String SPLASH_SCREEN_ACTIVITY = " SPLASH SCREEN ACTIVITY ";
-
+    public static final String TUTORIAL_ACTIVITY = " TUTORIAL ACTIVITY ";
+    public static final String UPDATE_PROFILE_ACTIVITY = " UPDATE PROFILE ACTIVITY ";
 
     // all the fragments
+    public static final String INTRO_QUOTE_HOLDER_FRAGMENT = " INTRO QUOTE HOLDER FRAGMENT ";
+    public static final String MOOD_DETAIL_HOLDER_FRAGMENT = " MOOD DETAIL HOLDER FRAGMENT ";
+    public static final String TUTORIAL_HOLDER_FRAGMENT = " TUTORIAL HOLDER FRAGMENT ";
 
     // all the adapters
-    public static final String MOOD_DETAIL_RECYCLER_ADAPTER =" MOODS DETAIL RECYCLER ADAPTER";
-    public static final String TIMELINE_RECYCLER_ADAPTER =" TIMELINE RECYCLER ADAPTER";
+    public static final String MOOD_DETAIL_RECYCLER_ADAPTER =" MOODS DETAIL RECYCLER ADAPTER ";
+    public static final String INTRO_QUOTE_SLIDER_ADAPTER =" INTRO QUOTE SLIDER ADAPTER ";
+    public static final String TIMELINE_RECYCLER_ADAPTER =" TIMELINE RECYCLER ADAPTER ";
 
     // all the async tasks
     public static final String FETCH_MOOD_DETAIL_ASYNC_TASK=" FETCH MOOD DETAIL ASYNC TASK ";
+    public static final String FETCH_PROFILE_DETAILS_ASYNC_TASK=" FETCH_PROFILE_DETAILS_ASYNC_TASK ";
+    public static final String FETCH_QUOTE_OF_THE_DAY_ASYNC_TASK=" FETCH QUOTE OF THE DAY ASYNC TASK ";
     public static final String FETCH_QUOTES_FOR_DAY_ASYNC_TASK=" FETCH QUOTES FOR DAY ASYNC TASK ";
     public static final String FETCH_USER_ID_ASYNC_TASK=" FETCH USER ID ASYNC TASK ";
     public static final String LOGIN_ASYNC_TASK=" LOGIN ASYNC TASK ";
     public static final String MOBILE_VERIFICATION_ASYNC_TASK=" MOBILE VERIFICATION ASYNC TASK ";
     public static final String REGISTER_ASYNC_TASK=" REGISTER ASYNC TASK ";
-    public static final String FETCH_PROFILE_DETAILS_ASYNC_TASK=" FETCH_PROFILE_DETAILS_ASYNC_TASK "
+    public static final String SEND_EDITTED_PROFILE_ASYNC_TASK=" SEND EDITTED PROFILE ASYNC TASK ";
+    public static final String SEND_TRANSACTION_ASYNC_TASK=" SEND TRANSACTION ASYNC TASK ";
+    public static final String UPDATE_PROFILE_ASYNC_TASK=" UPDATE PROFILE ASYNC TASK ";
+
 
     // all the data
-    public static ArrayList<CommentsData> commentsData;
+//    public static ArrayList<CommentsData> commentsData;
     public static ArrayList<KeyValuePairData> keyValuePairData;
     public static ArrayList<MoodDetailData> moodDetailData;
+    public static ArrayList<ProfileData> profileData;
     public static ArrayList<QuotesData> quotesData;
     public static ArrayList<TimelineData> timelineData;
 
     // all the developer links
-    public static final String splashUrl = "http://brezie.in/dev/Brezie/splash.php";
-    public static final String landingUrl = "http://brezie.in/dev/Brezie/landing.php";
-    public static final String moodDetailUrl = "http://brezie.in/dev/Brezie/mood_detail.php";
-    public static final String profileUrl = "http://brezie.in/dev/Brezie/profile.php";
-    public static final String registerUrl = "http://brezie.in/dev/Brezie/register.php";
-    public static final String verifyUrl = "http://brezie.in/dev/Brezie/verify.php";
-    public static final String loginUrl = "http://brezie.in/dev/Brezie/login.php";
+//    public static final String quoteOfDayUrl = "http://brezie.in/dev/Brezie/getquoteoftheday.php";
+//    public static final String splashUrl = "http://brezie.in/dev/Brezie/splash.php";
+//    public static final String landingUrl = "http://brezie.in/dev/Brezie/landing.php";
+//    public static final String moodDetailUrl = "http://brezie.in/dev/Brezie/mood_detail.php";
+//    public static final String profileUrl = "http://brezie.in/dev/Brezie/profile.php";
+//    public static final String registerUrl = "http://brezie.in/dev/Brezie/register.php";
+//    public static final String verifyUrl = "http://brezie.in/dev/Brezie/verify.php";
+//    public static final String loginUrl = "http://brezie.in/dev/Brezie/login.php";
+//    public static final String updateProfileUrl = "http://www.brezie.in/dev/Brezie/updateProfile.php";
+//    public static final String sendTransactionUrl = "http://www.brezie.in/dev/Brezie/transaction.php";
+//    public static final String sendNotificationUrl = "http://www.brezie.in/dev/Brezie/send_notification.php";
+//    public static final String shareUrl = "http://www.brezie.in/dev/Brezie/mobile.php?";
 
     // all the prod links
-//    public static final String splashUrl = "http://brezie.com/brezieprod/splash.php";
-//    public static final String landingUrl = "http://brezie.com/brezieprod/landing.php";
+    public static final String quoteOfDayUrl = "http://brezie.com/brezieprod/getquoteoftheday.php";
+    public static final String splashUrl = "http://brezie.com/brezieprod/splash.php";
+    public static final String landingUrl = "http://brezie.com/brezieprod/landing.php";
 //    public static final String moodDetailUrl = "http://brezie.com/brezieprod/mood_detail.php";
-//    public static final String profileUrl = "http://brezie.com/brezieprod/profile.php";
-//    public static final String registerUrl = "http://brezie.com/brezieprod/register.php";
-//    public static final String verifyUrl = "http://brezie.com/brezieprod/verify.php";
+    public static final String moodDetailUrl = "http://brezie.com/brezieprod/new_mood_detail.php";
+    public static final String profileUrl = "http://brezie.com/brezieprod/profile.php";
+    public static final String registerUrl = "http://brezie.com/brezieprod/register.php";
+    public static final String verifyUrl = "http://brezie.com/brezieprod/verify.php";
+    public static final String loginUrl = "http://brezie.com/brezieprod/login.php";
+    public static final String updateProfileUrl = "http://brezie.com/brezieprod/updateProfile.php";
+    public static final String sendTransactionUrl = "http://brezie.com/brezieprod/transaction.php";
+    public static final String shareUrl = "http://www.brezie.com/brezieprod/mobile.php?";
+
 
 }

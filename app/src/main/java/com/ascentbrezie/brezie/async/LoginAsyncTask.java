@@ -91,8 +91,19 @@ public class LoginAsyncTask extends AsyncTask<String,Void,Boolean> {
 
                 Log.d(Constants.LOG_TAG," The response is "+response);
 
+                JSONObject jsonObject = new JSONObject(response);
+                String status = jsonObject.getString("status");
 
-                return true;
+                if(status.equalsIgnoreCase("true")){
+
+                    Constants.nickname = jsonObject.getString("nickname");
+                    return true;
+                }
+                else if(status.equalsIgnoreCase("false")){
+
+                    return false;
+                }
+
             }
             return false;
 

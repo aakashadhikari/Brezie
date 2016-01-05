@@ -2,22 +2,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LandingActivity"
-    android:background="@drawable/background_1"
-    >
+    android:background="@drawable/background_landing"
+    tools:context=".LandingActivity">
 
     <include
         android:id="@+id/toolbar_landing_activity"
         layout="@layout/layout_toolbar"
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager_landing_activity"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/padding"/>
+
+    <com.ascentbrezie.brezie.custom.CustomTextView
+        android:id="@+id/mood_text_landing_activity"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_extra_large"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        android:gravity="center_horizontal"
+        />
+    <com.ascentbrezie.brezie.custom.CustomTextView
+        android:id="@+id/prompt_text_landing_activity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size"
+        android:textColor="@color/white"
+        android:padding="@dimen/padding_small"
+        android:visibility="gone"
+        android:gravity="center_horizontal"
         />
 
-    <com.daimajia.slider.library.SliderLayout
-        android:id="@+id/slider_landing_activity"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_centerInParent="true"
+    <ImageView
+        android:id="@+id/arrow_image_landing_activity"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/icon_arrow_down"
+        android:layout_below="@id/prompt_text_landing_activity"
         />
 
     <LinearLayout
@@ -25,7 +53,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        />
+        android:orientation="horizontal" />
 
 </RelativeLayout>

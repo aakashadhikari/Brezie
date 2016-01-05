@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="tutorial_images">
+        <item>@drawable/background_tutorial_1</item>
+        <item>@drawable/background_tutorial_2</item>
+        <item>@drawable/background_tutorial_3</item>
+        <item>@drawable/background_tutorial_4</item>
+    </string-array>
+
+    
+</resources>

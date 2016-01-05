@@ -56,6 +56,7 @@ public class LoginOrRegisterActivity extends Activity {
     public void login(){
 
         Intent i = new Intent(this,LoginActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
 
     }
@@ -63,6 +64,7 @@ public class LoginOrRegisterActivity extends Activity {
     public void register(){
 
         Intent i = new Intent(this,RegisterActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(i);
 
     }

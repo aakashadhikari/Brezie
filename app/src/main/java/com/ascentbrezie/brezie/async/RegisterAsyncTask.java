@@ -92,7 +92,20 @@ public class RegisterAsyncTask extends AsyncTask<String,Void,Boolean> {
 
                 Log.d(Constants.LOG_TAG," The response is "+response);
 
-                return true;
+                JSONObject jsonObject = new JSONObject(response);
+                String status = jsonObject.getString("status");
+
+                if(status.equalsIgnoreCase("true")){
+
+                    Constants.otp = jsonObject.getString("otp");
+                    return true;
+                }
+                else if(status.equalsIgnoreCase("false")){
+
+                    return false;
+                }
+
+
             }
 
             return false;

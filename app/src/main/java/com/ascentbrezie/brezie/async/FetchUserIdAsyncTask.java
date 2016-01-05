@@ -69,7 +69,8 @@ public class FetchUserIdAsyncTask extends AsyncTask<String,Void,Boolean> {
             httpURLConnection.setDoOutput(true);
 
             List<KeyValuePairData> keyValuePairData = new ArrayList<KeyValuePairData>();
-            keyValuePairData.add(new KeyValuePairData("deviceId",params[1]));
+            keyValuePairData.add(new KeyValuePairData("device_id",params[1]));
+            keyValuePairData.add(new KeyValuePairData("notification_id",params[2]));
 
             outputStream = httpURLConnection.getOutputStream();
 

@@ -14,11 +14,13 @@
     <dimen name="margin_large">10dp</dimen>
     <dimen name="margin">8dp</dimen>
     <dimen name="margin_small">5dp</dimen>
+    <dimen name="margin_extra_small">3dp</dimen>
 
     <dimen name="padding_extra_large">12dp</dimen>
     <dimen name="padding_large">10dp</dimen>
     <dimen name="padding">8dp</dimen>
     <dimen name="padding_small">5dp</dimen>
+    <dimen name="padding_extra_small">3dp</dimen>
 
 
     <dimen name="radius_button">30dp</dimen>

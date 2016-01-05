@@ -36,6 +36,12 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
     private BufferedWriter bufferedWriter;
     private URL url;
     private HttpURLConnection httpURLConnection;
+    private List<CommentsData>commentsData;
+
+    private int size;
+
+    private String quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,backgroundUrl;
+    private boolean isLiked;
 
     public interface FetchMoodDetailCallback{
 
@@ -46,11 +52,17 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
     public FetchMoodDetailAsyncTask(Context context, FetchMoodDetailCallback callback) {
         this.context = context;
         this.callback = callback;
-        if(Constants.moodDetailData != null){
-            Constants.moodDetailData.clear();
+//        if(Constants.moodDetailData != null){
+//            Constants.moodDetailData.clear();
+//        }
+//        else{
+//            Constants.moodDetailData = new ArrayList<MoodDetailData>();
+//        }
+        if(commentsData != null){
+           commentsData.clear();
         }
         else{
-            Constants.moodDetailData = new ArrayList<MoodDetailData>();
+            commentsData = new ArrayList<CommentsData>();
         }
 
     }
@@ -78,10 +90,11 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
             List<KeyValuePairData> keyValuePairData = new ArrayList<KeyValuePairData>();
             keyValuePairData.add(new KeyValuePairData("user_id",params[1]));
             keyValuePairData.add(new KeyValuePairData("mood_id",params[2]));
-            keyValuePairData.add(new KeyValuePairData("latitude","1"));
-            keyValuePairData.add(new KeyValuePairData("longitude","1"));
-//            keyValuePairData.add(new KeyValuePairData("latitude",params[3]));
-//            keyValuePairData.add(new KeyValuePairData("longitude",params[4]));
+            keyValuePairData.add(new KeyValuePairData("latitude",params[3]));
+            keyValuePairData.add(new KeyValuePairData("longitude",params[4]));
+            keyValuePairData.add(new KeyValuePairData("screen_category",params[5]));
+            keyValuePairData.add(new KeyValuePairData("last_seen_quote_id",params[6]));
+            keyValuePairData.add(new KeyValuePairData("direction",params[7]));
 
             outputStream = httpURLConnection.getOutputStream();
 
@@ -99,25 +112,56 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
 
                 Log.d(Constants.LOG_TAG," The response is "+response);
 
-                JSONObject jsonObject = new JSONObject(response);
-                String quoteId = jsonObject.getString("quote_id");
-                String commentCounter = jsonObject.getString("comment_counter");
-                String likeCounter = jsonObject.getString("like_counter");
-                String shareCounter = jsonObject.getString("share_counter");
-                String usedAsCounter = jsonObject.getString("usedas_counter");
+                JSONArray jsonArray = new JSONArray(response);
+                size = jsonArray.length();
 
-                JSONArray jsonArray = jsonObject.getJSONArray("comments");
-                for(int i=0;i<jsonArray.length();i++){
+                if(size == 0){
 
-                    JSONObject nestedJsonObject = jsonArray.getJSONObject(i);
-                    String nickName = nestedJsonObject.getString("nickname");
-                    String comment = nestedJsonObject.getString("comment_text");
-
-                    List<CommentsData>commentsData = new ArrayList<CommentsData>();
-                    commentsData.add(new CommentsData(comment,nickName));
-
+                    Constants.isEnd = true;
+                }
+                else{
+                    Constants.isEnd = false;
                 }
 
+                for (int i=0;i<jsonArray.length();i++){
+
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    quoteId = jsonObject.getString("quote_id");
+                    commentCounter = jsonObject.getString("comment_counter");
+                    likeCounter = jsonObject.getString("like_counter");
+                    shareCounter = jsonObject.getString("share_counter");
+                    usedAsCounter = jsonObject.getString("usedas_counter");
+                    backgroundUrl = jsonObject.getString("quote_path");
+                    isLiked = jsonObject.getBoolean("is_liked");
+
+                    JSONArray nestedJsonArray = jsonObject.getJSONArray("comments");
+                    commentsData = new ArrayList<CommentsData>();
+                    for(int j=0;j<nestedJsonArray.length();j++){
+
+                        JSONObject nestedJsonObject = nestedJsonArray.getJSONObject(j);
+                        String nickName = nestedJsonObject.getString("nickname");
+                        String comment = nestedJsonObject.getString("comment_text");
+
+                        commentsData.add(new CommentsData(comment,nickName));
+                    }
+
+                    String commentsCount = String.valueOf(nestedJsonArray.length());
+                    String direction = params[7];
+                    if(direction.equalsIgnoreCase("1")|| direction.equalsIgnoreCase("0")){
+
+                        Log.d(Constants.LOG_TAG," appending data at the end ");
+                        Constants.moodDetailData.add(new MoodDetailData(quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,backgroundUrl,commentsData,commentsCount,isLiked,false));
+
+                    }
+                    else if(direction.equalsIgnoreCase("-1")){
+
+                        int addAt = (size - i -1);
+                        Log.d(Constants.LOG_TAG," prepending the data at the start with position"+addAt);
+                        Constants.moodDetailData.add(addAt,new MoodDetailData(quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,backgroundUrl,commentsData,commentsCount,isLiked,false));
+                    }
+
+                    Constants.nextToRequest = quoteId;
+                }
 
                 return true;
             }
