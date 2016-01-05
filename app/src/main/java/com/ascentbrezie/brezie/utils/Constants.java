@@ -28,6 +28,7 @@ public class Constants {
     public static String otp;
     public static String quoteOfTheDay;
     public static String nextToRequest;
+    public static boolean isEnd;
 
     //
     public static String nickname;
@@ -103,8 +104,8 @@ public class Constants {
     public static final String quoteOfDayUrl = "http://brezie.com/brezieprod/getquoteoftheday.php";
     public static final String splashUrl = "http://brezie.com/brezieprod/splash.php";
     public static final String landingUrl = "http://brezie.com/brezieprod/landing.php";
-    public static final String moodDetailUrl = "http://brezie.com/brezieprod/mood_detail.php";
-//    public static final String moodDetailUrl = "http://brezie.com/brezieprod/new_mood_detail.php";
+//    public static final String moodDetailUrl = "http://brezie.com/brezieprod/mood_detail.php";
+    public static final String moodDetailUrl = "http://brezie.com/brezieprod/new_mood_detail.php";
     public static final String profileUrl = "http://brezie.com/brezieprod/profile.php";
     public static final String registerUrl = "http://brezie.com/brezieprod/register.php";
     public static final String verifyUrl = "http://brezie.com/brezieprod/verify.php";

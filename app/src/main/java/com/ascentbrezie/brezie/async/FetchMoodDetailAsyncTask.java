@@ -38,6 +38,8 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
     private HttpURLConnection httpURLConnection;
     private List<CommentsData>commentsData;
 
+    private int size;
+
     private String quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,backgroundUrl;
     private boolean isLiked;
 
@@ -50,12 +52,12 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
     public FetchMoodDetailAsyncTask(Context context, FetchMoodDetailCallback callback) {
         this.context = context;
         this.callback = callback;
-        if(Constants.moodDetailData != null){
-            Constants.moodDetailData.clear();
-        }
-        else{
-            Constants.moodDetailData = new ArrayList<MoodDetailData>();
-        }
+//        if(Constants.moodDetailData != null){
+//            Constants.moodDetailData.clear();
+//        }
+//        else{
+//            Constants.moodDetailData = new ArrayList<MoodDetailData>();
+//        }
         if(commentsData != null){
            commentsData.clear();
         }
@@ -91,6 +93,8 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
             keyValuePairData.add(new KeyValuePairData("latitude",params[3]));
             keyValuePairData.add(new KeyValuePairData("longitude",params[4]));
             keyValuePairData.add(new KeyValuePairData("screen_category",params[5]));
+            keyValuePairData.add(new KeyValuePairData("last_seen_quote_id",params[6]));
+            keyValuePairData.add(new KeyValuePairData("direction",params[7]));
 
             outputStream = httpURLConnection.getOutputStream();
 
@@ -109,6 +113,16 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
                 Log.d(Constants.LOG_TAG," The response is "+response);
 
                 JSONArray jsonArray = new JSONArray(response);
+                size = jsonArray.length();
+
+                if(size == 0){
+
+                    Constants.isEnd = true;
+                }
+                else{
+                    Constants.isEnd = false;
+                }
+
                 for (int i=0;i<jsonArray.length();i++){
 
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -132,8 +146,21 @@ public class FetchMoodDetailAsyncTask extends AsyncTask<String,Void,Boolean> {
                     }
 
                     String commentsCount = String.valueOf(nestedJsonArray.length());
-                    Constants.moodDetailData.add(new MoodDetailData(quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,backgroundUrl,commentsData,commentsCount,isLiked,false));
+                    String direction = params[7];
+                    if(direction.equalsIgnoreCase("1")|| direction.equalsIgnoreCase("0")){
 
+                        Log.d(Constants.LOG_TAG," appending data at the end ");
+                        Constants.moodDetailData.add(new MoodDetailData(quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,backgroundUrl,commentsData,commentsCount,isLiked,false));
+
+                    }
+                    else if(direction.equalsIgnoreCase("-1")){
+
+                        int addAt = (size - i -1);
+                        Log.d(Constants.LOG_TAG," prepending the data at the start with position"+addAt);
+                        Constants.moodDetailData.add(addAt,new MoodDetailData(quoteId,commentCounter,likeCounter,shareCounter,usedAsCounter,backgroundUrl,commentsData,commentsCount,isLiked,false));
+                    }
+
+                    Constants.nextToRequest = quoteId;
                 }
 
                 return true;

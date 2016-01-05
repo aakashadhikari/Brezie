@@ -397,24 +397,34 @@ public class MoodDetailActivity extends AppCompatActivity implements ViewPager.O
 
         saveLastSeen(position);
 
-//        Log.d(Constants.LOG_TAG," The position is "+position);
-//        if((offset != 0) && (position == 2))
-//        {
-//
-//            String quoteId = Constants.moodDetailData.get(0).getQuoteId();
-//            Log.d(Constants.LOG_TAG, " the fetch data is called with direction -1 and quote Id "+quoteId);
-//            fetchData(quoteId,"-1","more");
-//        }
-//        else if(position == (Constants.moodDetailData.size()-2)){
-//
-//            Log.d(Constants.LOG_TAG," the fetch data is called with direction 1");
-//
-//            /**
-//             * We are sending the variable nextToRequest as it has the value of quoteId
-//             * that is +3 position from the current position
-//             * **/
-//            fetchData(Constants.nextToRequest, "1","more");
-//        }
+        Log.d(Constants.LOG_TAG," The position is "+position);
+        if((offset != 0) && (position == 2))
+        {
+
+            /**
+             * Constants.isEnd is a variable that will avoid the request more data
+             * if it senses that we have reached the end.
+             * This variable is set in FetchMoodDetailAsyncTask
+             * **/
+            if(!Constants.isEnd){
+
+                String quoteId = Constants.moodDetailData.get(0).getQuoteId();
+                Log.d(Constants.LOG_TAG, " the fetch data is called with direction -1 and quote Id "+quoteId);
+                fetchData(quoteId,"-1","more");
+            }
+
+
+        }
+        else if(position == (Constants.moodDetailData.size()-2)){
+
+            Log.d(Constants.LOG_TAG," the fetch data is called with direction 1");
+
+            /**
+             * We are sending the variable nextToRequest as it has the value of quoteId
+             * that is +3 position from the current position
+             * **/
+            fetchData(Constants.nextToRequest, "1","more");
+        }
 
 
     }
