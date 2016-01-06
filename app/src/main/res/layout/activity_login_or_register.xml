@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_smoke"
+    android:background="#e43f3f"
     >
 
     <LinearLayout
@@ -12,31 +12,40 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerInParent="true"
-        android:background="@color/background_smoke"
-        >
+        android:background="#e43f3f"
+        android:id="@+id/linearLayout">
 
-    <com.ascentbrezie.brezie.custom.CustomButton
+        <com.ascentbrezie.brezie.custom.CustomButton
         android:id="@+id/login_button_login_or_register_activity"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="Login"
         android:layout_margin="@dimen/margin_large"
-        android:background="@drawable/custom_button"
-        style="@style/button_style"
         android:textSize="@dimen/text_size_large"
-        android:padding="@dimen/padding_large" />
+        android:padding="@dimen/padding_large"
+        android:background="#cc1d1d"
+        android:textColor="#ffffff"/>
     <com.ascentbrezie.brezie.custom.CustomButton
         android:id="@+id/register_button_login_or_register_activity"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/margin_large"
         android:text="Register"
-        android:background="@drawable/custom_button"
-        style="@style/button_style"
+        android:layout_margin="@dimen/margin_large"
         android:textSize="@dimen/text_size_large"
-        android:padding="@dimen/padding_large" />
+        android:padding="@dimen/padding_large"
+        android:background="#cc1d1d"
+        android:textColor="#ffffff"/>
 
     </LinearLayout>
+
+    <ImageView android:src="@drawable/logo_with_name"
+        android:layout_width="260dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_above="@+id/linearLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="61dp" />
 
 </RelativeLayout>
